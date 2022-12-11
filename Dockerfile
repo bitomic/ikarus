@@ -53,5 +53,6 @@ RUN yarn workspaces focus --all --production
 RUN chown node:node /home/node/app
 
 USER node
+EXPOSE 4000
 
 CMD [ "doppler", "run", "--", "yarn", "start" ]
