@@ -70,4 +70,7 @@ jobs:
   Deploy:
     delivery:
       secrets: inherit
-      uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
+
+      steps:
+        - name: Deploy using Docker
+          uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
