@@ -10,6 +10,9 @@ on:
       - 'Dockerfile'
       - '.github/workflows/continuous-delivery.yml'
   
+permissions:
+  packages: read
+
 env:
   # Uses docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
@@ -65,14 +68,6 @@ jobs:
         run: echo "::set-output name=tag::${{ steps.package_version.outputs.version }}.${{ github.run_number }}"
       
   Deploy:
-    runs-on: ubuntu-latest
-    needs: [Publish]
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e # tag=v2
-        with:
-          submodules: true
-          
-      - name: Deploy image to production server
-        run: docker run -t caprover/cli-caprover:2.2.3 caprover deploy --caproverUrl ${{ secrets.CAPROVER_URL }} --caproverPassword ${{ secrets.CAPROVER_PASSWORD }} --caproverApp ${{ env.REPOSITORY_NAME }} --imageName ghcr.io/bitomic/${{ env.REPOSITORY_NAME }}:${{ needs.Publish.outputs.deploy_tag }}
-
+    delivery:
+      secrets: inherit
+      uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
