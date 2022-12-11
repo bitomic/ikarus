@@ -68,11 +68,5 @@ jobs:
         run: echo "::set-output name=tag::${{ steps.package_version.outputs.version }}.${{ github.run_number }}"
       
   Deploy:
-    delivery:
-      name: Deploy using Docker
-      runs-on: ubuntu-latest
-      secrets: inherit
-
-      steps:
-        - name: Login and deploy
-          uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
+    name: Deploy using Docker
+    uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
