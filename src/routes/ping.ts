@@ -2,7 +2,7 @@ import { type ApiRequest, type ApiResponse, methods, Route, type RouteOptions } 
 import { ApplyOptions } from '@sapphire/decorators'
 
 @ApplyOptions<RouteOptions>( {
-	enabled: true,
+	enabled: false,
 	route: 'ping'
 	} )
 export class UserRoute extends Route {
