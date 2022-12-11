@@ -69,8 +69,10 @@ jobs:
       
   Deploy:
     delivery:
+      name: Deploy using Docker
+      runs-on: ubuntu-latest
       secrets: inherit
 
       steps:
-        - name: Deploy using Docker
+        - name: Login and deploy
           uses: bitomic/utilities/.github/workflows/docker-deploy.yml@c9cfd8a9de6b1a9aaf3c4c0b2fa9f05674d7d186
