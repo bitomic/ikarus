@@ -25,7 +25,7 @@
     "fs-extra": "^10.1.0",
     "ioredis": "^5.2.4",
     "mysql2": "^2.3.3",
-    "pino": "^8.4.2",
+    "pino": "^8.7.0",
     "pino-pretty": "^9.1.1",
     "sequelize": "^6.21.4",
     "ts-dotenv": "^0.8.3"
