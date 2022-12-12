@@ -16,14 +16,10 @@ export class UserRoute extends Route {
 		const { guild } = request.params as RequestParams
 
 		try {
-			await this.container.client.guilds.fetch( guild )
-			response.json( {
-				exists: true
-			} )
+			const g = await this.container.client.guilds.fetch( guild )
+			response.json( g.toJSON() )
 		} catch {
-			response.json( {
-				exists: false
-			} )
+			response.json( {} )
 		}
 	}
 }
