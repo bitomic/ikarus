@@ -730,12 +730,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:^9.0.13":
-  version: 9.0.13
-  resolution: "@types/fs-extra@npm:9.0.13"
+"@types/fs-extra@npm:^11.0.1":
+  version: 11.0.1
+  resolution: "@types/fs-extra@npm:11.0.1"
   dependencies:
+    "@types/jsonfile": "*"
     "@types/node": "*"
-  checksum: add79e212acd5ac76b97b9045834e03a7996aef60a814185e0459088fd290519a3c1620865d588fa36c4498bf614210d2a703af5cf80aa1dbc125db78f6edac3
+  checksum: 3e930346e5d84f419deb8ced1c582beef8cb20d0bd8a0eb145a37d75bab0572a1895f0e48a0d681d386b3a58b9a992b2d2acecc464bcaec2548f53ea00718651
   languageName: node
   linkType: hard
 
@@ -743,6 +744,15 @@ __metadata:
   version: 7.0.9
   resolution: "@types/json-schema@npm:7.0.9"
   checksum: 259d0e25f11a21ba5c708f7ea47196bd396e379fddb79c76f9f4f62c945879dc21657904914313ec2754e443c5018ea8372362f323f30e0792897fdb2098a705
+  languageName: node
+  linkType: hard
+
+"@types/jsonfile@npm:*":
+  version: 6.1.1
+  resolution: "@types/jsonfile@npm:6.1.1"
+  dependencies:
+    "@types/node": "*"
+  checksum: 0f8fe0a9221a00e8413cffba723dfe16553868724b830237256fb0052ecd5cac96498189d1235a001cfa815f352008261c9ceb373f0aa58227f891e0c7a12c4d
   languageName: node
   linkType: hard
 
@@ -1985,18 +1995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "fs-extra@npm:10.1.0"
-  dependencies:
-    graceful-fs: ^4.2.0
-    jsonfile: ^6.0.1
-    universalify: ^2.0.0
-  checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
-  languageName: node
-  linkType: hard
-
-"fs-extra@npm:^11.0.0":
+"fs-extra@npm:^11.0.0, fs-extra@npm:^11.1.0":
   version: 11.1.0
   resolution: "fs-extra@npm:11.1.0"
   dependencies:
@@ -3632,7 +3631,7 @@ __metadata:
     "@sapphire/pieces": ^3.3.4
     "@sapphire/plugin-api": ^4.0.1
     "@sapphire/utilities": ^3.8.0
-    "@types/fs-extra": ^9.0.13
+    "@types/fs-extra": ^11.0.1
     "@types/node": ^18.11.18
     "@typescript-eslint/eslint-plugin": ^5.35.1
     "@typescript-eslint/parser": ^5.35.1
@@ -3640,7 +3639,7 @@ __metadata:
     discord-api-types: ^0.37.28
     discord.js: ^13.8.1
     eslint: ^8.31.0
-    fs-extra: ^10.1.0
+    fs-extra: ^11.1.0
     husky: ^8.0.3
     ioredis: ^5.2.5
     lint-staged: ^13.1.0
