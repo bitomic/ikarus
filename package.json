@@ -21,7 +21,7 @@
     "@sapphire/utilities": "^3.8.0",
     "colorette": "^2.0.19",
     "discord-api-types": "^0.37.28",
-    "discord.js": "^13.8.1",
+    "discord.js": "^13.12.0",
     "fs-extra": "^11.1.0",
     "ioredis": "^5.2.5",
     "mysql2": "^3.0.1",
