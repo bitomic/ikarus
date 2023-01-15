@@ -11,7 +11,9 @@ on:
       - '.github/workflows/continuous-delivery.yml'
   
 permissions:
+  contents: read
   packages: write
+  pull-requests: write
 
 env:
   # Uses docker.io for Docker Hub if empty
