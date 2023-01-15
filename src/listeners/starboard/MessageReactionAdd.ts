@@ -3,8 +3,7 @@ import { Listener, type ListenerOptions } from '@sapphire/framework'
 import type { PartialMessage, TextChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
-import { env } from '../../lib'
-import Imgur from 'imgur'
+import { resolveKey } from '@sapphire/plugin-i18next'
 
 @ApplyOptions<ListenerOptions>( {
 	event: Events.MessageReactionAdd
@@ -21,7 +20,7 @@ export class UserEvent extends Listener {
 		const starboardChannel = await guildSettings.get( message.guildId, 'starboard-channel' )
 		if ( !starboardChannel ) return
 
-		const requiredReactions = parseInt( await guildSettings.get( message.guildId, 'starboard-count' ) ?? '3', 10 )
+		const requiredReactions = parseInt( await guildSettings.get( message.guildId, 'starboard-count' ) ?? '1', 10 )
 		if ( reaction.count < requiredReactions ) return
 
 		const starboardMessages = models.get( 'StarboardMessages' )
@@ -65,16 +64,13 @@ export class UserEvent extends Listener {
 	}
 
 	protected async sendNewMessage( channel: TextChannel, message: Message | PartialMessage ): Promise<string | null> {
-		const imgur = new Imgur( {
-			clientId: env.IMGUR_CLIENT_ID,
-			clientSecret: env.IMGUR_CLIENT_SECRET
-		} )
-		const image = await imgur.upload( { image: message.author?.avatarURL( { extension: 'png' } ) ?? '' } )
+		const image = await this.container.images.getUserAvatar( message.author )
 		const stars = message.reactions.resolve( '⭐' )?.count
+		const label = await resolveKey( channel, 'starboard:go-to-message' )
 		const pin = await channel.send( {
 			components: [ {
 				components: [ {
-					label: 'Ir al mensaje',
+					label,
 					style: ButtonStyle.Link,
 					type: ComponentType.Button,
 					url: message.url
@@ -84,8 +80,8 @@ export class UserEvent extends Listener {
 			content: `⭐ ${ stars ?? '¿?' }`,
 			embeds: [ {
 				author: {
-					icon_url: image.data.link,
-					name: message.author?.tag ?? ''
+					icon_url: image,
+					name: message.author?.username ?? ''
 				},
 				color: Colors.yellow.s800,
 				description: message.content ?? '',
