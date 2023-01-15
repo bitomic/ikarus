@@ -5,10 +5,6 @@ on:
     branches-ignore:
       - 'renovate/**'
 
-permissions:
-  contents: read
-  pull-requests: read
-
 jobs:
   check:
     name: Check for a version bump
@@ -19,5 +15,3 @@ jobs:
 
       - name: Check for version bump
         uses: bachmacintosh/need-npm-package-version-bump@v1
-        with:
-          repo-token: ${{ github.token }}

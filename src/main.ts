@@ -1,5 +1,4 @@
 import '@sapphire/plugin-api/register'
-import '@sapphire/plugin-i18next/register'
 import '@sapphire/plugin-logger/register'
 import { env, UserClient } from './lib'
 import { container } from '@sapphire/framework'

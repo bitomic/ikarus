@@ -1,7 +1,7 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
-import { Locale, Partials } from 'discord.js'
 import { env } from './environment'
 import { ModelStore } from '../framework'
+import { Partials } from 'discord.js'
 import Redis from 'ioredis'
 import type { Sequelize } from 'sequelize'
 import { sequelize } from './Sequelize'
@@ -18,13 +18,6 @@ export class UserClient extends SapphireClient {
 				prefix: 'v1/',
 			},
 			defaultPrefix: env.DISCORD_PREFIX ?? '!',
-			i18n: {
-				fetchLanguage: context => {
-					const { languages } = container.i18n
-					const lang = context.guild?.preferredLocale ?? ''
-					return languages.has( lang ) ? lang : Locale.EnglishUS
-				}
-			},
 			intents: [
 				'Guilds',
 				'GuildMessages',
