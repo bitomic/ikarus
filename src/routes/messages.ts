@@ -11,7 +11,7 @@ interface RequestParams extends Record<string, string> {
 @ApplyOptions<RouteOptions>( {
 	enabled: true,
 	route: 'messages/:guild/:channel/:message'
-	} )
+} )
 export class UserRoute extends Route {
 	public async [ methods.GET ]( request: ApiRequest, response: ApiResponse ): Promise<void> {
 		const { channel, guild, message } = request.params as RequestParams
@@ -19,7 +19,7 @@ export class UserRoute extends Route {
 		try {
 			const g = await this.container.client.guilds.fetch( guild )
 			const c = await g.channels.fetch( channel )
-			if ( !c?.isText() ) {
+			if ( !c?.isTextBased() ) {
 				response.json( {
 					error: `The channel must be a text channel. ${ c?.name ?? 'The channel' } is ${ c?.type ?? 'unknown type' }.`
 				} )
@@ -62,7 +62,7 @@ export class UserRoute extends Route {
 		try {
 			const g = await this.container.client.guilds.fetch( guild )
 			const c = await g.channels.fetch( channel )
-			if ( !c?.isText() ) {
+			if ( !c?.isTextBased() || !( 'fetchWebhooks' in c ) || !( 'createWebhook' in c ) ) {
 				response.json( {
 					error: `The channel must be a text channel. ${ c?.name ?? 'The channel' } is ${ c?.type ?? 'unknown type' }.`
 				} )
@@ -79,8 +79,9 @@ export class UserRoute extends Route {
 				return
 			}
 
-			const webhook = ( await c.fetchWebhooks() ).find( i => i.owner?.id === this.container.client.id ) ?? await c.createWebhook( this.container.client.user?.username ?? 'Unknown', {
-				avatar: this.container.client.user?.avatarURL( { format: 'png' } ) ?? ''
+			const webhook = ( await c.fetchWebhooks() ).find( i => i.owner?.id === this.container.client.id ) ?? await c.createWebhook( {
+				avatar: this.container.client.user?.avatarURL( { extension: 'png' } ) ?? '',
+				name: this.container.client.user?.username ?? 'Unknown'
 			} )
 			await webhook.send( request.body as string )
 			response.json( {

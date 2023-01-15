@@ -4,7 +4,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 @ApplyOptions<RouteOptions>( {
 	enabled: false,
 	route: 'ping'
-	} )
+} )
 export class UserRoute extends Route {
 	public [ methods.GET ]( _: ApiRequest, response: ApiResponse ): void {
 		response.json( { message: 'pong' } )

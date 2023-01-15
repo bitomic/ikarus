@@ -1,7 +1,7 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import { env } from './environment'
-import { Intents } from 'discord.js'
 import { ModelStore } from '../framework'
+import { Partials } from 'discord.js'
 import Redis from 'ioredis'
 import type { Sequelize } from 'sequelize'
 import { sequelize } from './Sequelize'
@@ -19,15 +19,15 @@ export class UserClient extends SapphireClient {
 			},
 			defaultPrefix: env.DISCORD_PREFIX ?? '!',
 			intents: [
-				Intents.FLAGS.GUILDS,
-				Intents.FLAGS.GUILD_MESSAGES,
-				Intents.FLAGS.GUILD_MESSAGE_REACTIONS
+				'Guilds',
+				'GuildMessages',
+				'GuildMessageReactions'
 			],
 			loadDefaultErrorListeners: true,
 			logger: {
 				level: LogLevel.Info
 			},
-			partials: [ 'CHANNEL', 'MESSAGE', 'REACTION' ]
+			partials: [ Partials.Channel, Partials.Message, Partials.Reaction ]
 		} )
 		container.redis = new Redis( {
 			db: env.REDIS_DB,

@@ -10,7 +10,7 @@ interface RequestParams extends Record<string, string> {
 @ApplyOptions<RouteOptions>( {
 	enabled: true,
 	route: 'guilds/:guild'
-	} )
+} )
 export class UserRoute extends Route {
 	public async [ methods.GET ]( request: ApiRequest, response: ApiResponse ): Promise<void> {
 		const { guild } = request.params as RequestParams

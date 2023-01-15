@@ -7,7 +7,7 @@ import { Command } from '@sapphire/framework'
 	description: 'Pong!',
 	enabled: true,
 	name: 'ping'
-	} )
+} )
 export class UserCommand extends Command {
 	public override registerApplicationCommands( registry: ApplicationCommandRegistry ): void {
 		registry.registerChatInputCommand( {
