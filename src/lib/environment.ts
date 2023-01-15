@@ -8,6 +8,8 @@ export const env = load( {
 		type: String
 	},
 	DISCORD_TOKEN: String,
+	IMGUR_CLIENT_ID: String,
+	IMGUR_CLIENT_SECRET: String,
 	MYSQL_DATABASE: String,
 	MYSQL_HOST: String,
 	MYSQL_PASSWORD: String,
