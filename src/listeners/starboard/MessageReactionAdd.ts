@@ -21,7 +21,7 @@ export class UserEvent extends Listener {
 		const starboardChannel = await guildSettings.get( message.guildId, 'starboard-channel' )
 		if ( !starboardChannel ) return
 
-		const requiredReactions = parseInt( await guildSettings.get( message.guildId, 'starboard-count' ) ?? '1', 10 )
+		const requiredReactions = parseInt( await guildSettings.get( message.guildId, 'starboard-count' ) ?? '3', 10 )
 		if ( reaction.count < requiredReactions ) return
 
 		const starboardMessages = models.get( 'StarboardMessages' )
