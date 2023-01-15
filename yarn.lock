@@ -2491,7 +2491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^22.4.8":
+"i18next@npm:^22.4.8, i18next@npm:^22.4.9":
   version: 22.4.9
   resolution: "i18next@npm:22.4.9"
   dependencies:
@@ -4120,6 +4120,7 @@ __metadata:
     eslint: ^8.31.0
     fs-extra: ^11.1.0
     husky: ^8.0.3
+    i18next: ^22.4.9
     imgur: ^2.2.0
     ioredis: ^5.2.5
     lint-staged: ^13.1.0
