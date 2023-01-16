@@ -55,12 +55,10 @@ export class GuildSettingsModel extends Model<IGuildSettingsInterface> {
 	public async get( guild: string, setting: GuildSettingKey ): Promise<string | null> {
 		const key = this.key( guild, setting )
 		const cached = await this.container.redis.get( key )
-		console.log( { cached } )
 		if ( cached ) return cached
 
 		const result = await this.model.findOne( { where: { guild, setting } } )
 		if ( result ) {
-			console.log( [ result ] )
 			void this.container.redis.set( key, result.value )
 		}
 
