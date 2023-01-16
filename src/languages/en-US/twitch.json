@@ -1,0 +1,6 @@
+{
+	"is-live": "{{ user }} is live on Twitch",
+	"game": "Game",
+	"viewers": "Viewers",
+	"was-live": "{{ user }} was live on Twitch"
+}
