@@ -1,4 +1,5 @@
-import { ButtonStyle, ChannelType, ComponentType, Events, type Message, type MessageReaction } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, type MessageActionRowComponentBuilder } from '@discordjs/builders'
+import { ButtonStyle, ChannelType, Events, type Message, type MessageReaction } from 'discord.js'
 import { Listener, type ListenerOptions } from '@sapphire/framework'
 import type { PartialMessage, TextChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
@@ -59,40 +60,35 @@ export class UserEvent extends Listener {
 		} catch {
 			return false
 		}
-
-		return false
 	}
 
 	protected async sendNewMessage( channel: TextChannel, message: Message | PartialMessage ): Promise<string | null> {
 		const image = await this.container.images.getUserAvatar( message.author )
 		const stars = message.reactions.resolve( '⭐' )?.count
 		const label = await resolveKey( channel, 'starboard:go-to-message' )
+
+		const component = new ActionRowBuilder<MessageActionRowComponentBuilder>()
+			.addComponents( new ButtonBuilder()
+				.setLabel( label )
+				.setStyle( ButtonStyle.Link )
+				.setURL( message.url ) )
+		const embed = new EmbedBuilder()
+			.setAuthor( {
+				iconURL: image,
+				name: message.author?.username ?? ''
+			} )
+			.setColor( Colors.yellow.s800 )
+			.setDescription( message.content )
+			.setFooter( {
+				text: `${ message.id } • #${ 'name' in message.channel ? message.channel.name : message.channel.id }`
+			} )
+			.setImage( message.attachments.at( 0 )?.url ?? null )
+			.setTimestamp( Date.now() )
+
 		const pin = await channel.send( {
-			components: [ {
-				components: [ {
-					label,
-					style: ButtonStyle.Link,
-					type: ComponentType.Button,
-					url: message.url
-				} ],
-				type: ComponentType.ActionRow
-			} ],
+			components: [ component ],
 			content: `⭐ ${ stars ?? '¿?' }`,
-			embeds: [ {
-				author: {
-					icon_url: image,
-					name: message.author?.username ?? ''
-				},
-				color: Colors.yellow.s800,
-				description: message.content ?? '',
-				footer: {
-					text: `${ message.id } • #${ 'name' in message.channel ? message.channel.name : message.channel.id }`
-				},
-				image: {
-					url: message.attachments.at( 0 )?.url ?? ''
-				},
-				timestamp: new Date().toISOString()
-			}, ...message.embeds ]
+			embeds: [ embed, ...message.embeds ]
 		} )
 			.catch( () => null )
 
