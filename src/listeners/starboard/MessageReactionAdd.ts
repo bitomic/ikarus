@@ -1,5 +1,5 @@
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, type MessageActionRowComponentBuilder } from '@discordjs/builders'
-import { ButtonStyle, ChannelType, Events, type Message, type MessageReaction } from 'discord.js'
+import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, type JSONEncodable, type MessageActionRowComponentBuilder } from '@discordjs/builders'
+import { type APIEmbed, ButtonStyle, ChannelType, Events, type Message, type MessageReaction } from 'discord.js'
 import { Listener, type ListenerOptions } from '@sapphire/framework'
 import type { PartialMessage, TextChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
@@ -67,6 +67,35 @@ export class UserEvent extends Listener {
 		const stars = message.reactions.resolve( '⭐' )?.count
 		const label = await resolveKey( channel, 'starboard:go-to-message' )
 
+		const embeds: (APIEmbed | JSONEncodable<APIEmbed>)[] = []
+
+		if ( message.reference?.messageId ) {
+			try {
+				const quote = await message.channel.messages.fetch( message.reference.messageId )
+				
+				const embed = new EmbedBuilder()
+					.setAuthor( {
+						iconURL: await this.container.images.getUserAvatar( quote.author ),
+						name: await resolveKey( quote, 'general:reply-to', { replace: { user: quote.member?.nickname ?? quote.author.username } } )
+					} )
+					.setColor( 0x2f3136 )
+				if ( quote.content.length > 0 ) {
+					embed.setDescription( quote.content )
+				}
+				embeds.push( embed )
+
+				if ( quote.content.length === 0 && quote.embeds.length > 0 ) {
+					embeds.push( ...quote.embeds.map( i => {
+						const e = new EmbedBuilder( i.toJSON() )
+						e.setColor( 0x2f3136 )
+						return e
+					} ) )
+				}
+			} catch {
+				this.container.logger.warn( `An error occurred while trying to retrieve a referenced message for the starboard.` )
+			}
+		}
+
 		const component = new ActionRowBuilder<MessageActionRowComponentBuilder>()
 			.addComponents( new ButtonBuilder()
 				.setLabel( label )
@@ -75,20 +104,24 @@ export class UserEvent extends Listener {
 		const embed = new EmbedBuilder()
 			.setAuthor( {
 				iconURL: image,
-				name: message.author?.username ?? ''
+				name: message.member?.nickname ?? message.author?.username ?? ''
 			} )
 			.setColor( Colors.yellow.s800 )
-			.setDescription( message.content )
 			.setFooter( {
 				text: `${ message.id } • #${ 'name' in message.channel ? message.channel.name : message.channel.id }`
 			} )
 			.setImage( message.attachments.at( 0 )?.url ?? null )
 			.setTimestamp( Date.now() )
+		if ( message.content && message.content?.length > 0 ) {
+			embed.setDescription( message.content )
+		}
+		
+		embeds.push( embed, ...message.embeds )
 
 		const pin = await channel.send( {
 			components: [ component ],
 			content: `⭐ ${ stars ?? '¿?' }`,
-			embeds: [ embed, ...message.embeds ]
+			embeds
 		} )
 			.catch( () => null )
 
