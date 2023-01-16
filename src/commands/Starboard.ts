@@ -57,8 +57,10 @@ export class UserCommand extends Command {
 			name: await resolveKey( interaction, 'starboard:user-stats.message-count' ),
 			value: `${ messages.length }`
 		} )
+
+		const content = await resolveKey( interaction, 'starboard:user-stats.loading' )
 		await interaction.editReply( {
-			content: messages.length > 0 ? await resolveKey( interaction, 'starboard:user-stats.loading' ) as string : null,
+			content: messages.length > 0 ? content : null,
 			embeds: [ embed ]
 		} )
 		if ( messages.length === 0 ) return
@@ -131,9 +133,8 @@ export class UserCommand extends Command {
 				embeds: [ embed ]
 			} )
 		} catch {
-			await interaction.editReply( {
-				content: await resolveKey( interaction, 'starboard:user-stats.load-failed' ) as string
-			} )
+			const content = await resolveKey( interaction, 'starboard:user-stats.load-failed' )
+			await interaction.editReply( { content } )
 		}
 	}
 }
