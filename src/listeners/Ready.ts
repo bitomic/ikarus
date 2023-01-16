@@ -11,5 +11,6 @@ export class UserEvent extends Listener {
 		this.container.logger.info( `Ready! as ${ this.container.client.user?.tag ?? 'unknown user' }` )
 
 		await this.container.sequelize.sync()
+		await this.container.twitch.init()
 	}
 }
