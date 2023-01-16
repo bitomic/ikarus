@@ -2,7 +2,14 @@ import { container } from '@sapphire/pieces'
 import { env } from './environment'
 import { request } from 'undici'
 
-interface Stream {
+export interface Game {
+	box_art_url: string
+	id: string
+	igdb_id: string
+	name: string
+}
+
+export interface Stream {
 	id: string
 	game_id: string
 	game_name: string
@@ -16,6 +23,18 @@ interface Stream {
 	user_login: string
 	user_name: string
 	viewer_count: number
+}
+
+export interface User {
+	broadcaster_type: 'affiliate' | 'partner' | ''
+	created_at: string
+	description: string
+	display_name: string
+	id: string
+	login: string
+	offline_image_url: string
+	profile_image_url: string
+	type: 'admin' | 'global_mod' | 'staff' | ''
 }
 
 class Twitch {
@@ -71,7 +90,7 @@ class Twitch {
 			return value.map( v => `${ key }=${ v }` ).join( '&' )
 		} )
 			.join( '&' )
-		const { body } = await request( `${ url }?${ params }`, {
+		const { body } = await request( `https://api.twitch.tv/helix/${ url }?${ params }`, {
 			headers: {
 				'Client-Id': env.TWITCH_CLIENT,
 				authorization: `Bearer ${ this.accessToken }`,
@@ -81,12 +100,26 @@ class Twitch {
 		return body.json()
 	}
 
+	public async getGame( gameId: string ): Promise<Game | null> {
+		const req = await this.get( 'games', {
+			id: gameId
+		} ) as { data: Game[] }
+		return req.data.at( 0 ) ?? null
+	}
+
 	public async getStreams( users: string[] ): Promise<Stream[]> {
-		const req = await this.get( 'https://api.twitch.tv/helix/streams', {
+		const req = await this.get( 'streams', {
 			first: 100,
 			user_login: users
 		} ) as { data: Stream[] }
 		return req.data
+	}
+
+	public async getUser( user: string ): Promise<User | null> {
+		const req = await this.get( 'users', {
+			login: user
+		} ) as { data: User[] }
+		return req.data.at( 0 ) ?? null
 	}
 
 	public async getUserStream( user: string ): Promise<Stream | null> {
