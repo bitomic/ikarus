@@ -1,7 +1,8 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
-import { Locale, Partials } from 'discord.js'
+import { Events, Locale, Partials } from 'discord.js'
 import { env } from './environment'
 import { ModelStore } from '../framework'
+import { randomUUID } from 'crypto'
 import Redis from 'ioredis'
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis'
 import type { Sequelize } from 'sequelize'
@@ -51,6 +52,25 @@ export class UserClient extends SapphireClient {
 				} )
 			}
 		} )
+		container.ready = async (): Promise<true> => {
+			if ( this.isReady() ) return true
+
+			const identifier = randomUUID()
+			container.logger.info( `A function is waiting for a ready event (${ identifier })` )
+			const logDone = () => container.logger.info( `The ready event was sent to ${ identifier }` )
+
+			await Promise.race( [
+				setTimeout( logDone, 1000 * 10 ),
+				new Promise<void>( resolve => {
+					this.on( Events.ClientReady, () => {
+						logDone()
+						resolve()
+					} )
+				} )
+			] )
+
+			return true
+		}
 		container.redis = new Redis( redisOptions )
 		container.sequelize = sequelize
 		container.stores.register( new ModelStore() )
@@ -63,6 +83,7 @@ export class UserClient extends SapphireClient {
 
 declare module '@sapphire/pieces' {
 	interface Container {
+		ready: () => Promise<true>
 		redis: Redis
 		sequelize: Sequelize
 	}
