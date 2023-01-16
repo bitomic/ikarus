@@ -81,11 +81,16 @@ class Twitch {
 		return body.json()
 	}
 
-	public async getUserStream( user: string ): Promise<Stream | null> {
+	public async getStreams( users: string[] ): Promise<Stream[]> {
 		const req = await this.get( 'https://api.twitch.tv/helix/streams', {
-			user_login: user
+			user_login: users
 		} ) as { data: Stream[] }
-		return req.data.at( 0 ) ?? null
+		return req.data
+	}
+
+	public async getUserStream( user: string ): Promise<Stream | null> {
+		const req = await this.getStreams( [ user ] )
+		return req.at( 0 ) ?? null
 	}
 }
 
