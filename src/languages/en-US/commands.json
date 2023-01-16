@@ -1,0 +1,18 @@
+{
+	"starboard": {
+		"description": "Check statistics related to the starboard.",
+		"name": "starboard",
+		"subcommands": {
+			"user": {
+				"description": "Check an user's stats.",
+				"name": "user",
+				"options": {
+					"user": {
+						"description": "User you want to check.",
+						"name": "user"
+					}
+				}
+			}
+		}
+	}
+}

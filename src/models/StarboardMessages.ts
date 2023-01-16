@@ -76,6 +76,12 @@ export class StarboardMessagesModel extends Model<IStarboardMessagesInterface> {
 		const result = await this.model.findOne( { where: { guild, message } } )
 		return result
 	}
+
+	public getUserMessages( guild: string, user: string ): Promise<IStarboardMessages[]> {
+		return this.model.findAll( { where: {
+			guild, user
+		} } )
+	}
 }
 
 declare global {

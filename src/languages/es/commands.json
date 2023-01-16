@@ -1,0 +1,18 @@
+{
+	"starboard": {
+		"description": "Consulta estadísticas relacionadas al starboard.",
+		"name": "starboard",
+		"subcommands": {
+			"user": {
+				"description": "Consulta las estadísticas de alguien.",
+				"name": "usuario",
+				"options": {
+					"user": {
+						"description": "Usuario que quieres revisar.",
+						"name": "usuario"
+					}
+				}
+			}
+		}
+	}
+}
