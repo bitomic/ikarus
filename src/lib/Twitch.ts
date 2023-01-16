@@ -63,10 +63,13 @@ class Twitch {
 		await redis.set( 'twitch:token-expiry', this.tokenExpiry )
 	}
 
-	public async get( url: string, query: Record<string, string | number> ): Promise<unknown> {
+	public async get( url: string, query: Record<string, string | number | string[] | number[]> ): Promise<unknown> {
 		await this.availableToken()
 
-		const params = Object.entries( query ).map( ( [ key, value ] ) => `${ key }=${ value }` )
+		const params = Object.entries( query ).map( ( [ key, value ] ) => {
+			if ( typeof value === 'string' || typeof value === 'number' ) return `${ key }=${ value }`
+			return value.map( v => `${ key }=${ v }` ).join( '&' )
+		} )
 			.join( '&' )
 		const { body } = await request( `${ url }?${ params }`, {
 			headers: {
