@@ -83,6 +83,7 @@ class Twitch {
 
 	public async getStreams( users: string[] ): Promise<Stream[]> {
 		const req = await this.get( 'https://api.twitch.tv/helix/streams', {
+			first: 100,
 			user_login: users
 		} ) as { data: Stream[] }
 		return req.data
