@@ -1,3 +1,4 @@
 {
-	"link": "enlace"
+	"link": "enlace",
+	"reply-to": "Respondiendo a {{ user }}"
 }
