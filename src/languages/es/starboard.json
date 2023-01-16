@@ -1,0 +1,14 @@
+{
+	"go-to-message": "Mensaje original",
+	"user-stats": {
+		"description": "Estas son las estadísticas de mensajes destacados enviados por <@!{{ user }}>.",
+		"title": "Estadísticas de {{ user }}",
+		"loading": "Intentaré cargar más información, por favor espera...",
+		"load-failed": "No pude cargar información adicional.",
+		"message-count": "Número de mensajes",
+		"total-stars": "Total de estrellas",
+		"max-stars": "Número máximo de estrellas",
+		"first-star": "Primer mensaje destacado",
+		"last-star": "Último mensaje destacado"
+	}
+}
