@@ -43,13 +43,11 @@ export class UserTask extends ScheduledTask {
 				return
 			}
 
-			const viewersField = embed.data.fields?.at( 1 )
-			if ( !viewersField ) {
-				throw new UserError( { context: activeStream, identifier: 'NoViewersField' } )
-			}
-			viewersField.value = `${ stream.viewer_count }`
-
-			embed.spliceFields( 1, 1, viewersField )
+			embed.spliceFields( 1, 1, {
+				inline: true,
+				name: await resolveKey( guild, 'twitch:viewers' ),
+				value: `${ stream.viewer_count }`
+			} )
 				.setImage( stream.thumbnail_url.replace( '-{width}x{height}', '' ) )
 			await message.edit( { embeds: [ embed ] } )
 
