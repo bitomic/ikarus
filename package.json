@@ -35,7 +35,8 @@
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
     "sequelize": "^6.28.0",
-    "ts-dotenv": "^0.9.0"
+    "ts-dotenv": "^0.9.0",
+    "undici": "^5.15.0"
   },
   "devDependencies": {
     "@bitomic/eslint-config": "^1.0.0",
