@@ -26,5 +26,7 @@ export const env = load( {
 	REDIS_HOST: String,
 	REDIS_PASSWORD: String,
 	REDIS_PORT: Number,
-	REDIS_USERNAME: String
+	REDIS_USERNAME: String,
+	TWITCH_CLIENT: String,
+	TWITCH_SECRET: String
 } )
