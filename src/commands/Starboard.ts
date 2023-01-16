@@ -58,7 +58,7 @@ export class UserCommand extends Command {
 			value: `${ messages.length }`
 		} )
 		await interaction.editReply( {
-			content: messages.length > 0 ? await resolveKey( interaction, 'starboard:user-stats.loading' )  : null,
+			content: messages.length > 0 ? await resolveKey( interaction, 'starboard:user-stats.loading' ) as string : null,
 			embeds: [ embed ]
 		} )
 		if ( messages.length === 0 ) return
@@ -132,7 +132,7 @@ export class UserCommand extends Command {
 			} )
 		} catch {
 			await interaction.editReply( {
-				content: await resolveKey( interaction, 'starboard:user-stats.load-failed' )
+				content: await resolveKey( interaction, 'starboard:user-stats.load-failed' ) as string
 			} )
 		}
 	}
