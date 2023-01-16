@@ -67,12 +67,12 @@ export class UserEvent extends Listener {
 		const stars = message.reactions.resolve( '⭐' )?.count
 		const label = await resolveKey( channel, 'starboard:go-to-message' )
 
-		const embeds: (APIEmbed | JSONEncodable<APIEmbed>)[] = []
+		const embeds: Array<APIEmbed | JSONEncodable<APIEmbed>> = []
 
 		if ( message.reference?.messageId ) {
 			try {
 				const quote = await message.channel.messages.fetch( message.reference.messageId )
-				
+
 				const embed = new EmbedBuilder()
 					.setAuthor( {
 						iconURL: await this.container.images.getUserAvatar( quote.author ),
@@ -92,7 +92,7 @@ export class UserEvent extends Listener {
 					} ) )
 				}
 			} catch {
-				this.container.logger.warn( `An error occurred while trying to retrieve a referenced message for the starboard.` )
+				this.container.logger.warn( 'An error occurred while trying to retrieve a referenced message for the starboard.' )
 			}
 		}
 
@@ -112,10 +112,10 @@ export class UserEvent extends Listener {
 			} )
 			.setImage( message.attachments.at( 0 )?.url ?? null )
 			.setTimestamp( Date.now() )
-		if ( message.content && message.content?.length > 0 ) {
+		if ( message.content && message.content.length > 0 ) {
 			embed.setDescription( message.content )
 		}
-		
+
 		embeds.push( embed, ...message.embeds )
 
 		const pin = await channel.send( {
