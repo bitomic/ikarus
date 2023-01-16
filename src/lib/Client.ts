@@ -3,11 +3,19 @@ import { Locale, Partials } from 'discord.js'
 import { env } from './environment'
 import { ModelStore } from '../framework'
 import Redis from 'ioredis'
+import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis'
 import type { Sequelize } from 'sequelize'
 import { sequelize } from './Sequelize'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
+		const redisOptions = {
+			db: env.REDIS_DB,
+			host: env.REDIS_HOST,
+			password: env.REDIS_PASSWORD,
+			port: env.REDIS_PORT,
+			username: env.REDIS_USERNAME
+		}
 		super( {
 			api: {
 				acceptedContentMimeTypes: [ 'application/json' ],
@@ -34,15 +42,16 @@ export class UserClient extends SapphireClient {
 			logger: {
 				level: LogLevel.Info
 			},
-			partials: [ Partials.Channel, Partials.Message, Partials.Reaction ]
+			partials: [ Partials.Channel, Partials.Message, Partials.Reaction ],
+			tasks: {
+				strategy: new ScheduledTaskRedisStrategy( {
+					bull: {
+						connection: redisOptions
+					}
+				} )
+			}
 		} )
-		container.redis = new Redis( {
-			db: env.REDIS_DB,
-			host: env.REDIS_HOST,
-			password: env.REDIS_PASSWORD,
-			port: env.REDIS_PORT,
-			username: env.REDIS_USERNAME
-		} )
+		container.redis = new Redis( redisOptions )
 		container.sequelize = sequelize
 		container.stores.register( new ModelStore() )
 	}
