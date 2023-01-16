@@ -13,7 +13,7 @@ export class UserEvent extends Listener {
 		if ( reaction.emoji.name !== '⭐' ) return
 		await reaction.fetch()
 		const { message } = reaction
-		if ( !message.guildId || message.partial ) return
+		if ( !message.inGuild() ) return
 
 		const models = this.container.stores.get( 'models' )
 		const guildSettings = models.get( 'GuildSettings' )
@@ -38,15 +38,7 @@ export class UserEvent extends Listener {
 		const pin = await this.sendNewMessage( channel, message )
 		if ( !pin ) return
 
-		await starboardMessages.set( {
-			channel: message.channel.isThread() ? message.channel.parentId ?? '' : message.channelId,
-			guild: message.guildId,
-			message: message.id,
-			pinChannel: starboardChannel,
-			pinMessage: pin,
-			thread: message.channel.isThread() ? message.channelId : undefined,
-			user: reaction.message.author?.id ?? ''
-		} )
+		await starboardMessages.setMessage( message, starboardChannel, pin )
 	}
 
 	protected async updateMessage( message: Message<true> ): Promise<boolean> {

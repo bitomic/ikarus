@@ -1,6 +1,7 @@
 import type { ModelStatic, Model as SequelizeModel } from 'sequelize'
 import type { PieceContext, PieceOptions } from '@sapphire/pieces'
 import { DataTypes } from 'sequelize'
+import type { Message } from 'discord.js'
 import { Model } from '../framework'
 
 interface IStarboardMessages {
@@ -70,6 +71,18 @@ export class StarboardMessagesModel extends Model<IStarboardMessagesInterface> {
 		await this.model.create( options )
 		const key = this.key( options.guild, options.message )
 		void this.container.redis.set( key, options.pinMessage )
+	}
+
+	public setMessage( message: Message<true>, pinChannel: string, pinMessage: string ): Promise<void> {
+		return this.set( {
+			channel: message.channel.isThread() ? message.channel.parentId ?? '' : message.channelId,
+			guild: message.guildId,
+			message: message.id,
+			pinChannel,
+			pinMessage,
+			thread: message.channel.isThread() ? message.channelId : undefined,
+			user: message.author.id
+		} )
 	}
 
 	public async get( guild: string, message: string ): Promise<IStarboardMessages | null> {
