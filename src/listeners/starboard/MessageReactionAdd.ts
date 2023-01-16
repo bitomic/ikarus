@@ -26,23 +26,9 @@ export class UserEvent extends Listener {
 		const starboardMessages = models.get( 'StarboardMessages' )
 		const isPinned = await starboardMessages.has( message.guildId, message.id )
 
-		if ( isPinned ) {
-			const pin = await starboardMessages.get( message.guildId, message.id )
-			if ( pin ) {
-				const guild = await this.container.client.guilds.fetch( message.guildId )
-				const channel = await guild.channels.fetch( pin.pinChannel )
-					.catch( () => null )
-				if ( channel?.isTextBased() ) {
-					const msg = await channel.messages.fetch( pin.pinMessage )
-						.catch( () => null )
-					if ( msg ) {
-						await msg.edit( {
-							content: `⭐ ${ message.reactions.resolve( '⭐' )?.count ?? '¿?' }`
-						} )
-						return
-					}
-				}
-			}
+		if ( isPinned && message.inGuild() ) {
+			const success = await this.updateMessage( message )
+			if ( success ) return
 		}
 
 		const guild = await this.container.client.guilds.fetch( message.guildId )
@@ -61,6 +47,28 @@ export class UserEvent extends Listener {
 			thread: message.channel.isThread() ? message.channelId : undefined,
 			user: reaction.message.author?.id ?? ''
 		} )
+	}
+
+	protected async updateMessage( message: Message<true> ): Promise<boolean> {
+		const pin = await this.container.stores.get( 'models' ).get( 'StarboardMessages' )
+			.get( message.guildId, message.id )
+		if ( !pin ) return false
+
+		try {
+			const guild = await this.container.client.guilds.fetch( message.guildId )
+			const channel = await guild.channels.fetch( pin.pinChannel )
+			if ( !channel?.isTextBased() ) return false
+
+			const msg = await channel.messages.fetch( pin.pinMessage )
+			await msg.edit( {
+				content: `⭐ ${ message.reactions.resolve( '⭐' )?.count ?? '¿?' }`
+			} )
+			return true
+		} catch {
+			return false
+		}
+
+		return false
 	}
 
 	protected async sendNewMessage( channel: TextChannel, message: Message | PartialMessage ): Promise<string | null> {
