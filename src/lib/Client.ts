@@ -47,7 +47,11 @@ export class UserClient extends SapphireClient {
 			tasks: {
 				strategy: new ScheduledTaskRedisStrategy( {
 					bull: {
-						connection: redisOptions
+						connection: redisOptions,
+						defaultJobOptions: {
+							removeOnComplete: true,
+							removeOnFail: true
+						}
 					}
 				} )
 			}
