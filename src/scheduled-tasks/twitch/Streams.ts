@@ -141,6 +141,7 @@ export class UserTask extends ScheduledTask {
 				if ( channel?.type !== ChannelType.GuildText ) continue
 
 				const message = await channel.messages.fetch( activeStream.message )
+				await message.fetch()
 				const embed = message.embeds.at( 0 )?.data ?? {}
 				const author = embed.author ?? {}
 				const game = embed.fields?.at( 0 )?.value ?? ''
