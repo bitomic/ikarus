@@ -98,6 +98,7 @@ export class UserTask extends ScheduledTask {
 	protected async createEmbed( options: { gameImage: string, guild: Guild, stream: Stream, userAvatar: string } ): Promise<EmbedBuilder> {
 		const { gameImage, guild, stream, userAvatar } = options
 
+		const image = stream.thumbnail_url.replace( '-{width}x{height}', '' )
 		const embed = new EmbedBuilder()
 			.setColor( Colors.deepPurple.a400 )
 			.setAuthor( {
@@ -117,7 +118,7 @@ export class UserTask extends ScheduledTask {
 					value: `${ stream.viewer_count }`
 				}
 			)
-			.setImage( stream.thumbnail_url.replace( '-{width}x{height}', '' ) )
+			.setImage( `${ image }?cb=${ Date.now() }` )
 			.setThumbnail( gameImage )
 			.setURL( `https://twitch.tv/${ stream.user_login }` )
 			.setTimestamp( new Date( stream.started_at ) )
