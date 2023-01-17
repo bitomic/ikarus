@@ -41,6 +41,13 @@ export class TwitchFollowsModel extends Model<ITwitchFollowsInterface> {
 		)
 	}
 
+	public async getGuildStreamers( guild: string ): Promise<ITwitchFollows[]> {
+		const query = await this.model.findAll( {
+			where: { guild }
+		} )
+		return query.map( i => i.toJSON() )
+	}
+
 	public async getStreamers(): Promise<string[]> {
 		const query = await this.model.findAll( {
 			attributes: [ 'user' ],
@@ -58,6 +65,14 @@ export class TwitchFollowsModel extends Model<ITwitchFollowsInterface> {
 
 	public async register( options: ITwitchFollows ): Promise<void> {
 		await this.model.upsert( options )
+	}
+
+	public async remove( { guild, user }: Pick<ITwitchFollows, 'guild' | 'user'> ): Promise<void> {
+		await this.model.destroy( {
+			where: {
+				guild, user
+			}
+		} )
 	}
 }
 
