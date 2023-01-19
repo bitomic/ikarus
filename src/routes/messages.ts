@@ -26,6 +26,7 @@ export class UserRoute extends Route {
 				return
 			}
 			const m = await c.messages.fetch( message )
+			await m.fetch()
 			if ( m.system ) {
 				response.json( {
 					error: 'You can\'t fetch a system message.'
