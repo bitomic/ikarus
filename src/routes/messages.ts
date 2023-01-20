@@ -58,6 +58,7 @@ export class UserRoute extends Route {
 	}
 
 	public async [ methods.POST ]( request: ApiRequest, response: ApiResponse ): Promise<void> {
+		response.setHeader( 'Access-Control-Allow-Origin', '*' )
 		const { channel, guild, message } = request.params as RequestParams
 
 		try {
