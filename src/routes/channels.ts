@@ -15,7 +15,7 @@ export class UserRoute extends Route {
 
 		try {
 			const g = await this.container.client.guilds.fetch( guild )
-			response.json( g.channels )
+			response.json( await g.channels.fetch() )
 		} catch {
 			response.json( {} )
 		}
