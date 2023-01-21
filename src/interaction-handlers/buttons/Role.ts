@@ -18,13 +18,7 @@ export class UserButton extends InteractionHandler {
 
 		const hasRole = interaction.member.roles.cache.has( roleId )
 		if ( type === 'ronce' && hasRole ) {
-			const description = await resolveKey( interaction, 'role-buttons:already-have' )
-			void interaction.reply( {
-				embeds: [ {
-					color: Colors.amber.s800,
-					description
-				} ]
-			} )
+			void this.reply( interaction, Colors.amber.s800, 'already-have' )
 			return
 		}
 
