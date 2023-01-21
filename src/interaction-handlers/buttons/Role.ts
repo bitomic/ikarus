@@ -45,10 +45,10 @@ export class UserButton extends InteractionHandler {
 
 		if ( hasRole ) {
 			await interaction.member.roles.remove( roleId )
-			void this.reply( interaction, role.color, 'role-added', { role: role.id } )
-		} else {
-			await interaction.member.roles.remove( roleId )
 			void this.reply( interaction, role.color, 'role-removed', { role: role.id } )
+		} else {
+			await interaction.member.roles.add( roleId )
+			void this.reply( interaction, role.color, 'role-added', { role: role.id } )
 		}
 	}
 
