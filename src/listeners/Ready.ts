@@ -1,3 +1,4 @@
+import { ActivityType } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener } from '@sapphire/framework'
 import type { ListenerOptions } from '@sapphire/framework'
@@ -12,5 +13,11 @@ export class UserEvent extends Listener {
 
 		await this.container.sequelize.sync()
 		await this.container.twitch.init()
+		this.container.client.user?.setPresence( {
+			activities: [ {
+				name: `version ${ process.env.npm_package_version ?? '1.0.0' }`,
+				type: ActivityType.Playing
+			} ]
+		} )
 	}
 }
