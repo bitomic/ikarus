@@ -72,5 +72,10 @@ jobs:
   Deploy:
     name: Deploy using Docker
     needs: [Publish]
-    secrets: inherit
-    uses: bitomic/utilities/.github/workflows/docker-deploy.yml@31efda957426e62e487fcc0ae79a7bd3aec3c874
+    uses: bitomic/utilities/.github/workflows/docker-deploy.yml@43040b5429c539c4a000f2baa752d45eb5dfae7c
+    secrets:
+      DOCKER_NETWORK: "${{ secrets.DOCKER_NETWORK }}"
+      DOPPLER_TOKEN: "${{ secrets.DOPPLER_TOKEN }}"
+      SSH_HOST: "${{ secrets.SSH_HOST }}"
+      SSH_PRIVATE_KEY: "${{ secrets.SSH_PRIVATE_KEY }}"
+      SSH_USER: "${{ secrets.SSH_USER }}"
