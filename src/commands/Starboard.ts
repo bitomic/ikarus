@@ -1,3 +1,4 @@
+/*
 import { ApplicationCommandOptionType, ChannelType, type ChatInputCommandInteraction, type Message } from 'discord.js'
 import type { ApplicationCommandRegistry, CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
@@ -138,3 +139,4 @@ export class UserCommand extends Command {
 		}
 	}
 }
+*/
