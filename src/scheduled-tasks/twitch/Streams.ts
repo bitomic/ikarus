@@ -1,3 +1,4 @@
+/*
 import type { EmbedField, Guild } from 'discord.js'
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { ActiveStream } from '../../utils'
@@ -182,3 +183,4 @@ declare module '@sapphire/plugin-scheduled-tasks' {
 		streams: never;
 	}
 }
+*/
