@@ -1,7 +1,6 @@
-import type { ApplicationCommandRegistry, CommandOptions } from '@sapphire/framework'
-import type { CommandInteraction, Message } from 'discord.js'
+import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
-import { Command } from '@sapphire/framework'
+import type { CommandInteraction } from 'discord.js'
 
 @ApplyOptions<CommandOptions>( {
 	description: 'Pong!',
@@ -18,9 +17,5 @@ export class UserCommand extends Command {
 
 	public override chatInputRun( interaction: CommandInteraction ): void {
 		void interaction.reply( 'Pong!' )
-	}
-
-	public override messageRun( message: Message ): void {
-		void message.reply( 'Pong!' )
 	}
 }
