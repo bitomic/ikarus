@@ -1,3 +1,4 @@
+/*
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, type JSONEncodable, type MessageActionRowComponentBuilder } from '@discordjs/builders'
 import { type APIEmbed, ButtonStyle, ChannelType, Events, type Message, type MessageReaction } from 'discord.js'
 import { Listener, type ListenerOptions } from '@sapphire/framework'
@@ -128,3 +129,4 @@ export class UserEvent extends Listener {
 		return pin?.id ?? null
 	}
 }
+*/
