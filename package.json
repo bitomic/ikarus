@@ -37,6 +37,7 @@
     "mysql2": "^3.0.1",
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.28.0",
     "ts-dotenv": "^0.9.0",
     "undici": "^5.15.0"

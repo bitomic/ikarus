@@ -3038,6 +3038,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"reflect-metadata@npm:^0.1.13":
+  version: 0.1.13
+  resolution: "reflect-metadata@npm:0.1.13"
+  checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
+  languageName: node
+  linkType: hard
+
 "regenerator-runtime@npm:^0.13.11":
   version: 0.13.11
   resolution: "regenerator-runtime@npm:0.13.11"
@@ -3192,6 +3199,7 @@ __metadata:
     mysql2: ^3.0.1
     pino: ^8.8.0
     pino-pretty: ^9.1.1
+    reflect-metadata: ^0.1.13
     rimraf: ^4.0.5
     sequelize: ^6.28.0
     ts-dotenv: ^0.9.0

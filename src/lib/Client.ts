@@ -1,12 +1,9 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import { Events, Locale, Partials } from 'discord.js'
 import { env } from './environment'
-import { ModelStore } from '../framework'
 import { randomUUID } from 'crypto'
 import Redis from 'ioredis'
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis'
-import type { Sequelize } from 'sequelize'
-import { sequelize } from './Sequelize'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
@@ -76,8 +73,6 @@ export class UserClient extends SapphireClient {
 			return true
 		}
 		container.redis = new Redis( redisOptions )
-		container.sequelize = sequelize
-		container.stores.register( new ModelStore() )
 	}
 
 	public async start(): Promise<void> {
@@ -89,6 +84,5 @@ declare module '@sapphire/pieces' {
 	interface Container {
 		ready: () => Promise<true>
 		redis: Redis
-		sequelize: Sequelize
 	}
 }
