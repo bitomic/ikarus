@@ -16,6 +16,7 @@
     "@bitomic/material-colors": "^1.0.0",
     "@discordjs/builders": "^1.4.0",
     "@discordjs/rest": "^1.5.0",
+    "@prisma/client": "^4.11.0",
     "@sapphire/decorators": "^6.0.0",
     "@sapphire/duration": "^1.0.0",
     "@sapphire/framework": "4.0.1",
@@ -37,8 +38,8 @@
     "mysql2": "^3.0.1",
     "pino": "^8.8.0",
     "pino-pretty": "^9.1.1",
+    "prisma": "^4.11.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.28.0",
     "ts-dotenv": "^0.9.0",
     "undici": "^5.15.0"
   },
