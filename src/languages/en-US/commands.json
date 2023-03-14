@@ -1,4 +1,8 @@
 {
+	"ping": {
+		"description": "Check my status.",
+		"name": "ping"
+	},
 	"starboard": {
 		"description": "Check statistics related to the starboard.",
 		"name": "starboard",

@@ -1,4 +1,8 @@
 {
+	"ping": {
+		"description": "Consulta mi estado.",
+		"name": "ping"
+	},
 	"starboard": {
 		"description": "Consulta estadísticas relacionadas al starboard.",
 		"name": "starboard",
