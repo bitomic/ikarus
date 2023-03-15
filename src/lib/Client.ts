@@ -1,6 +1,8 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import { Events, Locale, Partials } from 'discord.js'
 import { env } from './environment'
+import { ModelStore } from '../framework'
+import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import Redis from 'ioredis'
 import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis'
@@ -53,6 +55,7 @@ export class UserClient extends SapphireClient {
 				} )
 			}
 		} )
+		container.prisma = new PrismaClient()
 		container.ready = async (): Promise<true> => {
 			if ( this.isReady() ) return true
 
@@ -73,6 +76,7 @@ export class UserClient extends SapphireClient {
 			return true
 		}
 		container.redis = new Redis( redisOptions )
+		container.stores.register( new ModelStore() )
 	}
 
 	public async start(): Promise<void> {
@@ -82,6 +86,7 @@ export class UserClient extends SapphireClient {
 
 declare module '@sapphire/pieces' {
 	interface Container {
+		prisma: PrismaClient
 		ready: () => Promise<true>
 		redis: Redis
 	}

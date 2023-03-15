@@ -7,13 +7,7 @@ import { Utility } from '@sapphire/plugin-utilities-store'
 	name: 'validation'
 } )
 export class ValidationUtility extends Utility {
-	public readonly validators = {
-		snowflake: s.string.regex( SnowflakeRegex )
-	}
-
-	public snowflake( value: unknown ): string {
-		return this.validators.snowflake.parse( value )
-	}
+	public readonly snowflake = s.string.regex( SnowflakeRegex )
 }
 
 declare module '@sapphire/plugin-utilities-store' {

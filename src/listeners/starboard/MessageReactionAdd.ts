@@ -1,11 +1,11 @@
-/*
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, type JSONEncodable, type MessageActionRowComponentBuilder } from '@discordjs/builders'
-import { type APIEmbed, ButtonStyle, ChannelType, Events, type Message, type MessageReaction } from 'discord.js'
+import { type APIEmbed, ButtonStyle, ChannelType, Events, type MessageReaction } from 'discord.js'
 import { Listener, type ListenerOptions } from '@sapphire/framework'
-import type { PartialMessage, TextChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
+import { ConfigurationKey } from '@prisma/client'
 import { resolveKey } from '@sapphire/plugin-i18next'
+import { s } from '@sapphire/shapeshift'
 
 @ApplyOptions<ListenerOptions>( {
 	event: Events.MessageReactionAdd
@@ -18,85 +18,74 @@ export class UserEvent extends Listener {
 		if ( !message.inGuild() ) return
 
 		const models = this.container.stores.get( 'models' )
-		const guildSettings = models.get( 'GuildSettings' )
-		const starboardChannel = await guildSettings.get( message.guildId, 'starboard-channel' )
+
+		const { snowflake } = this.container.utilities.validation
+		const configuration = models.get( 'configuration' )
+		const starboardChannel = await configuration.get( message.guildId, ConfigurationKey.StarboardChannel, snowflake )
 		if ( !starboardChannel ) return
 
-		const requiredReactions = parseInt( await guildSettings.get( message.guildId, 'starboard-count' ) ?? '3', 10 )
+		const requiredReactions = parseInt( await configuration.get( message.guildId, ConfigurationKey.StarboardCount, s.string.regex( /\d+/ ) ) ?? '3', 10 )
 		if ( reaction.count < requiredReactions ) return
 
-		const starboardMessages = models.get( 'StarboardMessages' )
-		const isPinned = await starboardMessages.has( message.guildId, message.id )
-
-		if ( isPinned && message.inGuild() ) {
-			const success = await this.updateMessage( message )
-			if ( success ) return
-		}
-
-		const guild = await this.container.client.guilds.fetch( message.guildId )
-		const channel = await guild.channels.fetch( starboardChannel )
+		const channel = await this.container.client.channels.fetch( starboardChannel )
 		if ( channel?.type !== ChannelType.GuildText ) return
 
-		const pin = await this.sendNewMessage( channel, message )
-		if ( !pin ) return
+		const messages = models.get( 'messages' )
+		await messages.assert( message )
 
-		await starboardMessages.setMessage( message, starboardChannel, pin )
-	}
+		const { starboard } = this.container.prisma
+		const stored = await starboard.findUnique( {
+			where: { originalId: message.id }
+		} )
+		const count = message.reactions.resolve( '⭐' )?.count ?? '¿?'
 
-	protected async updateMessage( message: Message<true> ): Promise<boolean> {
-		const pin = await this.container.stores.get( 'models' ).get( 'StarboardMessages' )
-			.get( message.guildId, message.id )
-		if ( !pin ) return false
-
-		try {
-			const guild = await this.container.client.guilds.fetch( message.guildId )
-			const channel = await guild.channels.fetch( pin.pinChannel )
-			if ( !channel?.isTextBased() ) return false
-
-			const msg = await channel.messages.fetch( pin.pinMessage )
-			await msg.edit( {
-				content: `⭐ ${ message.reactions.resolve( '⭐' )?.count ?? '¿?' }`
-			} )
-			return true
-		} catch {
-			return false
+		if ( stored ) {
+			try {
+				const pin = await channel.messages.fetch( stored.pinnedId )
+				await pin.edit( {
+					content: `⭐ ${ count }`
+				} )
+				return
+			} catch ( e ) {
+				this.container.logger.error( 'There was an error while trying to update a starboard message.', e )
+			}
 		}
-	}
 
-	protected async sendNewMessage( channel: TextChannel, message: Message | PartialMessage ): Promise<string | null> {
-		const image = await this.container.images.getUserAvatar( message.author )
-		const stars = message.reactions.resolve( '⭐' )?.count
-		const label = await resolveKey( channel, 'starboard:go-to-message' )
-
+		const avatar = await this.container.images.getUserAvatar( message.author )
 		const embeds: Array<APIEmbed | JSONEncodable<APIEmbed>> = []
 
 		if ( message.reference?.messageId ) {
 			try {
-				const quote = await message.channel.messages.fetch( message.reference.messageId )
+				const quote = await message.fetchReference()
 
-				const embed = new EmbedBuilder()
-					.setAuthor( {
-						iconURL: await this.container.images.getUserAvatar( quote.author ),
-						name: await resolveKey( quote, 'general:reply-to', { replace: { user: quote.member?.nickname ?? quote.author.username } } )
-					} )
-					.setColor( 0x2f3136 )
 				if ( quote.content.length > 0 ) {
-					embed.setDescription( quote.content )
+					const embed = new EmbedBuilder()
+						.setAuthor( {
+							iconURL: await this.container.images.getUserAvatar( quote.author ),
+							name: await resolveKey( quote, 'general:reply-to', {
+								replace: {
+									user: quote.member?.nickname ?? quote.author.username
+								}
+							} )
+						} )
+						.setColor( 0x2f3136 )
+						.setDescription( quote.content )
+					embeds.push( embed )
 				}
-				embeds.push( embed )
 
-				if ( quote.content.length === 0 && quote.embeds.length > 0 ) {
-					embeds.push( ...quote.embeds.map( i => {
+				if ( quote.embeds.length > 0 ) {
+					embeds.push( ...quote.embeds.slice( 0, 3 ).map( i => {
 						const e = new EmbedBuilder( i.toJSON() )
 						e.setColor( 0x2f3136 )
 						return e
 					} ) )
 				}
 			} catch {
-				this.container.logger.warn( 'An error occurred while trying to retrieve a referenced message for the starboard.' )
+				this.container.logger.error( 'There was an error while fetching a referenced message for the starboard.' )
 			}
 		}
 
+		const label = await resolveKey( channel, 'starboard:go-to-message' )
 		const component = new ActionRowBuilder<MessageActionRowComponentBuilder>()
 			.addComponents( new ButtonBuilder()
 				.setLabel( label )
@@ -104,12 +93,12 @@ export class UserEvent extends Listener {
 				.setURL( message.url ) )
 		const embed = new EmbedBuilder()
 			.setAuthor( {
-				iconURL: image,
-				name: message.member?.nickname ?? message.author?.username ?? ''
+				iconURL: avatar,
+				name: message.member?.nickname ?? message.author.username
 			} )
 			.setColor( Colors.yellow.s800 )
 			.setFooter( {
-				text: `${ message.id } • #${ 'name' in message.channel ? message.channel.name : message.channel.id }`
+				text: `${ message.id } • #${ message.channel.name }`
 			} )
 			.setImage( message.attachments.at( 0 )?.url ?? null )
 			.setTimestamp( Date.now() )
@@ -117,16 +106,18 @@ export class UserEvent extends Listener {
 			embed.setDescription( message.content )
 		}
 
-		embeds.push( embed, ...message.embeds )
+		embeds.push( embed, ...message.embeds.slice( 0, 3 ) )
 
 		const pin = await channel.send( {
 			components: [ component ],
-			content: `⭐ ${ stars ?? '¿?' }`,
+			content: `⭐ ${ count }`,
 			embeds
 		} )
-			.catch( () => null )
-
-		return pin?.id ?? null
+		await starboard.create( {
+			data: {
+				originalId: message.id,
+				pinnedId: pin.id
+			}
+		} )
 	}
 }
-*/

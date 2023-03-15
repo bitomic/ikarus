@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Message {
+  author  String
+  channel String
+  guild   String
+  message String @id
+  thread String?
+}
+
+model Starboard {
+  originalId String @unique
+  pinnedId   String @id
+}
+
+enum ConfigurationKey {
+  StarboardChannel
+  StarboardCount
+}
+
+model Configuration {
+  guild String
+  property ConfigurationKey
+  value String
+
+  @@id([guild, property])
+}
