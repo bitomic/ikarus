@@ -1,21 +1,43 @@
-import { ApplicationCommandOptionType, type ChatInputApplicationCommandData, Locale } from 'discord.js'
 import { type ApplicationCommandRegistry, container } from '@sapphire/framework'
+import { type ChatInputApplicationCommandData, Locale } from 'discord.js'
 import { env } from '../lib'
 import { s } from '@sapphire/shapeshift'
 import type { TFunction } from 'i18next'
 
 interface Localizable {
+	description: string
 	descriptionLocalizations?: Partial<Record<Locale, string | null>>
+	name: string
 	nameLocalizations?: Partial<Record<Locale, string | null>>
+	options?: Localizable[]
 }
 
-const tHelper = ( locale: Locale, t: ( value: string ) => string, target: Localizable, prefix?: string ) => {
-	prefix = prefix ? `${ prefix }.` : ''
+type i18nCollection = {
+	[ key in Locale ]?: TFunction
+} & { 'en-US': TFunction }
+
+const localize = ( i18n: i18nCollection, target: Localizable, prefix: string ) => {
+	const en = i18n[ 'en-US' ]
+	target.description = en( `${ prefix }.description` )
+	target.name = en( `${ prefix }.name` )
+
 	target.descriptionLocalizations ??= {}
-	target.descriptionLocalizations[ locale ] = t( `${ prefix }description` )
 	target.nameLocalizations ??= {}
-	target.nameLocalizations[ locale ] = t( `${ prefix }name` )
+
+	for ( const [ _locale, t ] of Object.entries( i18n ) ) {
+		const locale = _locale as Locale
+		target.descriptionLocalizations[ locale ] = t( `${ prefix }.description` )
+		target.nameLocalizations[ locale ] = t( `${ prefix }.name` )
+	}
+
+	if ( !target.options ) return
+
+	for ( const option of target.options ) {
+		localize( i18n, option, `${ prefix }.options.${ option.name }` )
+	}
 }
+
+const isCommandData = ( command: Parameters<ApplicationCommandRegistry[ 'registerChatInputCommand' ]>[ 0 ] ): command is ChatInputApplicationCommandData => !( 'toJSON' in command )
 
 export const i18n = ( _target: unknown, methodName: string, descriptor: PropertyDescriptor ) => {
 	if ( methodName !== 'registerApplicationCommands' ) {
@@ -34,56 +56,26 @@ export const i18n = ( _target: unknown, methodName: string, descriptor: Property
 	descriptor.value = function( registry: ApplicationCommandRegistry ) {
 		original.call( this, registryMock )
 
-		if ( !command ) return
-
-		const en = container.i18n.getT( 'en-US' )
-		const tBase = ( i18n: TFunction, command: string, value: string ) => i18n( `commands:${ command }.${ value }` )
-		const t = tBase.bind( undefined, en, command.name )
-
-		const updatedCommand: ChatInputApplicationCommandData = {
-			description: t( 'description' ),
-			name: t( 'name' )
-		}
+		if ( !command || !isCommandData( command ) ) return
 
 		const { languages } = container.i18n
 		const validateLocale = s.nativeEnum( Locale )
 
-		const translateCommand = ( command: ChatInputApplicationCommandData, locale: Locale, t: ( value: string ) => string ) => {
-			const localize = tHelper.bind( undefined, locale, t )
-
-			localize( command )
-			if ( !command.options ) return
-
-			for ( const option of command.options ) {
-				localize( option, `options.${ option.name }` )
-
-				if ( option.type === ApplicationCommandOptionType.SubcommandGroup && option.options ) {
-					for ( const subcommand of option.options ) {
-						localize( subcommand, `options.${ option.name }.subcommands.${ subcommand.name }` )
-
-						for ( const subcommandOption of subcommand.options ?? [] ) {
-							localize( subcommandOption, `options.${ option.name }.subcommands.${ subcommand.name }.options.${ subcommandOption.name }` )
-						}
-					}
-				} else if ( option.type === ApplicationCommandOptionType.Subcommand && option.options ) {
-					for ( const subcommandOption of option.options ) {
-						localize( subcommandOption, `options.${ option.name }.options.${ subcommandOption.name }` )
-					}
-				}
-			}
+		const i18n: i18nCollection = {
+			'en-US': container.i18n.getT( 'en-US' )
 		}
-
 		for ( const [ _lang, translate ] of languages ) {
 			const lang = validateLocale.parse( _lang )
 			if ( lang === Locale.EnglishUS ) continue
-			const t = tBase.bind( undefined, translate, command.name )
-			translateCommand( updatedCommand, lang, t )
+			i18n[ lang ] = translate
 		}
+
+		localize( i18n, command, `commands:${ command.name }` )
 
 		options ??= {}
 		if ( env.NODE_ENV === 'development' ) {
 			options.guildIds = [ env.DISCORD_DEVELOPMENT_SERVER ]
 		}
-		registry.registerChatInputCommand( Object.assign( command, updatedCommand ), options )
+		registry.registerChatInputCommand( command, options )
 	}
 }

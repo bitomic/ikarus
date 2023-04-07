@@ -16,10 +16,15 @@ model Message {
   guild   String
   message String @id
   thread String?
+
+  starboardOriginal Starboard? @relation("original")
+  starboardPinned Starboard? @relation("pinned")
 }
 
 model Starboard {
+  original Message @relation(fields: [originalId], name: "original", references: [message])
   originalId String @unique
+  pinned Message @relation(fields: [pinnedId], name: "pinned", references: [message])
   pinnedId   String @id
 }
 

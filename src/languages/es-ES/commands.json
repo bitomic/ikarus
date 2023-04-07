@@ -6,7 +6,7 @@
 	"starboard": {
 		"description": "Consulta estadísticas relacionadas al starboard.",
 		"name": "starboard",
-		"subcommands": {
+		"options": {
 			"user": {
 				"description": "Consulta las estadísticas de alguien.",
 				"name": "usuario",

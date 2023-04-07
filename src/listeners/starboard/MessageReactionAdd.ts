@@ -113,6 +113,7 @@ export class UserEvent extends Listener {
 			content: `⭐ ${ count }`,
 			embeds
 		} )
+		await messages.assert( pin )
 		await starboard.create( {
 			data: {
 				originalId: message.id,
