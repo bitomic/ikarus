@@ -11,7 +11,7 @@
     "lint": "eslint src/ --ext .ts --cache",
     "lint:fix": "eslint src/ --fix --ext .ts --cache",
     "db:generate": "yarn prisma generate",
-    "db:migrate": "yarn prisma migrate deploy || true",
+    "db:migrate": "doppler run yarn prisma migrate deploy || true",
     "start": "doppler run -- yarn node --enable-source-maps dist/main.js",
     "version:patch": "npm version patch -m \"chore: set version to %s\"",
     "version:minor": "npm version minor -m \"chore: set version to %s\"",
