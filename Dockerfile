@@ -58,4 +58,4 @@ RUN chown node:node /home/node/app
 
 USER node
 
-CMD [ "yarn db:migrate", " ; " "doppler", "run", "--", "yarn", "start" ]
+CMD yarn db:migrate ; doppler run -- yarn start
