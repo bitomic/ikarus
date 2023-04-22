@@ -35,7 +35,9 @@ WORKDIR /home/node/app
 ENV NODE_ENV="development"
 
 COPY --chown=node:node tsconfig.json tsconfig.json
+COPY --chown=node:node prisma/ prisma/
 RUN yarn install --immutable
+RUN yarn db:generate
 
 COPY --chown=node:node src/ src/
 RUN yarn run build
@@ -48,11 +50,12 @@ WORKDIR /home/node/app
 ENV NODE_ENV="production"
 
 COPY --chown=node:node --from=builder /home/node/app/dist dist
+COPY --chown=node:node prisma/ prisma/
 
 RUN yarn workspaces focus --all --production
+COPY --chown=node:node --from=builder /home/node/app/node_modules/.prisma node_modules/.prisma
 RUN chown node:node /home/node/app
 
 USER node
-EXPOSE 4000
 
-CMD [ "doppler", "run", "--", "yarn", "start" ]
+CMD [ "yarn db:migrate", "&&" "doppler", "run", "--", "yarn", "start" ]
