@@ -1,9 +1,9 @@
+import type { GuildMember, User } from 'discord.js'
 import { container } from '@sapphire/pieces'
 import { env } from './environment'
 import type { Game } from './Twitch'
 import Imgur from 'imgur'
 import { type User as TwitchUser } from './Twitch'
-import { type User } from 'discord.js'
 
 class ImageManager {
 	protected imgur = new Imgur( {
@@ -56,13 +56,13 @@ class ImageManager {
 		} )
 	}
 
-	public getUserAvatar( user: User | null ): string | Promise<string> {
+	public getUserAvatar( user: GuildMember | User | null ): string | Promise<string> {
 		if ( !user ) return ''
 		return this.findHashedImage( {
 			hashPrefix: 'discord:user-avatar-hash',
 			identifier: user.id,
 			imagePrefix: 'discord:user-avatar',
-			url: user.avatarURL( { extension: 'png' } ) ?? ''
+			url: user.displayAvatarURL( { forceStatic: false, size: 256 } )
 		} )
 	}
 }
