@@ -1,8 +1,8 @@
+import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import type { EmbedField, GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
-import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { s } from '@sapphire/shapeshift'
 import { SnowflakeRegex } from '@sapphire/discord-utilities'
@@ -64,10 +64,12 @@ export class UserTask extends ScheduledTask {
 						value: game
 					} )
 				}
+
+				const vod = hyperlink( 'Link', `https://twitch.tv/videos/${ activeStream.vod }` )
 				embedFields.push( {
 					inline: true,
 					name: 'VOD',
-					value: `https://twitch.tv/videos/${ activeStream.vod }`
+					value: vod
 				} )
 				embed.setFields( ...embedFields )
 
