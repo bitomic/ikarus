@@ -40,3 +40,12 @@ model Configuration {
 
   @@id([guild, property])
 }
+
+model TwitchFollows {
+  channel String
+  mentions Json?
+  guild String
+  user String
+
+  @@id([channel, user])
+}
