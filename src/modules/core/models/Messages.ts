@@ -1,7 +1,7 @@
 import { type PieceOptions, UserError } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import type { Message } from 'discord.js'
-import { Model } from '../framework'
+import { Model } from '../../../framework'
 
 @ApplyOptions<PieceOptions>( {
 	name: 'messages'
