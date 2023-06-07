@@ -1,12 +1,12 @@
-import { EmbedBuilder, hyperlink } from '@discordjs/builders'
-import type { EmbedField, GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
+import type { GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
+import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { s } from '@sapphire/shapeshift'
 import { SnowflakeRegex } from '@sapphire/discord-utilities'
-import type { Stream } from '../../lib'
+import type { Stream } from '../../../lib'
 import { Time } from '@sapphire/duration'
 import type { TwitchFollows } from '@prisma/client'
 
@@ -18,12 +18,12 @@ interface ActiveStream {
 }
 
 interface TaskPayload {
-	user: string
+	stream: Stream
 }
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	interval: Time.Minute * 5,
-	name: 'remove-stream'
+	name: 'update-stream'
 } )
 export class UserTask extends ScheduledTask {
 	public readonly activeStreamValidator = s.object( {
@@ -33,54 +33,33 @@ export class UserTask extends ScheduledTask {
 		vod: s.string
 	} ).ignore
 
-	public override async run( { user }: TaskPayload ): Promise<void> {
+	public override async run( { stream }: TaskPayload ): Promise<void> {
 		if ( !this.container.client.isReady() ) {
-			this.container.logger.warn( 'Task[RemoveStream]: Client isn\'t ready yet.' )
+			this.container.logger.warn( 'Task[UpdateStream]: Client isn\'t ready yet.' )
 			return
 		}
 
-		const { redis } = this.container
-		const keys = await redis.keys( this.activeStreamKey( '*', user ) )
-		if ( keys.length === 0 ) return
+		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
+		const targets = await twitchFollows.getStreamerTargets( stream.user_name )
 
-		for ( const key of keys ) {
+		const user = await this.container.twitch.getUser( stream.user_login )
+		const avatar = await this.container.images.getTwitchUserAvatar( user )
+
+		const game = await this.container.twitch.getGame(  stream.game_id )
+		const gameImage = await this.container.images.getTwitchGameImage( game )
+
+		for ( const target of targets ) {
 			try {
-				const activeStream = this.activeStreamValidator.parse( await redis.hgetall( key ) )
-				await redis.del( key )
+				const activeKey = this.activeStreamKey( target.channel, stream.user_login )
+				const isActive = await this.container.redis.exists( activeKey )
 
-				const channel = await this.container.client.channels.fetch( activeStream.channel ) as GuildTextBasedChannel
-				const message = await channel.messages.fetch( activeStream.message )
-				const embedData = message.embeds.at( 0 )?.data
-				if ( !embedData ) continue
-
-				const embed = new EmbedBuilder( embedData )
-				const embedFields: EmbedField[] = []
-
-				const game = embedData.fields?.at( 0 )?.value
-				if ( game ) {
-					embedFields.push( {
-						inline: true,
-						name: await resolveKey( channel, 'twitch:game' ),
-						value: game
-					} )
+				if ( isActive ) {
+					await this.updateMessage( target, stream, avatar, gameImage )
+				} else {
+					await this.createMessage( target, stream, avatar, gameImage )
 				}
-
-				const vod = hyperlink( 'Link', `https://twitch.tv/videos/${ activeStream.vod }` )
-				embedFields.push( {
-					inline: true,
-					name: 'VOD',
-					value: vod
-				} )
-				embed.setFields( ...embedFields )
-
-				embed.setAuthor( {
-					iconURL: embed.data.author?.icon_url ?? '',
-					name: await resolveKey( channel, 'twitch:was-live', { replace: { user } } )
-				} )
-
-				await message.edit( { embeds: [ embed ] } )
 			} catch ( e ) {
-				this.container.logger.warn( `Task[RemoveStream]: There was an error while removing ${ key }.`, e )
+				this.container.logger.warn( `Task[UpdateStream]: There was an error while trying to update ${ target.user } in ${ target.channel }.`, e )
 			}
 		}
 	}
@@ -158,6 +137,6 @@ export class UserTask extends ScheduledTask {
 
 declare module '@sapphire/plugin-scheduled-tasks' {
 	interface ScheduledTasks {
-		'remove-stream': never;
+		'update-stream': never;
 	}
 }
