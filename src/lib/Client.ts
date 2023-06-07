@@ -1,7 +1,10 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import { Events, Locale, Partials } from 'discord.js'
 import { env } from './environment'
+import fs from 'fs'
+import { getRootData } from '@sapphire/pieces'
 import { ModelStore } from '../framework'
+import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import Redis from 'ioredis'
@@ -77,6 +80,13 @@ export class UserClient extends SapphireClient {
 		}
 		container.redis = new Redis( redisOptions )
 		container.stores.register( new ModelStore() )
+
+		const { root } = getRootData()
+		const modules = fs.readdirSync( path.join( root, 'modules' ) )
+		for ( const module of modules ) {
+			const modulepath = path.join( root, 'modules', module )
+			this.stores.registerPath( modulepath )
+		}
 	}
 
 	public async start(): Promise<void> {
