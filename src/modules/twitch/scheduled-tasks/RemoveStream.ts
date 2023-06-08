@@ -1,21 +1,13 @@
+import { type ActiveStream, TwitchTask } from './_TwitchTask'
 import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import type { EmbedField, GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
-import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
-import { s } from '@sapphire/shapeshift'
-import { SnowflakeRegex } from '@sapphire/discord-utilities'
+import type { ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '../../../lib'
 import { Time } from '@sapphire/duration'
 import type { TwitchFollows } from '@prisma/client'
-
-interface ActiveStream {
-	channel: string
-	message: string
-	streamer: string
-	vod: string
-}
 
 interface TaskPayload {
 	user: string
@@ -25,19 +17,9 @@ interface TaskPayload {
 	interval: Time.Minute * 5,
 	name: 'remove-stream'
 } )
-export class UserTask extends ScheduledTask {
-	public readonly activeStreamValidator = s.object( {
-		channel: s.string.regex( SnowflakeRegex ),
-		message: s.string.regex( SnowflakeRegex ),
-		streamer: s.string,
-		vod: s.string
-	} ).ignore
-
+export class UserTask extends TwitchTask {
 	public override async run( { user }: TaskPayload ): Promise<void> {
-		if ( !this.container.client.isReady() ) {
-			this.container.logger.warn( 'Task[RemoveStream]: Client isn\'t ready yet.' )
-			return
-		}
+		if ( !this.isReady() ) return
 
 		const { redis } = this.container
 		const keys = await redis.keys( this.activeStreamKey( '*', user ) )
@@ -85,10 +67,6 @@ export class UserTask extends ScheduledTask {
 		}
 	}
 
-	protected activeStreamKey( channel: string, streamer: string ): string {
-		return `twitch:active-stream/${ streamer }/${ channel }`
-	}
-
 	protected async createEmbed( channel: TextBasedChannel, stream: Stream, avatar: string, game: string ): Promise<EmbedBuilder> {
 		return new EmbedBuilder()
 			.setColor( Colors.deepPurple.a400 )
@@ -116,10 +94,10 @@ export class UserTask extends ScheduledTask {
 	}
 
 	protected async createMessage( follow: TwitchFollows, stream: Stream, avatar: string, game: string ): Promise<void> {
-		const channel = await this.container.client.channels.fetch( follow.channel )
-		const bot = this.container.client.user
+		const channelUtility = this.container.utilities.channel
+		const channel = await channelUtility.getGuildTextChannel( follow.channel )
 
-		if ( !bot || !channel?.isTextBased() || channel.isDMBased() || !channel.permissionsFor( bot )?.has( 'SendMessages' ) ) {
+		if ( !channel ) {
 			this.container.logger.warn( `Can't send stream updates in channel ${ follow.channel }.` )
 			return
 		}
