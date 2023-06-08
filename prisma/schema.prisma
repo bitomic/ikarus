@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,41 +8,40 @@ datasource db {
 }
 
 model Message {
-  author  String
-  channel String
-  guild   String
-  message String @id
-  thread String?
-
+  author            String
+  channel           String
+  guild             String
+  message           String     @id
+  thread            String?
   starboardOriginal Starboard? @relation("original")
-  starboardPinned Starboard? @relation("pinned")
+  starboardPinned   Starboard? @relation("pinned")
 }
 
 model Starboard {
-  original Message @relation(fields: [originalId], name: "original", references: [message])
-  originalId String @unique
-  pinned Message @relation(fields: [pinnedId], name: "pinned", references: [message])
-  pinnedId   String @id
-}
-
-enum ConfigurationKey {
-  StarboardChannel
-  StarboardCount
+  originalId String  @unique
+  pinnedId   String  @id
+  original   Message @relation("original", fields: [originalId], references: [message])
+  pinned     Message @relation("pinned", fields: [pinnedId], references: [message])
 }
 
 model Configuration {
-  guild String
+  guild    String
   property ConfigurationKey
-  value String
+  value    String
 
   @@id([guild, property])
 }
 
 model TwitchFollows {
-  channel String
+  channel  String
   mentions Json?
-  guild String
-  user String
+  guild    String
+  user     String
 
   @@id([channel, user])
+}
+
+enum ConfigurationKey {
+  StarboardChannel
+  StarboardCount
 }

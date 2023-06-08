@@ -30,7 +30,7 @@ CREATE TABLE `Configuration` (
 -- CreateTable
 CREATE TABLE `TwitchFollows` (
     `channel` VARCHAR(191) NOT NULL,
-    `mentions` JSON NOT NULL,
+    `mentions` JSON NULL,
     `guild` VARCHAR(191) NOT NULL,
     `user` VARCHAR(191) NOT NULL,
 
@@ -42,3 +42,4 @@ ALTER TABLE `Starboard` ADD CONSTRAINT `Starboard_originalId_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Starboard` ADD CONSTRAINT `Starboard_pinnedId_fkey` FOREIGN KEY (`pinnedId`) REFERENCES `Message`(`message`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
