@@ -35,10 +35,8 @@ export class UserTask extends TwitchTask {
 				const isActive = await this.container.redis.exists( activeKey )
 
 				if ( isActive ) {
-					this.container.logger.info( 'Updating message.' )
 					await this.updateMessage( target, stream, avatar, gameImage )
 				} else {
-					this.container.logger.info( 'Creating message.' )
 					await this.createMessage( target, stream, avatar, gameImage )
 				}
 			} catch ( e ) {

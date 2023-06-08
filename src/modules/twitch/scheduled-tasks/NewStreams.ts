@@ -17,7 +17,6 @@ export class UserTask extends TwitchTask {
 		while ( streamers.length ) {
 			const chunk = streamers.splice( 0, 100 )
 			const streams = await this.container.twitch.getStreams( chunk )
-			this.container.logger.info( `Found ${ streams.length } active streams.`, streams )
 
 			for ( const stream of streams ) {
 				await this.container.tasks.create( 'update-stream', { stream } )
