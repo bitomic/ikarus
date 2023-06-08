@@ -1,5 +1,5 @@
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
-import { ApplyOptions } from '@sapphire/decorators'
+import type { PieceContext } from '@sapphire/pieces'
 import { s } from '@sapphire/shapeshift'
 import { SnowflakeRegex } from '@sapphire/discord-utilities'
 
@@ -10,9 +10,6 @@ export interface ActiveStream {
 	vod: string
 }
 
-@ApplyOptions<ScheduledTaskOptions>( {
-	name: ''
-} )
 export abstract class TwitchTask extends ScheduledTask {
 	public readonly activeStreamValidator = s.object( {
 		channel: s.string.regex( SnowflakeRegex ),
@@ -20,6 +17,13 @@ export abstract class TwitchTask extends ScheduledTask {
 		streamer: s.string,
 		vod: s.string
 	} ).ignore
+
+	public constructor( context: PieceContext, options: ScheduledTaskOptions ) {
+		super( context, {
+			name: '',
+			...options
+		} )
+	}
 
 	protected isReady(): boolean {
 		if ( !this.container.client.isReady() ) {

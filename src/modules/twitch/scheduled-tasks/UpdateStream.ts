@@ -13,6 +13,7 @@ interface TaskPayload {
 }
 
 @ApplyOptions<ScheduledTaskOptions>( {
+	enabled: true,
 	name: 'update-stream'
 } )
 export class UserTask extends TwitchTask {

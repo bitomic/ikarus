@@ -4,6 +4,7 @@ import { Time } from '@sapphire/duration'
 import { TwitchTask } from './_TwitchTask'
 
 @ApplyOptions<ScheduledTaskOptions>( {
+	enabled: true,
 	interval: Time.Minute * 5,
 	name: 'new-streams'
 } )
