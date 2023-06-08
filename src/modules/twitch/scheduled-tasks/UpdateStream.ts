@@ -19,8 +19,6 @@ interface TaskPayload {
 export class UserTask extends TwitchTask {
 	public override async run( { stream }: TaskPayload ): Promise<void> {
 		if ( !this.isReady() ) return
-		this.container.logger.info( `Running ${ this.name } task.` )
-		this.container.logger.info( 'Updating stream.', stream )
 
 		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
 		const targets = await twitchFollows.getStreamerTargets( stream.user_name )
