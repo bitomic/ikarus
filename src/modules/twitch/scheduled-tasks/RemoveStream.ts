@@ -6,7 +6,6 @@ import Colors from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import type { ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '../../../lib'
-import { Time } from '@sapphire/duration'
 import type { TwitchFollows } from '@prisma/client'
 
 interface TaskPayload {
@@ -14,7 +13,6 @@ interface TaskPayload {
 }
 
 @ApplyOptions<ScheduledTaskOptions>( {
-	interval: Time.Minute * 5,
 	name: 'remove-stream'
 } )
 export class UserTask extends TwitchTask {
