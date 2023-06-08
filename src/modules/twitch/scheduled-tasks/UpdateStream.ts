@@ -20,6 +20,8 @@ interface TaskPayload {
 export class UserTask extends TwitchTask {
 	public override async run( { stream }: TaskPayload ): Promise<void> {
 		if ( !this.isReady() ) return
+		this.container.logger.info( `Running ${ this.name } task.` )
+		this.container.logger.info( 'Updating stream.', stream )
 
 		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
 		const targets = await twitchFollows.getStreamerTargets( stream.user_name )
@@ -36,8 +38,10 @@ export class UserTask extends TwitchTask {
 				const isActive = await this.container.redis.exists( activeKey )
 
 				if ( isActive ) {
+					this.container.logger.info( 'Updating message.' )
 					await this.updateMessage( target, stream, avatar, gameImage )
 				} else {
+					this.container.logger.info( 'Creating message.' )
 					await this.createMessage( target, stream, avatar, gameImage )
 				}
 			} catch ( e ) {

@@ -20,10 +20,12 @@ interface TaskPayload {
 export class UserTask extends TwitchTask {
 	public override async run( { user }: TaskPayload ): Promise<void> {
 		if ( !this.isReady() ) return
+		this.container.logger.info( `Running ${ this.name } task.` )
 
 		const { redis } = this.container
 		const keys = await redis.keys( this.activeStreamKey( '*', user ) )
 		if ( keys.length === 0 ) return
+		this.container.logger.info( `Found ${ keys.length } active streams for ${ user }.` )
 
 		for ( const key of keys ) {
 			try {
