@@ -1,17 +1,15 @@
-import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
+import type { ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { Time } from '@sapphire/duration'
+import { TwitchTask } from './_TwitchTask'
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	interval: Time.Minute * 5,
 	name: 'new-streams'
 } )
-export class UserTask extends ScheduledTask {
+export class UserTask extends TwitchTask {
 	public override async run(): Promise<void> {
-		if ( !this.container.client.isReady() ) {
-			this.container.logger.warn( 'Task[NewStreams]: Client isn\'t ready yet.' )
-			return
-		}
+		if ( !this.isReady() ) return
 
 		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
 		const streamers = await twitchFollows.getStreamers()

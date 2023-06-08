@@ -1,21 +1,13 @@
+import { type ActiveStream, TwitchTask } from './_TwitchTask'
 import type { GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
-import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
 import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
-import { s } from '@sapphire/shapeshift'
-import { SnowflakeRegex } from '@sapphire/discord-utilities'
+import { type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '../../../lib'
 import { Time } from '@sapphire/duration'
 import type { TwitchFollows } from '@prisma/client'
-
-interface ActiveStream {
-	channel: string
-	message: string
-	streamer: string
-	vod: string
-}
 
 interface TaskPayload {
 	stream: Stream
@@ -25,19 +17,9 @@ interface TaskPayload {
 	interval: Time.Minute * 5,
 	name: 'update-stream'
 } )
-export class UserTask extends ScheduledTask {
-	public readonly activeStreamValidator = s.object( {
-		channel: s.string.regex( SnowflakeRegex ),
-		message: s.string.regex( SnowflakeRegex ),
-		streamer: s.string,
-		vod: s.string
-	} ).ignore
-
+export class UserTask extends TwitchTask {
 	public override async run( { stream }: TaskPayload ): Promise<void> {
-		if ( !this.container.client.isReady() ) {
-			this.container.logger.warn( 'Task[UpdateStream]: Client isn\'t ready yet.' )
-			return
-		}
+		if ( !this.isReady() ) return
 
 		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
 		const targets = await twitchFollows.getStreamerTargets( stream.user_name )
@@ -62,10 +44,6 @@ export class UserTask extends ScheduledTask {
 				this.container.logger.warn( `Task[UpdateStream]: There was an error while trying to update ${ target.user } in ${ target.channel }.`, e )
 			}
 		}
-	}
-
-	protected activeStreamKey( channel: string, streamer: string ): string {
-		return `twitch:active-stream/${ streamer }/${ channel }`
 	}
 
 	protected async createEmbed( channel: TextBasedChannel, stream: Stream, avatar: string, game: string ): Promise<EmbedBuilder> {
@@ -95,10 +73,10 @@ export class UserTask extends ScheduledTask {
 	}
 
 	protected async createMessage( follow: TwitchFollows, stream: Stream, avatar: string, game: string ): Promise<void> {
-		const channel = await this.container.client.channels.fetch( follow.channel )
-		const bot = this.container.client.user
+		const channelUtility = this.container.utilities.channel
+		const channel = await channelUtility.getGuildTextChannel( follow.channel )
 
-		if ( !bot || !channel?.isTextBased() || channel.isDMBased() || !channel.permissionsFor( bot )?.has( 'SendMessages' ) ) {
+		if ( !channel ) {
 			this.container.logger.warn( `Can't send stream updates in channel ${ follow.channel }.` )
 			return
 		}
