@@ -2,6 +2,20 @@ import { container } from '@sapphire/pieces'
 import { env } from './environment'
 import { request } from 'undici'
 
+export interface Broadcaster {
+	broadcaster_language: string
+	broadcaster_login: string
+	display_name: string
+	game_id: string
+	game_name: string
+	id: string
+	is_live: boolean
+	tags: string[]
+	thumbnail_url: string
+	title: string
+	started_at: string
+}
+
 export interface Game {
 	box_art_url: string
 	id: string
@@ -125,6 +139,13 @@ class Twitch {
 	public async getUserStream( user: string ): Promise<Stream | null> {
 		const req = await this.getStreams( [ user ] )
 		return req.at( 0 ) ?? null
+	}
+
+	public async searchStreams( input: string ): Promise<Broadcaster[]> {
+		const req = await this.get( 'search/channels', {
+			query: input
+		} ) as { data: Broadcaster[] }
+		return req.data
 	}
 }
 

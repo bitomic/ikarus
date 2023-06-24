@@ -1,6 +1,10 @@
 {
+	"add-success": "**{{ user }}** is now being followed. Active streams will be posted in <#{{ channel }}>.",
 	"is-live": "{{ user }} is live on Twitch",
 	"game": "Game",
+	"list-title": "Streamers followed in this server",
+	"remove-fail": "Couldn't remove **{{ user }}** because it wasn't registered in the server's follows.",
+	"remove-success": "**{{ user }}** was successfully removed from the server's follows.",
 	"viewers": "Viewers",
 	"was-live": "{{ user }} was live on Twitch"
 }

@@ -3,6 +3,40 @@
 		"description": "Check my status.",
 		"name": "ping"
 	},
+	"twitch": {
+		"description": "Check details about the Twitch channels being followed by this server.",
+		"name": "twitch",
+		"options": {
+			"add": {
+				"description": "Start following a new channel in this server.",
+				"name": "add",
+				"options": {
+					"channel": {
+						"description": "Channel where you want updates to be posted.",
+						"name": "channel"
+					},
+					"streamer": {
+						"description": "Streamer you want to start following.",
+						"name": "streamer"
+					}
+				}
+			},
+			"list": {
+				"description": "Get a list of all channels that are being followed by this server.",
+				"name": "list"
+			},
+			"remove": {
+				"description": "Remove a channel from the server's follow list.",
+				"name": "remove",
+				"options": {
+					"streamer": {
+						"description": "Streamer you want to start following.",
+						"name": "streamer"
+					}
+				}
+			}
+		}
+	},
 	"starboard": {
 		"description": "Check statistics related to the starboard.",
 		"name": "starboard",
