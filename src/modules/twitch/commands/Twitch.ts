@@ -6,6 +6,7 @@ import Colors from '@bitomic/material-colors'
 import { hyperlink } from '@discordjs/builders'
 import { i18n } from '../../../decorators'
 import { resolveKey } from '@sapphire/plugin-i18next'
+import type { TwitchFollows } from '@prisma/client'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,
@@ -237,10 +238,32 @@ export class UserCommand extends Command {
 				guild: interaction.guildId
 			}
 		} )
-		const list = streams.map( stream => {
-			const url = `https://twitch.tv/${ stream.user }`
-			const link = hyperlink( stream.user, url )
-			return `- ${ link }`
+
+		if ( streams.length === 0 ) {
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.deepPurple.a400,
+				description: 'twitch:list-none'
+			} )
+			void interaction.editReply( {
+				embeds: [ embed ]
+			} )
+			return
+		}
+
+		const groups = streams.reduce( ( list, stream ) => {
+			const exists = list.has( stream.channel )
+			const channel = list.get( stream.channel ) ?? []
+			channel.push( stream )
+			if ( !exists ) list.set( stream.channel, channel )
+			return list
+		}, new Map<string, TwitchFollows[]>() )
+		const list = [ ...groups.entries() ].map( ( [ channel, streams ] ) => {
+			const links = streams.map( stream => {
+				const url = `https://twitch.tv/${ stream.user }`
+				const link = hyperlink( stream.user, url )
+				return `- ${ link }`
+			} ).join( '\n' )
+			return `## <#${ channel }>\n${ links }`
 		} ).join( '\n' )
 		const embed = await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.a400,
