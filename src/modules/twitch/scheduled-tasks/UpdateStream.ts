@@ -46,6 +46,9 @@ export class UserTask extends TwitchTask {
 	}
 
 	protected async createEmbed( channel: TextBasedChannel, stream: Stream, avatar: string, game: string ): Promise<EmbedBuilder> {
+		const imageUrl = stream.thumbnail_url.replace( '-{width}x{height}', '' )
+		const image = `${ imageUrl }?cb=${ Date.now() }`
+
 		return new EmbedBuilder()
 			.setColor( Colors.deepPurple.a400 )
 			.setAuthor( {
@@ -65,7 +68,7 @@ export class UserTask extends TwitchTask {
 					value: `${ stream.viewer_count }`
 				}
 			)
-			.setImage( stream.thumbnail_url.replace( '-{width}x{height}', '' ) )
+			.setImage( image )
 			.setThumbnail( game )
 			.setURL( `https://twitch.tv/${ stream.user_login }` )
 			.setTimestamp( new Date( stream.started_at ) )

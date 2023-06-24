@@ -59,6 +59,8 @@ export class UserTask extends TwitchTask {
 					name: await resolveKey( channel, 'twitch:was-live', { replace: { user } } )
 				} )
 
+				embed.setImage( null )
+
 				await message.edit( { embeds: [ embed ] } )
 			} catch ( e ) {
 				this.container.logger.warn( `Task[RemoveStream]: There was an error while removing ${ key }.`, e )
