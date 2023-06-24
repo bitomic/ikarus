@@ -1,9 +1,9 @@
 import type { ApplicationCommandOptionData, AutocompleteInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
 import { ApplicationCommandOptionType, ChannelType } from 'discord.js'
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
-import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
+import { hyperlink } from '@discordjs/builders'
 import { i18n } from '../../../decorators'
 import { resolveKey } from '@sapphire/plugin-i18next'
 
@@ -68,15 +68,12 @@ export class UserCommand extends Command {
 		const hasPermissions = interaction.memberPermissions.has( 'ManageGuild' )
 
 		if ( reply && !hasPermissions && interaction.isCommand() ) {
-			const message = await resolveKey( interaction, 'errors:missing-permissions', {
-				replace: {
-					permission: await resolveKey( interaction, 'misc:permissions.manage-guild' )
-				}
-			} )
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'errors:missing-permissions'
+			}, { permissions: await resolveKey( interaction, 'misc:permissions.manage-guild' ) } )
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 		}
 
@@ -148,16 +145,19 @@ export class UserCommand extends Command {
 		const streamer = interaction.options.getString( 'streamer', true )
 		const channel = interaction.options.getChannel( 'channel' ) ?? interaction.channel
 		if ( !channel || channel.type !== ChannelType.GuildText ) {
-			const message = await resolveKey( interaction, 'errors:bad-channel', {
-				replace: {
+			const embed = await this.container.utilities.embed.i18n(
+				interaction,
+				{
+					color: Colors.amber.s800,
+					description: 'errors:bad-channel'
+				},
+				{
 					channel: channel?.id,
 					type: await resolveKey( interaction, 'misc:channel-types.text' )
 				}
-			} )
+			)
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 			return
 		}
@@ -169,15 +169,12 @@ export class UserCommand extends Command {
 			}
 		} )
 		if ( alreadyStored ) {
-			const message = await resolveKey( interaction, 'errors:twitch-already-added', {
-				replace: {
-					user: streamer
-				}
-			} )
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'errors:twitch-already-added'
+			}, { user: streamer } )
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 			return
 		}
@@ -185,15 +182,12 @@ export class UserCommand extends Command {
 		const user = await this.container.twitch.getUser( streamer )
 			.catch( () => null )
 		if ( !user ) {
-			const message = await resolveKey( interaction, 'errors:twitch-not-found', {
-				replace: {
-					user: streamer
-				}
-			} )
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'errors:twitch-not-found'
+			}, { user: streamer } )
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 			return
 		}
@@ -209,29 +203,29 @@ export class UserCommand extends Command {
 		await this.container.redis.sadd( key, user.login )
 
 		if ( !row ) {
-			const message = await resolveKey( interaction, 'errors:twitch-db-error', {
-				replace: {
-					user: streamer
-				}
-			} )
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'errors:twitch-db-error'
+			}, { user: streamer } )
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 			return
 		}
 
-		const message = await resolveKey( interaction, 'twitch:add-success', {
-			replace: {
+		const embed = await this.container.utilities.embed.i18n(
+			interaction,
+			{
+				color: Colors.deepPurple.a400,
+				description: 'twitch:add-success'
+			},
+			{
 				channel: channel.id,
 				user: streamer
 			}
-		} )
+		)
 		void interaction.reply( {
-			embeds: [ new EmbedBuilder()
-				.setDescription( message )
-				.setColor( Colors.deepPurple.a400 ) ]
+			embeds: [ embed ]
 		} )
 	}
 
@@ -243,14 +237,16 @@ export class UserCommand extends Command {
 				guild: interaction.guildId
 			}
 		} )
-		const embed = new EmbedBuilder()
-			.setTitle( await resolveKey( interaction, 'twitch:list-title' ) )
-			.setDescription( streams.map( stream => {
-				const url = `https://twitch.tv/${ stream.user }`
-				const link = hyperlink( stream.user, url )
-				return `- ${ link }`
-			} ).join( '\n' ) )
-			.setColor( Colors.deepPurple.a400 )
+		const list = streams.map( stream => {
+			const url = `https://twitch.tv/${ stream.user }`
+			const link = hyperlink( stream.user, url )
+			return `- ${ link }`
+		} ).join( '\n' )
+		const embed = await this.container.utilities.embed.i18n( interaction, {
+			color: Colors.deepPurple.a400,
+			description: list,
+			title: 'twitch:list-title'
+		} )
 		void interaction.editReply( {
 			embeds: [ embed ]
 		} )
@@ -268,13 +264,12 @@ export class UserCommand extends Command {
 		} )
 
 		if ( !row ) {
-			const message = await resolveKey( interaction, 'twitch:remove-fail', {
-				replace: { user }
-			} )
+			const embed = await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'twitch:remove-fail'
+			}, { user } )
 			void interaction.reply( {
-				embeds: [ new EmbedBuilder()
-					.setDescription( message )
-					.setColor( Colors.amber.s800 ) ]
+				embeds: [ embed ]
 			} )
 			return
 		}
@@ -289,13 +284,13 @@ export class UserCommand extends Command {
 		} )
 		const key = this.getRedisKey( interaction.guildId )
 		await this.container.redis.srem( key, row.user )
-		const message = await resolveKey( interaction, 'twitch:remove-success', {
-			replace: { user }
-		} )
+
+		const embed = await this.container.utilities.embed.i18n( interaction, {
+			color: Colors.green.s800,
+			description: 'twitch:remove-success'
+		}, { user } )
 		void interaction.reply( {
-			embeds: [ new EmbedBuilder()
-				.setDescription( message )
-				.setColor( Colors.green.s800 ) ]
+			embeds: [ embed ]
 		} )
 	}
 
