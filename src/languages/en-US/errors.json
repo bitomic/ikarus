@@ -1,0 +1,7 @@
+{
+	"bad-channel": "This command requires a channel with the following type: **{{ type }}**. You tried using <#{{ channel }}>.",
+	"missing-permissions": "You are missing the following permission to use this command: **{{ permission }}**.",
+	"twitch-already-added": "**{{ user }}** was already being followed in this server. You can only follow a streamer once per server.",
+	"twitch-db-error": "There was an error while trying to register your follow for **{{ user }}**. Please try again later.",
+	"twitch-not-found": "Couldn't find **{{ user }}** in Twitch. Make sure you are typing their username correctly."
+}

@@ -1,0 +1,8 @@
+{
+	"channel-types": {
+		"text": "Text Channel"
+	},
+	"permissions": {
+		"manage-guild": "Manage Guild"
+	}
+}

@@ -3,6 +3,16 @@
 		"description": "Consulta mi estado.",
 		"name": "ping"
 	},
+	"twitch": {
+		"description": "Consulta detalles sobre los canales de Twitch seguidos por este servidor.",
+		"name": "twitch",
+		"options": {
+			"list": {
+				"description": "Obtén una lista de los canales que actualmente sigue el servidor.",
+				"name": "list"
+			}
+		}
+	},
 	"starboard": {
 		"description": "Consulta estadísticas relacionadas al starboard.",
 		"name": "starboard",

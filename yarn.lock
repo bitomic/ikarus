@@ -523,6 +523,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.195":
+  version: 4.14.195
+  resolution: "@types/lodash@npm:4.14.195"
+  checksum: 39b75ca635b3fa943d17d3d3aabc750babe4c8212485a4df166fe0516e39288e14b0c60afc6e21913cc0e5a84734633c71e617e2bd14eaa1cf51b8d7799c432e
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 17.0.9
   resolution: "@types/node@npm:17.0.9"
@@ -3183,6 +3190,7 @@ __metadata:
     "@sapphire/shapeshift": ^3.8.1
     "@sapphire/utilities": ^3.8.0
     "@types/fs-extra": ^11.0.1
+    "@types/lodash": ^4.14.195
     "@types/node": ^18.11.18
     "@typescript-eslint/eslint-plugin": ^5.48.1
     "@typescript-eslint/parser": ^5.48.1
@@ -3197,6 +3205,7 @@ __metadata:
     imgur: ^2.2.0
     ioredis: ^5.2.5
     lint-staged: ^13.1.0
+    lodash: ^4.17.21
     mysql2: ^3.0.1
     pino: ^8.8.0
     pino-pretty: ^9.1.1
