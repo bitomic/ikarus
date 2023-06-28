@@ -51,9 +51,9 @@ export class UserClient extends SapphireClient {
 					defaultJobOptions: {
 						removeOnComplete: true,
 						removeOnFail: true
-					},
-					prefix: 'ajax-task'
-				}
+					}
+				},
+				queue: 'ajax-tasks'
 			}
 		} )
 		container.prisma = new PrismaClient()
