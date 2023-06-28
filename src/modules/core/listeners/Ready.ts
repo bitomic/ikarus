@@ -1,7 +1,6 @@
 import { ActivityType } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
-import { Listener } from '@sapphire/framework'
-import type { ListenerOptions } from '@sapphire/framework'
+import { Listener, type ListenerOptions } from '@sapphire/framework'
 
 @ApplyOptions<ListenerOptions>( {
 	event: 'ready',

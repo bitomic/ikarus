@@ -1,9 +1,8 @@
 import type { GuildMember, User } from 'discord.js'
 import { container } from '@sapphire/pieces'
 import { env } from './environment'
-import type { Game } from './Twitch'
 import Imgur from 'imgur'
-import { type User as TwitchUser } from './Twitch'
+import { type Game, type User as TwitchUser } from './Twitch'
 
 class ImageManager {
 	protected imgur = new Imgur( {

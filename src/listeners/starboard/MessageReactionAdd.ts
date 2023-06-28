@@ -23,7 +23,7 @@ export class UserEvent extends Listener {
 		await messages.assert( message )
 		await this.container.redis.sadd( `starboard:${ message.id }`, user.id )
 
-		this.container.tasks.create( 'starboard', {
+		void this.container.tasks.create( 'starboard', {
 			messageId: message.id
 		} satisfies StarboardPayload, 0 )
 	}
