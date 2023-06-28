@@ -6,9 +6,9 @@ import type { TFunction } from 'i18next'
 
 interface Localizable {
 	description: string
-	descriptionLocalizations?: Partial<Record<Locale, string | null>>
+	descriptionLocalizations?: Partial<Record<Locale, string | null>> | undefined
 	name: string
-	nameLocalizations?: Partial<Record<Locale, string | null>>
+	nameLocalizations?: Partial<Record<Locale, string | null>> | undefined
 	options?: Localizable[]
 }
 

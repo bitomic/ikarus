@@ -1,5 +1,4 @@
-import type { ApplicationCommandOptionData, AutocompleteInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
-import { ApplicationCommandOptionType, ChannelType } from 'discord.js'
+import { type ApplicationCommandOptionData, ApplicationCommandOptionType, type AutocompleteInteraction, ChannelType, type ChatInputCommandInteraction, type Interaction } from 'discord.js'
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import Colors from '@bitomic/material-colors'
