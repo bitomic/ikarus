@@ -8,7 +8,6 @@ import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import Redis from 'ioredis'
-import { ScheduledTaskRedisStrategy } from '@sapphire/plugin-scheduled-tasks/register-redis'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
@@ -47,16 +46,14 @@ export class UserClient extends SapphireClient {
 			},
 			partials: [ Partials.Channel, Partials.Message, Partials.Reaction ],
 			tasks: {
-				strategy: new ScheduledTaskRedisStrategy( {
-					bull: {
-						connection: redisOptions,
-						defaultJobOptions: {
-							removeOnComplete: true,
-							removeOnFail: true
-						},
-						prefix: 'ajax-task'
-					}
-				} )
+				bull: {
+					connection: redisOptions,
+					defaultJobOptions: {
+						removeOnComplete: true,
+						removeOnFail: true
+					},
+					prefix: 'ajax-task'
+				}
 			}
 		} )
 		container.prisma = new PrismaClient()
