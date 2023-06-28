@@ -54,7 +54,7 @@ export class UserClient extends SapphireClient {
 							removeOnComplete: true,
 							removeOnFail: true
 						},
-						prefix: 'ajax-task:'
+						prefix: 'ajax-task'
 					}
 				} )
 			}
