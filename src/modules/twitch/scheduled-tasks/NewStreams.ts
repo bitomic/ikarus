@@ -5,7 +5,7 @@ import { TwitchTask } from './_TwitchTask'
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	enabled: true,
-	interval: Time.Minute * 5,
+	interval: Time.Minute * 1,
 	name: 'new-streams'
 } )
 export class UserTask extends TwitchTask {
@@ -14,25 +14,21 @@ export class UserTask extends TwitchTask {
 
 		const twitchFollows = this.container.stores.get( 'models' ).get( 'twitchfollows' )
 		const streamers = await twitchFollows.getStreamers()
+
+		const offline = new Set( ( await this.container.redis.keys( 'twitch:active-stream/*' ) )
+			.map( i => i.split( /\//g ).at( 1 ) ) )
+
 		while ( streamers.length ) {
 			const chunk = streamers.splice( 0, 100 )
 			const streams = await this.container.twitch.getStreams( chunk )
 
 			for ( const stream of streams ) {
 				await this.container.tasks.create( 'update-stream', { stream } )
+				offline.delete( stream.user_login )
 			}
-
-			const offline = chunk.reduce( ( list, name ) => {
-				const isOnline = streams.find( s => s.user_login === name )
-				if ( !isOnline ) {
-					list.push( name )
-				}
-				return list
-			}, [] as string[] )
-
-			for ( const user of offline ) {
-				await this.container.tasks.create( 'remove-stream', { user } )
-			}
+		}
+		for ( const user of offline ) {
+			await this.container.tasks.create( 'remove-stream', { user } )
 		}
 	}
 }
