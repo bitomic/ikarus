@@ -22,6 +22,7 @@ export class UserTask extends TwitchTask {
 
 		const { redis } = this.container
 		const keys = await redis.keys( this.activeStreamKey( '*', user ) )
+		this.container.logger.info( `RemoveStream: found the following keys for user ${ user }:`, keys )
 		if ( keys.length === 0 ) return
 
 		for ( const key of keys ) {
