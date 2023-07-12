@@ -26,14 +26,19 @@ export class UserTask extends TwitchTask {
 		if ( keys.length === 0 ) return
 
 		for ( const key of keys ) {
+			this.container.logger.info( `Checking key: ${ key }` )
 			try {
 				const activeStream = this.activeStreamValidator.parse( await redis.hgetall( key ) )
+				this.container.logger.info( activeStream )
 				await redis.del( key )
 
 				const channel = await this.container.client.channels.fetch( activeStream.channel ) as GuildTextBasedChannel
 				const message = await channel.messages.fetch( activeStream.message )
 				const embedData = message.embeds.at( 0 )?.data
-				if ( !embedData ) continue
+				if ( !embedData ) {
+					this.container.logger.warn( 'No embed data.' )
+					continue
+				}
 
 				const embed = new EmbedBuilder( embedData )
 				const embedFields: EmbedField[] = []
