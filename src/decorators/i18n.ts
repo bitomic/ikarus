@@ -1,28 +1,20 @@
 import { type ApplicationCommandRegistry, container } from '@sapphire/framework'
-import { type ChatInputApplicationCommandData, Locale } from 'discord.js'
+import { type ApplicationCommandOptionData, type ChatInputApplicationCommandData, Locale } from 'discord.js'
 import { env } from '../lib'
 import { s } from '@sapphire/shapeshift'
 import type { TFunction } from 'i18next'
-
-interface Localizable {
-	description: string
-	descriptionLocalizations?: Partial<Record<Locale, string | null>> | undefined
-	name: string
-	nameLocalizations?: Partial<Record<Locale, string | null>> | undefined
-	options?: Localizable[]
-}
 
 type i18nCollection = {
 	[ key in Locale ]?: TFunction
 } & { 'en-US': TFunction }
 
-const localize = ( i18n: i18nCollection, target: Localizable, prefix: string ) => {
+const localize = ( i18n: i18nCollection, target: ChatInputApplicationCommandData | ApplicationCommandOptionData, prefix: string ) => {
 	const en = i18n[ 'en-US' ]
 	target.description = en( `${ prefix }.description` )
 	target.name = en( `${ prefix }.name` )
 
-	target.descriptionLocalizations ??= {}
-	target.nameLocalizations ??= {}
+	target.descriptionLocalizations ??= {} // eslint-disable-line @typescript-eslint/no-unnecessary-condition
+	target.nameLocalizations ??= {} // eslint-disable-line @typescript-eslint/no-unnecessary-condition
 
 	for ( const [ _locale, t ] of Object.entries( i18n ) ) {
 		const locale = _locale as Locale
@@ -30,7 +22,7 @@ const localize = ( i18n: i18nCollection, target: Localizable, prefix: string ) =
 		target.nameLocalizations[ locale ] = t( `${ prefix }.name` )
 	}
 
-	if ( !target.options ) return
+	if ( !( 'options' in target ) ) return
 
 	for ( const option of target.options ) {
 		localize( i18n, option, `${ prefix }.options.${ option.name }` )
