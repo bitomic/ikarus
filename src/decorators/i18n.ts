@@ -1,6 +1,6 @@
 import { type ApplicationCommandRegistry, container } from '@sapphire/framework'
 import { type ApplicationCommandOptionData, type ChatInputApplicationCommandData, Locale } from 'discord.js'
-import { env } from '../lib'
+import { env } from '#lib/environment'
 import { s } from '@sapphire/shapeshift'
 import type { TFunction } from 'i18next'
 

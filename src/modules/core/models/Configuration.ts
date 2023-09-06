@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import type { BaseValidator } from '@sapphire/shapeshift'
 import type { ConfigurationKey } from '@prisma/client'
-import { Model } from '../../../framework'
+import { Model } from '#framework/Model'
 import type { PieceOptions } from '@sapphire/framework'
 
 @ApplyOptions<PieceOptions>( {

@@ -1,13 +1,14 @@
 import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import { Events, Locale, Partials } from 'discord.js'
-import { env } from './environment'
+import { env } from './environment.js'
 import fs from 'fs'
 import { getRootData } from '@sapphire/pieces'
-import { ModelStore } from '../framework'
+import { ModelStore } from '#framework/ModelStore'
 import path from 'path'
 import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
-import Redis from 'ioredis'
+import { Redis } from 'ioredis'
+import { Twitch } from './Twitch.js'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
@@ -78,6 +79,7 @@ export class UserClient extends SapphireClient {
 		}
 		container.redis = new Redis( redisOptions )
 		container.stores.register( new ModelStore() )
+		container.twitch = new Twitch()
 
 		const { root } = getRootData()
 		const modules = fs.readdirSync( path.join( root, 'modules' ) )
@@ -97,5 +99,6 @@ declare module '@sapphire/pieces' {
 		prisma: PrismaClient
 		ready: () => Promise<true>
 		redis: Redis
+		twitch: Twitch
 	}
 }

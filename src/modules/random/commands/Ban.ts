@@ -2,7 +2,8 @@ import { ApplicationCommandOptionType, type ChatInputCommandInteraction } from '
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import { EmbedBuilder } from '@discordjs/builders'
-import Colors from '@bitomic/material-colors'
+import { Colors } from '@bitomic/material-colors'
+import { env } from '#lib/environment'
 
 @ApplyOptions<CommandOptions>( {
 	description: 'Banea a un miembro del servidor (falso).',
@@ -30,7 +31,9 @@ export class UserCommand extends Command {
 					type: ApplicationCommandOptionType.String
 				}
 			]
-		}, { guildIds: [ '1038642068341403771' ] } )
+		}, {
+			guildIds: [ env.NODE_ENV === 'development' ? env.DISCORD_DEVELOPMENT_SERVER : '1038642068341403771' ]
+		} )
 	}
 
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {

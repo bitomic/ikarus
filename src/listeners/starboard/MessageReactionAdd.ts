@@ -3,7 +3,7 @@ import { Listener, type ListenerOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import { ConfigurationKey } from '@prisma/client'
 import { s } from '@sapphire/shapeshift'
-import type { StarboardPayload } from '../../scheduled-tasks/Starboard'
+import type { StarboardPayload } from '../../scheduled-tasks/Starboard.js'
 
 @ApplyOptions<ListenerOptions>( {
 	event: Events.MessageReactionAdd

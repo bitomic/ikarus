@@ -1,11 +1,11 @@
-import { type ActiveStream, TwitchTask } from './_TwitchTask'
+import { type ActiveStream, TwitchTask } from './_TwitchTask.js'
 import type { GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
-import Colors from '@bitomic/material-colors'
+import { Colors } from '@bitomic/material-colors'
 import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
-import type { Stream } from '../../../lib'
+import type { Stream } from '#lib/Twitch'
 import type { TwitchFollows } from '@prisma/client'
 
 interface TaskPayload {

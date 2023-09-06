@@ -21,17 +21,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bitomic/eslint-config@npm:^1.2.0":
-  version: 1.2.0
-  resolution: "@bitomic/eslint-config@npm:1.2.0"
-  checksum: 076d33889fa0952c34da824fde7bab92067f9199b98f1375d55406e4d06b6002dc29de84bb910dc220387aea8afeea1292ca5fde82b07d2de54b3c7b0007d097
+"@bitomic/eslint-config@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@bitomic/eslint-config@npm:1.3.0"
+  checksum: b58c526f654f3d822e9fad5baedfa82492cf53762dc975d0019b4d31202c2d8ed6ac837f7e93bc6beb331e34e3997d59a8dd9f835411b9cb65b7ec4a9028ab3a
   languageName: node
   linkType: hard
 
-"@bitomic/material-colors@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@bitomic/material-colors@npm:1.0.0"
-  checksum: bda3034ec5f4877f30bc04267e4a756675bd4e0e254c0c6dbb424c269bf4f5324bac8aeccc92abaab44d890b02aeeffcbf5bfd2f50ee4a0603fba0998ea2b793
+"@bitomic/material-colors@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@bitomic/material-colors@npm:1.1.0"
+  checksum: cc5e03d6124f8641e37c3e4f221ff32d779b12efd9a9a6da64cde606497a024705049bc60e2a8e9f07c08e310b0247827aef71a87e28d3ed1c029f8d23952a01
   languageName: node
   linkType: hard
 
@@ -3154,8 +3154,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sapphire-template@workspace:."
   dependencies:
-    "@bitomic/eslint-config": ^1.2.0
-    "@bitomic/material-colors": ^1.0.0
+    "@bitomic/eslint-config": ^1.3.0
+    "@bitomic/material-colors": ^1.1.0
     "@discordjs/builders": ^1.6.5
     "@discordjs/rest": ^2.0.1
     "@prisma/client": ^5.2.0

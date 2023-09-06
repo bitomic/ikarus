@@ -2,7 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from '@discordjs/builde
 import { type APIEmbedAuthor, ButtonStyle, ChannelType, type Message, type MessageCreateOptions, type TextChannel } from 'discord.js'
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { ApplyOptions } from '@sapphire/decorators'
-import Colors from '@bitomic/material-colors'
+import { Colors } from '@bitomic/material-colors'
 import { ConfigurationKey } from '@prisma/client'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { UserError } from '@sapphire/framework'

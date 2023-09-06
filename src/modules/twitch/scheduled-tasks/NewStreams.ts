@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import type { ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import { Time } from '@sapphire/duration'
-import { TwitchTask } from './_TwitchTask'
+import { TwitchTask } from './_TwitchTask.js'
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	enabled: true,
