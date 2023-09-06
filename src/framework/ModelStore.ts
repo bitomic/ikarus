@@ -1,4 +1,4 @@
-import { Model } from './Model'
+import { Model } from './Model.js'
 import { Store } from '@sapphire/pieces'
 
 export class ModelStore extends Store<Model> {

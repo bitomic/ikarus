@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { env } from './environment'
+import { env } from './environment.js'
 import { request } from 'undici'
 
 export interface Broadcaster {
@@ -51,7 +51,7 @@ export interface User {
 	type: 'admin' | 'global_mod' | 'staff' | ''
 }
 
-class Twitch {
+export class Twitch {
 	private accessToken = ''
 	private tokenExpiry = 0
 
@@ -146,13 +146,5 @@ class Twitch {
 			query: input
 		} ) as { data: Broadcaster[] }
 		return req.data
-	}
-}
-
-container.twitch = new Twitch()
-
-declare module '@sapphire/pieces' {
-	interface Container {
-		twitch: Twitch
 	}
 }

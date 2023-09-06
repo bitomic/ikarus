@@ -10,6 +10,6 @@ export class UserEvent extends Listener {
 		this.container.logger.info( `Ready! as ${ this.container.client.user?.tag ?? 'unknown user' }` )
 
 		await this.container.twitch.init()
-		await this.container.tasks.create( 'status' )
+		await this.container.tasks.create( 'status', null, 0 )
 	}
 }

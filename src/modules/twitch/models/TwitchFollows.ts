@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { Model } from '../../../framework'
+import { Model } from '#framework/Model'
 import type { PieceOptions } from '@sapphire/framework'
 import type { TwitchFollows } from '@prisma/client'
 

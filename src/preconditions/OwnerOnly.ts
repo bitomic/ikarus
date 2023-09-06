@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { env } from '../lib'
+import { env } from '#lib/environment'
 import type { Message } from 'discord.js'
 import { Precondition, type PreconditionOptions, type PreconditionResult } from '@sapphire/framework'
 

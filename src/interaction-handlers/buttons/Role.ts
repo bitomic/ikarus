@@ -1,7 +1,7 @@
 import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import type { ButtonInteraction  } from 'discord.js'
-import Colors from '@bitomic/material-colors'
+import { Colors } from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
 
 @ApplyOptions<InteractionHandlerOptions>( {

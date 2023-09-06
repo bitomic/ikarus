@@ -1,7 +1,7 @@
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import type { CommandInteraction } from 'discord.js'
-import { i18n } from '../../../decorators'
+import { i18n } from '#decorators/i18n'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,

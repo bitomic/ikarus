@@ -3,9 +3,9 @@ import '@sapphire/plugin-i18next/register'
 import '@sapphire/plugin-logger/register'
 import '@sapphire/plugin-scheduled-tasks/register'
 import '@sapphire/plugin-utilities-store/register'
-import { env, UserClient } from './lib'
+import { env } from '#lib/environment'
 import { container } from '@sapphire/framework'
-import type { InternationalizationClientOptions, InternationalizationHandler } from '@sapphire/plugin-i18next'
+import { UserClient } from '#lib/Client'
 
 ( async () => {
 	const client = new UserClient()
@@ -18,13 +18,3 @@ import type { InternationalizationClientOptions, InternationalizationHandler } f
 	}
 } )()
 	.catch( e => container.logger.error( e ) )
-
-declare module '@sapphire/pieces' {
-	interface Container {
-		i18n: InternationalizationHandler;
-	}
-}
-
-declare module 'discord.js' {
-	export interface ClientOptions extends InternationalizationClientOptions {}
-}

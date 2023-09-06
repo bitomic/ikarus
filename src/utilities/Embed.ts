@@ -1,4 +1,6 @@
-import { get, has, set } from 'lodash'
+import get from 'lodash/get.js'
+import has from 'lodash/has.js'
+import set from 'lodash/set.js'
 import { resolveKey, type Target } from '@sapphire/plugin-i18next'
 import type { APIEmbed } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'

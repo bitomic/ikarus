@@ -1,9 +1,9 @@
 import { type ApplicationCommandOptionData, ApplicationCommandOptionType, type AutocompleteInteraction, ChannelType, type ChatInputCommandInteraction, type Interaction } from 'discord.js'
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
-import Colors from '@bitomic/material-colors'
+import { Colors } from '@bitomic/material-colors'
 import { hyperlink } from '@discordjs/builders'
-import { i18n } from '../../../decorators'
+import { i18n } from '#decorators/i18n'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import type { TwitchFollows } from '@prisma/client'
 
