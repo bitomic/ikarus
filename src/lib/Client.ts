@@ -9,6 +9,7 @@ import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { Redis } from 'ioredis'
 import { Twitch } from './Twitch.js'
+import { ImageManager } from './images.js'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
@@ -50,13 +51,14 @@ export class UserClient extends SapphireClient {
 				bull: {
 					connection: redisOptions,
 					defaultJobOptions: {
-						removeOnComplete: true,
-						removeOnFail: true
+						removeOnComplete: false,
+						removeOnFail: false
 					}
 				},
 				queue: 'ajax-tasks'
 			}
 		} )
+		container.images = new ImageManager()
 		container.prisma = new PrismaClient()
 		container.ready = async (): Promise<true> => {
 			if ( this.isReady() ) return true
@@ -96,6 +98,7 @@ export class UserClient extends SapphireClient {
 
 declare module '@sapphire/pieces' {
 	interface Container {
+		images: ImageManager
 		prisma: PrismaClient
 		ready: () => Promise<true>
 		redis: Redis
