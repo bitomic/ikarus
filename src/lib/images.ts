@@ -1,10 +1,12 @@
 import type { GuildMember, User } from 'discord.js'
 import { container } from '@sapphire/pieces'
 import { env } from './environment.js'
-import { ImgurClient } from 'imgur'
+import imgur from 'imgur'
 import { type Game, type User as TwitchUser } from './Twitch.js'
 
-class ImageManager {
+const ImgurClient = imgur.default
+
+export class ImageManager {
 	protected imgur = new ImgurClient( {
 		clientId: env.IMGUR_CLIENT_ID,
 		clientSecret: env.IMGUR_CLIENT_SECRET
@@ -63,13 +65,5 @@ class ImageManager {
 			imagePrefix: 'discord:user-avatar',
 			url: user.displayAvatarURL( { forceStatic: false, size: 256 } )
 		} )
-	}
-}
-
-container.images = new ImageManager()
-
-declare module '@sapphire/pieces' {
-	interface Container {
-		images: ImageManager
 	}
 }
