@@ -37,7 +37,7 @@ export class EmbedUtility extends Utility {
 
 		if ( reply ) {
 			if ( target instanceof ChatInputCommandInteraction ) {
-				const method = target.replied ? 'editReply' : 'reply'
+				const method = target.replied || target.deferred ? 'editReply' : 'reply'
 				await target[ method ]( { embeds: [ data ] } )
 			}
 		}

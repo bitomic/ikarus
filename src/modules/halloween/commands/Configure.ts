@@ -3,7 +3,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { type ApplicationCommandOptionData, ApplicationCommandOptionType, type ChatInputCommandInteraction } from 'discord.js'
 import { i18n } from '#decorators/i18n'
 import { Colors } from '@bitomic/material-colors'
-import { resolveKey } from '@sapphire/plugin-i18next'
+import { permissions } from '#decorators/permissions'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,
@@ -13,6 +13,7 @@ export class UserCommand extends Command {
 	@i18n
 	public override registerApplicationCommands( registry: ApplicationCommandRegistry ): void {
 		registry.registerChatInputCommand( {
+			defaultMemberPermissions: 'ManageGuild',
 			description: this.description,
 			dmPermission: false,
 			name: this.name,
@@ -32,20 +33,12 @@ export class UserCommand extends Command {
 		} )
 	}
 
+	@permissions( 'ManageGuild', 'manage-guild' )
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		const hasPermissions = interaction.memberPermissions.has( 'ManageGuild', true )
-		if ( !hasPermissions ) {
-			await this.container.utilities.embed.i18n( interaction, {
-				color: Colors.amber.s800,
-				description: 'errors:missing-permissions'
-			}, { permissions: await resolveKey( interaction, 'misc:permissions.manage-guild' ) }, true )
-			return
-		}
-
 		const subcommand = interaction.options.getSubcommand()
 
 		if ( subcommand === 'enable' ) {
-			void this.enable( interaction )
+			await this.enable( interaction )
 		}
 	}
 
@@ -68,24 +61,30 @@ export class UserCommand extends Command {
 			return
 		}
 
-		await this.container.prisma.halloweenGuild.upsert( {
-			create: {
-				channels: [],
-				enabled: toEnable,
-				id: interaction.guild.id
-			},
-			update: {
-				enabled: toEnable
-			},
-			where: {
-				id: interaction.guild.id
-			}
-		} )
+		await this.upsertGuild( interaction.guildId, toEnable )
 
 		const key = toEnable ? 'enabled' : 'disabled'
 		await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.s800,
 			description: `halloween:enable.${ key }`
 		}, null, true )
+	}
+
+	protected async upsertGuild( guildId: string, enabled?: boolean ): Promise<void> {
+		enabled ??= false
+
+		await this.container.prisma.halloweenGuild.upsert( {
+			create: {
+				channels: [],
+				enabled,
+				id: guildId
+			},
+			update: {
+				enabled
+			},
+			where: {
+				id: guildId
+			}
+		} )
 	}
 }
