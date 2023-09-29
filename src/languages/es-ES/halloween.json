@@ -1,0 +1,7 @@
+{
+	"enable": {
+		"disabled": "Todas las funcionalidades de Dulce o Truco han sido desactivadas en este servidor.",
+		"enabled": "¡Acabas de habilitar las funcionalidades de Dulce o Truco en este servidor! No olvides configurar los canales en donde quieras que puedan aparecer monstruos.",
+		"no-change": "Los ajustes de Dulce o Truco ya se encontraban habilitados o deshabilitados."
+	}
+}

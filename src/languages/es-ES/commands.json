@@ -1,4 +1,20 @@
 {
+	"halloween": {
+		"description": "Configura los ajustes de Dulce o Truco.",
+		"name": "dulce-o-truco",
+		"options": {
+			"enable": {
+				"description": "Activa o desactiva el evento en este servidor.",
+				"name": "habilitar",
+				"options": {
+					"enable": {
+						"description": "Habilitar o deshabilitar",
+						"name": "habilitar"
+					}
+				}
+			}
+		}
+	},
 	"ping": {
 		"description": "Consulta mi estado.",
 		"name": "ping"

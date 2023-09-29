@@ -1,4 +1,20 @@
 {
+	"halloween": {
+		"description": "Setup the Trick or Treat settings.",
+		"name": "trick-or-treat",
+		"options": {
+			"enable": {
+				"description": "Turn the event on or off for this server.",
+				"name": "enable",
+				"options": {
+					"enable": {
+						"description": "Enable or disable",
+						"name": "enable"
+					}
+				}
+			}
+		}
+	},
 	"ping": {
 		"description": "Check my status.",
 		"name": "ping"
