@@ -55,6 +55,27 @@ export class UserCommand extends Command {
 						type: ApplicationCommandOptionType.Channel
 					} ],
 					type: ApplicationCommandOptionType.Subcommand
+				},
+				{
+					description: '',
+					name: 'spawning',
+					options: [
+						{
+							description: '',
+							maxValue: 60,
+							minValue: 5,
+							name: 'frequency',
+							type: ApplicationCommandOptionType.Integer
+						},
+						{
+							description: '',
+							maxValue: 100,
+							minValue: 5,
+							name: 'chance',
+							type: ApplicationCommandOptionType.Integer
+						}
+					],
+					type: ApplicationCommandOptionType.Subcommand
 				}
 			] satisfies ApplicationCommandOptionData[]
 		} )
@@ -68,6 +89,8 @@ export class UserCommand extends Command {
 			await this.enable( interaction )
 		} else if ( subcommand === 'add-channel' || subcommand === 'remove-channel' ) {
 			await this.updateChannels( interaction )
+		} else if ( subcommand === 'spawning' ) {
+			await this.spawning( interaction )
 		}
 	}
 
@@ -96,6 +119,45 @@ export class UserCommand extends Command {
 		await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.s800,
 			description: `halloween:enable.${ key }`
+		}, null, true )
+	}
+
+	@checkEnabled( false )
+	protected async spawning( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
+		const guild = await this.container.prisma.halloweenGuild.findUniqueOrThrow( {
+			where: {
+				id: interaction.guildId
+			}
+		} )
+
+		const chance = interaction.options.getInteger( 'chance' )
+		const frequency = interaction.options.getInteger( 'frequency' ) || 0
+		const roundedFrequency = Math.max( 5, 5 * Math.floor( frequency / 5 ) )
+
+		const noChanges = !chance && !frequency
+		const sameValues = guild.spawnChance === chance && guild.frequency === roundedFrequency
+		if ( noChanges || sameValues ) {
+			await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'halloween:no-settings'
+			}, null, true )
+			return
+		}
+
+		if ( chance && guild.spawnChance !== chance ) guild.spawnChance = chance
+		if ( frequency && guild.frequency !== roundedFrequency ) guild.frequency = roundedFrequency
+
+		await this.container.prisma.halloweenGuild.update( {
+			data: {
+				frequency: guild.frequency,
+				spawnChance: guild.spawnChance
+			},
+			where: { id: interaction.guild.id }
+		} )
+
+		await this.container.utilities.embed.i18n( interaction, {
+			color: Colors.deepPurple.s800,
+			description: 'halloween:updated-settings'
 		}, null, true )
 	}
 

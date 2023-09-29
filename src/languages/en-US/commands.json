@@ -23,6 +23,20 @@
 					}
 				}
 			},
+			"spawning": {
+				"description": "Control how often monsters can spawn.",
+				"name": "spawning",
+				"options": {
+					"chance": {
+						"description": "Set what's the chance for monsters to spawn (5%-100%).",
+						"name": "chance"
+					},
+					"frequency": {
+						"description": "Set how many minutes must be at least between spawns (only multiples of 5 minutes).",
+						"name": "frequency"
+					}
+				}
+			},
 			"remove-channel": {
 				"description": "Remove a previously allowed channel.",
 				"name": "remove-channel",

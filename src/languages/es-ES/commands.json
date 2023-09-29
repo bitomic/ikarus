@@ -23,6 +23,20 @@
 					}
 				}
 			},
+			"spawning": {
+				"description": "Controla qué tan seguido aparecen monstruos.",
+				"name": "aparición",
+				"options": {
+					"chance": {
+						"description": "Determina la probabilidad de que aparezcan monstruos (5%-100%).",
+						"name": "probabilidad"
+					},
+					"frequency": {
+						"description": "Determina cada cuántos minutos puede intentar aparecer un monstruo (solo múltiplos de 5 minutos).",
+						"name": "frecuencia"
+					}
+				}
+			},
 			"remove-channel": {
 				"description": "Elimina un canal previamente configurado para permitir monstruos.",
 				"name": "eliminar-canal",

@@ -5,5 +5,7 @@
 		"enabled": "You've successfully enabled all the Trick or Treat features in this server! Don't forget to set the channels to allow creepy monsters to spawn!",
 		"no-change": "The Trick-or-Treat features were already enabled or disabled in this server."
 	},
-	"not-enabled": "You can't use this command because this server doesn't have the Trick-or-Treat features enabled."
+	"no-settings": "You didn't set any value to update.",
+	"not-enabled": "You can't use this command because this server doesn't have the Trick-or-Treat features enabled.",
+	"updated-settings": "Settings have been successfully updated."
 }

@@ -47,9 +47,11 @@ enum ConfigurationKey {
 }
 
 model HalloweenGuild {
-  channels Json
-  id       String  @id
-  enabled  Boolean @default(false)
+  channels    Json
+  id          String  @id
+  enabled     Boolean @default(false)
+  frequency   Int     @default(5)
+  spawnChance Int     @default(50)
 }
 
 enum HalloweenCandyRarity {
