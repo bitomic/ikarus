@@ -2,7 +2,7 @@ import get from 'lodash/get.js'
 import has from 'lodash/has.js'
 import set from 'lodash/set.js'
 import { resolveKey, type Target } from '@sapphire/plugin-i18next'
-import type { APIEmbed } from 'discord.js'
+import { type APIEmbed, ChatInputCommandInteraction } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
 
@@ -10,7 +10,7 @@ import { Utility } from '@sapphire/plugin-utilities-store'
 	name: 'embed'
 } )
 export class EmbedUtility extends Utility {
-	public async i18n( target: Target, embed: APIEmbed, replace?: Record<string, unknown> ): Promise<APIEmbed> {
+	public async i18n( target: Target, embed: APIEmbed, replace?: Record<string, unknown> | null, reply?: boolean ): Promise<APIEmbed> {
 		const namespaces = [ ...this.container.i18n.namespaces ].join( '|' )
 		const regex = new RegExp( `^${ namespaces }:` )
 
@@ -32,6 +32,13 @@ export class EmbedUtility extends Utility {
 				if ( field.value.match( regex ) ) {
 					field.value = await resolveKey( target, field.value, { replace } )
 				}
+			}
+		}
+
+		if ( reply ) {
+			if ( target instanceof ChatInputCommandInteraction ) {
+				const method = target.replied ? 'editReply' : 'reply'
+				await target[ method ]( { embeds: [ data ] } )
 			}
 		}
 

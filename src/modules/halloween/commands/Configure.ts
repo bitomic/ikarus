@@ -35,13 +35,10 @@ export class UserCommand extends Command {
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
 		const hasPermissions = interaction.memberPermissions.has( 'ManageGuild', true )
 		if ( !hasPermissions ) {
-			const embed = await this.container.utilities.embed.i18n( interaction, {
+			await this.container.utilities.embed.i18n( interaction, {
 				color: Colors.amber.s800,
 				description: 'errors:missing-permissions'
-			}, { permissions: await resolveKey( interaction, 'misc:permissions.manage-guild' ) } )
-			void interaction.reply( {
-				embeds: [ embed ]
-			} )
+			}, { permissions: await resolveKey( interaction, 'misc:permissions.manage-guild' ) }, true )
 			return
 		}
 
@@ -64,13 +61,10 @@ export class UserCommand extends Command {
 
 		const noUpdate = ( !guild && toEnable === false ) || guild?.enabled === toEnable // eslint-disable-line no-extra-parens
 		if ( noUpdate ) {
-			const embed = await this.container.utilities.embed.i18n( interaction, {
+			await this.container.utilities.embed.i18n( interaction, {
 				color: Colors.amber.s800,
 				description: 'halloween:enable.no-change'
-			} )
-			void interaction.editReply( {
-				embeds: [ embed ]
-			} )
+			}, null, true )
 			return
 		}
 
@@ -89,12 +83,9 @@ export class UserCommand extends Command {
 		} )
 
 		const key = toEnable ? 'enabled' : 'disabled'
-		const embed = await this.container.utilities.embed.i18n( interaction, {
+		await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.s800,
 			description: `halloween:enable.${ key }`
-		} )
-		void interaction.editReply( {
-			embeds: [ embed ]
-		} )
+		}, null, true )
 	}
 }
