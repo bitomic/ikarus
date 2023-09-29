@@ -3,6 +3,16 @@
 		"description": "Configura los ajustes de Dulce o Truco.",
 		"name": "dulce-o-truco",
 		"options": {
+			"add-channel": {
+				"description": "Permite que monstruos aparezcan en el canal especificado.",
+				"name": "agregar-canal",
+				"options": {
+					"channel": {
+						"description": "Canal a permitir.",
+						"name": "canal"
+					}
+				}
+			},
 			"enable": {
 				"description": "Activa o desactiva el evento en este servidor.",
 				"name": "habilitar",
@@ -10,6 +20,16 @@
 					"enable": {
 						"description": "Habilitar o deshabilitar",
 						"name": "habilitar"
+					}
+				}
+			},
+			"remove-channel": {
+				"description": "Elimina un canal previamente configurado para permitir monstruos.",
+				"name": "eliminar-canal",
+				"options": {
+					"channel": {
+						"description": "Canal a restringir.",
+						"name": "canal"
 					}
 				}
 			}

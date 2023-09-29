@@ -1,9 +1,12 @@
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
-import { type ApplicationCommandOptionData, ApplicationCommandOptionType, type ChatInputCommandInteraction } from 'discord.js'
+import { type ApplicationCommandOptionData, ApplicationCommandOptionType, ChannelType, type ChatInputCommandInteraction } from 'discord.js'
 import { i18n } from '#decorators/i18n'
 import { Colors } from '@bitomic/material-colors'
 import { permissions } from '#decorators/permissions'
+import { PermissionFlagsBits } from 'discord-api-types/v10'
+import { s } from '@sapphire/shapeshift'
+import { checkEnabled } from '../decorators/check-enabled.js'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,
@@ -13,7 +16,7 @@ export class UserCommand extends Command {
 	@i18n
 	public override registerApplicationCommands( registry: ApplicationCommandRegistry ): void {
 		registry.registerChatInputCommand( {
-			defaultMemberPermissions: 'ManageGuild',
+			defaultMemberPermissions: PermissionFlagsBits.ManageGuild,
 			description: this.description,
 			dmPermission: false,
 			name: this.name,
@@ -28,6 +31,30 @@ export class UserCommand extends Command {
 						type: ApplicationCommandOptionType.Boolean
 					} ],
 					type: ApplicationCommandOptionType.Subcommand
+				},
+				{
+					description: '',
+					name: 'add-channel',
+					options: [ {
+						channelTypes: [ ChannelType.GuildText ],
+						description: '',
+						name: 'channel',
+						required: true,
+						type: ApplicationCommandOptionType.Channel
+					} ],
+					type: ApplicationCommandOptionType.Subcommand
+				},
+				{
+					description: '',
+					name: 'remove-channel',
+					options: [ {
+						channelTypes: [ ChannelType.GuildText ],
+						description: '',
+						name: 'channel',
+						required: true,
+						type: ApplicationCommandOptionType.Channel
+					} ],
+					type: ApplicationCommandOptionType.Subcommand
 				}
 			] satisfies ApplicationCommandOptionData[]
 		} )
@@ -39,6 +66,8 @@ export class UserCommand extends Command {
 
 		if ( subcommand === 'enable' ) {
 			await this.enable( interaction )
+		} else if ( subcommand === 'add-channel' || subcommand === 'remove-channel' ) {
+			await this.updateChannels( interaction )
 		}
 	}
 
@@ -67,6 +96,40 @@ export class UserCommand extends Command {
 		await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.s800,
 			description: `halloween:enable.${ key }`
+		}, null, true )
+	}
+
+	@checkEnabled( false )
+	protected async updateChannels( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
+		const add = interaction.options.getSubcommand() === 'add-channel'
+		const channel = interaction.options.getChannel( 'channel', true, [ ChannelType.GuildText ] )
+
+		const guild = await this.container.prisma.halloweenGuild.findUniqueOrThrow( {
+			where: {
+				id: interaction.guildId
+			}
+		} )
+
+		const channels = new Set( s.string.array.parse( guild.channels ) )
+		const originalSize = channels.size
+
+		if ( add && !channels.has( channel.id ) ) channels.add( channel.id )
+		else if ( !add && channels.has( channel.id ) ) channels.delete( channel.id )
+
+		if ( channels.size !== originalSize ) {
+			await this.container.prisma.halloweenGuild.update( {
+				data: {
+					channels: [ ...channels ]
+				},
+				where: {
+					id: interaction.guildId
+				}
+			} )
+		}
+
+		await this.container.utilities.embed.i18n( interaction, {
+			color: Colors.deepPurple.s800,
+			description: 'halloween:channels-updated'
 		}, null, true )
 	}
 

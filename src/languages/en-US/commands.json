@@ -3,6 +3,16 @@
 		"description": "Setup the Trick or Treat settings.",
 		"name": "trick-or-treat",
 		"options": {
+			"add-channel": {
+				"description": "Allow monsters to spawn in the specified channel.",
+				"name": "add-channel",
+				"options": {
+					"channel": {
+						"description": "Channel you want to allow.",
+						"name": "channel"
+					}
+				}
+			},
 			"enable": {
 				"description": "Turn the event on or off for this server.",
 				"name": "enable",
@@ -10,6 +20,16 @@
 					"enable": {
 						"description": "Enable or disable",
 						"name": "enable"
+					}
+				}
+			},
+			"remove-channel": {
+				"description": "Remove a previously allowed channel.",
+				"name": "remove-channel",
+				"options": {
+					"channel": {
+						"description": "Channel you want to disallow.",
+						"name": "channel"
 					}
 				}
 			}
