@@ -45,3 +45,61 @@ enum ConfigurationKey {
   StarboardChannel
   StarboardCount
 }
+
+model HalloweenGuild {
+  channels Json
+  id       String  @id
+  enabled  Boolean @default(false)
+}
+
+enum HalloweenCandyRarity {
+  Common
+  Uncommon
+  Rare
+}
+
+model HalloweenCandy {
+  name               String               @id
+  rarity             HalloweenCandyRarity
+  HalloweenInventory HalloweenInventory[]
+}
+
+model HalloweenUser {
+  id                Int                    @id @default(autoincrement())
+  guild             String
+  user              String
+  HalloweenCandy    HalloweenInventory[]
+  HalloweenUpgrades HalloweenUserUpgrade[]
+
+  @@unique([guild, user])
+}
+
+model HalloweenInventory {
+  candy     HalloweenCandy @relation(fields: [candyName], references: [name])
+  candyName String
+  count     Int            @default(0)
+  guild     String
+  id        Int            @id @default(autoincrement())
+  user      HalloweenUser  @relation(fields: [userId], references: [id])
+  userId    Int
+
+  @@unique([candyName, guild, userId])
+}
+
+model HalloweenUpgrade {
+  max                  Int                    @default(1)
+  name                 String                 @id
+  recipe               Json                   @default("{}")
+  HalloweenUserUpgrade HalloweenUserUpgrade[]
+}
+
+model HalloweenUserUpgrade {
+  guild        String
+  upgrade      HalloweenUpgrade @relation(fields: [upgradeName], references: [name])
+  upgradeCount Int              @default(0)
+  upgradeName  String
+  user         HalloweenUser    @relation(fields: [userId], references: [id])
+  userId       Int
+
+  @@unique([guild, upgradeName, userId])
+}
