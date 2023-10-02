@@ -7,7 +7,7 @@ import type { UserTask } from '../scheduled-tasks/Spawn.js'
 import { env } from '#lib/environment'
 
 @ApplyOptions<CommandOptions>( {
-	enabled: true,
+	enabled: env.NODE_ENV === 'development',
 	name: 'spawn'
 } )
 export class UserCommand extends Command {
@@ -26,7 +26,7 @@ export class UserCommand extends Command {
 					type: ApplicationCommandOptionType.Channel
 				}
 			] satisfies ApplicationCommandOptionData[]
-		}, { guildIds: [ env.DISCORD_DEVELOPMENT_SERVER ] } )
+		} )
 	}
 
 	@permissions( 'ManageGuild', 'manage-guild' )
