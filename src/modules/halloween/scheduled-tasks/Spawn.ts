@@ -10,6 +10,7 @@ import sample from 'lodash/sample.js'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { Colors } from '@bitomic/material-colors'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
+import MonsterImages from '../data/images.json' assert { type: 'json' }
 
 const Monsters = Object.keys( Rewards ) as Array<keyof typeof Rewards>
 
@@ -68,6 +69,9 @@ export class UserTask extends ScheduledTask {
 		const embed = await this.container.utilities.embed.i18n( channel, {
 			color: Colors.deepPurple.s800,
 			description: 'halloween:spawn.description',
+			thumbnail: {
+				url: MonsterImages[ monster ]
+			},
 			title: 'halloween:spawn.title'
 		}, { monster: name } )
 

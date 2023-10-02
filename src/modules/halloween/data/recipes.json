@@ -1,0 +1,52 @@
+{
+	"elixir-of-levitation": {
+		"cherry-slushie": 8,
+		"levitation-belt": 5,
+		"teeny-wand": 5
+	},
+	"demonfire-sword": {
+		"brimstone": 12,
+		"enchanted-blade": 6,
+		"inferno-hot-sauce": 4
+	},
+	"enchanted-mothwing-cloak": {
+		"barn-owl-feathers": 10,
+		"papyrus-scroll": 14,
+		"spidersilk-robe": 4
+	},
+	"fairys-sparkling-boots": {
+		"pixie-dust": 15,
+		"shiny-bauble": 5,
+		"tiny-boots": 8
+	},
+	"ghostly-lantern": {
+		"drop-of-ectoplasm": 16,
+		"rattlin-chains": 8,
+		"sinister-vine": 7
+	},
+	"goblins-lucky-charm": {
+		"chewed-shoe": 10,
+		"half-eaten-chocolate-bar": 5,
+		"lucky-rock": 14
+	},
+	"mummys-scroll-of-resurrection": {
+		"book-of-the-dead": 5,
+		"box-of-bandages": 13,
+		"papyrus-scroll": 10
+	},
+	"pirates-treasure-map": {
+		"crusty-barnacle": 18,
+		"fearsome-eyepatch": 10,
+		"goldn-doubloon": 6
+	},
+	"witchs-potion": {
+		"eye-of-newt": 14,
+		"toe-of-frog": 8,
+		"witches-brew": 5
+	},
+	"wizards-spellbook": {
+		"techno-mixtape": 5,
+		"teeny-wand": 7,
+		"wumpling-soup": 15
+	}
+}
