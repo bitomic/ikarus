@@ -54,18 +54,6 @@ model HalloweenGuild {
   spawnChance Int     @default(50)
 }
 
-enum HalloweenCandyRarity {
-  Common
-  Uncommon
-  Rare
-}
-
-model HalloweenCandy {
-  name               String               @id
-  rarity             HalloweenCandyRarity
-  HalloweenInventory HalloweenInventory[]
-}
-
 model HalloweenUser {
   id                Int                    @id @default(autoincrement())
   guild             String
@@ -77,7 +65,6 @@ model HalloweenUser {
 }
 
 model HalloweenInventory {
-  candy     HalloweenCandy @relation(fields: [candyName], references: [name])
   candyName String
   count     Int            @default(0)
   guild     String
@@ -88,20 +75,12 @@ model HalloweenInventory {
   @@unique([candyName, guild, userId])
 }
 
-model HalloweenUpgrade {
-  max                  Int                    @default(1)
-  name                 String                 @id
-  recipe               Json                   @default("{}")
-  HalloweenUserUpgrade HalloweenUserUpgrade[]
-}
-
 model HalloweenUserUpgrade {
   guild        String
-  upgrade      HalloweenUpgrade @relation(fields: [upgradeName], references: [name])
+  upgrade  String
   upgradeCount Int              @default(0)
-  upgradeName  String
   user         HalloweenUser    @relation(fields: [userId], references: [id])
   userId       Int
 
-  @@unique([guild, upgradeName, userId])
+  @@unique([guild, upgrade, userId])
 }

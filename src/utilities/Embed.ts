@@ -2,7 +2,7 @@ import get from 'lodash/get.js'
 import has from 'lodash/has.js'
 import set from 'lodash/set.js'
 import { resolveKey, type Target } from '@sapphire/plugin-i18next'
-import { type APIEmbed, ChatInputCommandInteraction } from 'discord.js'
+import { type APIEmbed, ButtonInteraction, ChatInputCommandInteraction } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
 
@@ -36,9 +36,12 @@ export class EmbedUtility extends Utility {
 		}
 
 		if ( reply ) {
-			if ( target instanceof ChatInputCommandInteraction ) {
-				const method = target.replied || target.deferred ? 'editReply' : 'reply'
-				await target[ method ]( { embeds: [ data ] } )
+			if ( target instanceof ChatInputCommandInteraction || target instanceof ButtonInteraction ) {
+				if ( target.replied || target.deferred ) {
+					await target.editReply( { embeds: [ data ] } )
+				} else {
+					await target.reply( { embeds: [ data ] } )
+				}
 			}
 		}
 

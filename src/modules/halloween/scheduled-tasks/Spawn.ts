@@ -75,12 +75,12 @@ export class UserTask extends ScheduledTask {
 			components: [ new ActionRowBuilder<ButtonBuilder>()
 				.addComponents(
 					new ButtonBuilder()
-						.setCustomId( `treat-${ monster }` )
+						.setCustomId( `trick-${ monster }` )
 						.setEmoji( { name: '🎃' } )
 						.setLabel( await resolveKey( channel, 'halloween:spawn.trick' ) )
 						.setStyle( ButtonStyle.Danger ),
 					new ButtonBuilder()
-						.setCustomId( `trick-${ monster }` )
+						.setCustomId( `treat-${ monster }` )
 						.setEmoji( { name: '🍬' } )
 						.setLabel( await resolveKey( channel, 'halloween:spawn.treat' ) )
 						.setStyle( ButtonStyle.Success )
