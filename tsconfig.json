@@ -2,7 +2,7 @@
 	"exclude": [ "dist", "node_modules" ],
 	"include": [ "src", "src/**/*.json" ],
 	"compilerOptions": {
-		"module": "Node16",
+		"module": "NodeNext",
 		"moduleResolution": "Node16",
 		"target": "ES2020",
 		"skipLibCheck": true,

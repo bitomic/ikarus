@@ -1,0 +1,203 @@
+{
+	"alien": [
+	  "space-trash",
+	  "silver-pants",
+	  "levitation-belt"
+	],
+	"bat": [
+	  "assorted-bugs",
+	  "cool-geode",
+	  "tropical-flower"
+	],
+	"cat": [
+	  "hairball",
+	  "toy-mouse",
+	  "can-of-tuna"
+	],
+	"centaur": [
+	  "smushed-pumpkin",
+	  "spooky-lantern",
+	  "huge-hoof"
+	],
+	"chupacabra": [
+	  "goat-horns",
+	  "cherry-slushie",
+	  "wool-sweater"
+	],
+	"clown": [
+	  "balloon-animal",
+	  "prank-flower",
+	  "clown-egg"
+	],
+	"crow": [
+	  "broken-twigs",
+	  "cold-fries",
+	  "shiny-bauble"
+	],
+	"demon": [
+	  "brimstone",
+	  "pitchfork",
+	  "inferno-hot-sauce"
+	],
+	"fairy": [
+	  "pixie-dust",
+	  "tiny-boots",
+	  "teeny-wand"
+	],
+	"frog": [
+	  "swamp-gas",
+	  "lily-pad",
+	  "miniature-crown"
+	],
+	"ghost": [
+	  "drop-of-ectoplasm",
+	  "rattlin-chains",
+	  "mostly-finished-business"
+	],
+	"goblin": [
+	  "lucky-rock",
+	  "chewed-shoe",
+	  "half-eaten-chocolate-bar"
+	],
+	"gremlin": [
+	  "glitching-gizmo",
+	  "sparking-smartphone",
+	  "twitchy-tablet"
+	],
+	"haunted-tree": [
+	  "eerie-acorn",
+	  "poison-apple",
+	  "evil-syrup"
+	],
+	"jackolantern": [
+	  "creepy-candle",
+	  "sinister-vine",
+	  "pumpkins-ghost"
+	],
+	"knight": [
+	  "bent-feather",
+	  "shiny-helmet",
+	  "enchanted-blade"
+	],
+	"man-shark": [
+	  "wet-kelp",
+	  "snorkel-and-fins",
+	  "postcard-from-atlantis"
+	],
+	"mothman": [
+	  "broken-lightbulb",
+	  "barn-owl-feathers",
+	  "blurry-photo"
+	],
+	"mummy": [
+	  "box-of-bandages",
+	  "papyrus-scroll",
+	  "book-of-the-dead"
+	],
+	"nice-pumpkins": [
+	  "roasted-seed",
+	  "hearty-soup",
+	  "perfect-pie"
+	],
+	"orc": [
+	  "bowl-of-orcslop",
+	  "wicked-dagger",
+	  "sweet-battleaxe"
+	],
+	"pirate": [
+	  "crusty-barnacle",
+	  "fearsome-eyepatch",
+	  "goldn-doubloon"
+	],
+	"plague-doctor": [
+	  "cough-drop",
+	  "fragrant-herbs",
+	  "gloomy-mask"
+	],
+	"rat": [
+	  "tiny-crumbs",
+	  "fine-cheeseboard",
+	  "magic-flute"
+	],
+	"reaper": [
+	  "chilly-chess-piece",
+	  "souvenir-hourglass",
+	  "shivering-scythe"
+	],
+	"robot": [
+	  "confusing-captchas",
+	  "positron-relay",
+	  "techno-mixtape"
+	],
+	"scarecrow": [
+	  "short-straw",
+	  "ragged-hat",
+	  "golden-corn"
+	],
+	"scientist": [
+	  "empty-test-tube",
+	  "tesla-coil",
+	  "shrink-ray"
+	],
+	"skeleton": [
+	  "glass-of-milk",
+	  "funny-bone",
+	  "grinning-skull"
+	],
+	"slime": [
+	  "sour-jelly",
+	  "gourmet-jam",
+	  "prizewinning-preserves"
+	],
+	"snake": [
+	  "baby-rattle",
+	  "feather-boa",
+	  "cool-eyepatch"
+	],
+	"spider": [
+	  "cobwebs",
+	  "eight-tiny-shoes",
+	  "spidersilk-robe"
+	],
+	"teddy-bear": [
+	  "spare-button",
+	  "bag-of-rags",
+	  "picnic-basket"
+	],
+	"vampire": [
+	  "used-toothpick",
+	  "cape-coupon",
+	  "blood-red-brooch"
+	],
+	"werewolf": [
+	  "shedded-fur",
+	  "wolf-claw",
+	  "moonstone-pendant"
+	],
+	"witch": [
+	  "eye-of-newt",
+	  "toe-of-frog",
+	  "witches-brew"
+	],
+	"wumpus-dino": [
+	  "fossil-footprint",
+	  "corprolite",
+	  "meteorite-chunk"
+	],
+	"wumpus-wumpus": [
+	  "wumpling-soup",
+	  "wumpernickel-bread",
+	  "wumpkin-spice-latte"
+	],
+	"wumpus-yeti": [
+	  "gnawed-bones",
+	  "snowball",
+	  "mountaineers-hat"
+	],
+	"zombie": [
+	  "peabrain",
+	  "basic-brain",
+	  "galaxy-brain"
+	]
+  }
+  

@@ -1,4 +1,64 @@
 {
+	"halloween": {
+		"description": "Configura los ajustes de Dulce o Truco.",
+		"name": "dulce-o-truco",
+		"options": {
+			"add-channel": {
+				"description": "Permite que monstruos aparezcan en el canal especificado.",
+				"name": "agregar-canal",
+				"options": {
+					"channel": {
+						"description": "Canal a permitir.",
+						"name": "canal"
+					}
+				}
+			},
+			"enable": {
+				"description": "Activa o desactiva el evento en este servidor.",
+				"name": "habilitar",
+				"options": {
+					"enable": {
+						"description": "Habilitar o deshabilitar",
+						"name": "habilitar"
+					}
+				}
+			},
+			"spawning": {
+				"description": "Controla qué tan seguido aparecen monstruos.",
+				"name": "aparición",
+				"options": {
+					"chance": {
+						"description": "Determina la probabilidad de que aparezcan monstruos (5%-100%).",
+						"name": "probabilidad"
+					},
+					"frequency": {
+						"description": "Determina cada cuántos minutos puede intentar aparecer un monstruo (solo múltiplos de 5 minutos).",
+						"name": "frecuencia"
+					}
+				}
+			},
+			"remove-channel": {
+				"description": "Elimina un canal previamente configurado para permitir monstruos.",
+				"name": "eliminar-canal",
+				"options": {
+					"channel": {
+						"description": "Canal a restringir.",
+						"name": "canal"
+					}
+				}
+			}
+		}
+	},
+	"inventory": {
+		"description": "Consulta tu inventario de Dulce o Truco.",
+		"name": "inventario",
+		"options": {
+			"member": {
+				"description": "Consulta el inventario de otra persona.",
+				"name": "miembro"
+			}
+		}
+	},
 	"ping": {
 		"description": "Consulta mi estado.",
 		"name": "ping"
@@ -12,6 +72,10 @@
 				"name": "list"
 			}
 		}
+	},
+	"recipes": {
+		"description": "Consulta todas las recetas disponibles de Dulce o Truco.",
+		"name": "recetas"
 	},
 	"starboard": {
 		"description": "Consulta estadísticas relacionadas al starboard.",

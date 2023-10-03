@@ -1,4 +1,64 @@
 {
+	"halloween": {
+		"description": "Setup the Trick or Treat settings.",
+		"name": "trick-or-treat",
+		"options": {
+			"add-channel": {
+				"description": "Allow monsters to spawn in the specified channel.",
+				"name": "add-channel",
+				"options": {
+					"channel": {
+						"description": "Channel you want to allow.",
+						"name": "channel"
+					}
+				}
+			},
+			"enable": {
+				"description": "Turn the event on or off for this server.",
+				"name": "enable",
+				"options": {
+					"enable": {
+						"description": "Enable or disable",
+						"name": "enable"
+					}
+				}
+			},
+			"spawning": {
+				"description": "Control how often monsters can spawn.",
+				"name": "spawning",
+				"options": {
+					"chance": {
+						"description": "Set what's the chance for monsters to spawn (5%-100%).",
+						"name": "chance"
+					},
+					"frequency": {
+						"description": "Set how many minutes must be at least between spawns (only multiples of 5 minutes).",
+						"name": "frequency"
+					}
+				}
+			},
+			"remove-channel": {
+				"description": "Remove a previously allowed channel.",
+				"name": "remove-channel",
+				"options": {
+					"channel": {
+						"description": "Channel you want to disallow.",
+						"name": "channel"
+					}
+				}
+			}
+		}
+	},
+	"inventory": {
+		"description": "Check your Trick-or-Treat inventory.",
+		"name": "inventory",
+		"options": {
+			"member": {
+				"description": "Check someone else's inventory.",
+				"name": "member"
+			}
+		}
+	},
 	"ping": {
 		"description": "Check my status.",
 		"name": "ping"
@@ -36,6 +96,10 @@
 				}
 			}
 		}
+	},
+	"recipes": {
+		"description": "Check all the available Trick-or-Treat recipes.",
+		"name": "recipes"
 	},
 	"starboard": {
 		"description": "Check statistics related to the starboard.",

@@ -1,0 +1,82 @@
+{
+	"elixir-of-levitation":  {
+		"materials": {
+			"cherry-slushie": 8,
+			"levitation-belt": 5,
+			"teeny-wand": 5
+		},
+		"max": 1
+	},
+	"demonfire-sword":  {
+		"materials": {
+			"brimstone": 12,
+			"enchanted-blade": 6,
+			"inferno-hot-sauce": 4
+		},
+		"max": 1
+	},
+	"enchanted-mothwing-cloak":  {
+		"materials": {
+			"barn-owl-feathers": 10,
+			"papyrus-scroll": 14,
+			"spidersilk-robe": 4
+		},
+		"max": 1
+	},
+	"fairys-sparkling-boots":  {
+		"materials": {
+			"pixie-dust": 15,
+			"shiny-bauble": 5,
+			"tiny-boots": 8
+		},
+		"max": 1
+	},
+	"ghostly-lantern":  {
+		"materials": {
+			"drop-of-ectoplasm": 16,
+			"rattlin-chains": 8,
+			"sinister-vine": 7
+		},
+		"max": 1
+	},
+	"goblins-lucky-charm":  {
+		"materials": {
+			"chewed-shoe": 10,
+			"half-eaten-chocolate-bar": 5,
+			"lucky-rock": 14
+		},
+		"max": 1
+	},
+	"mummys-scroll-of-resurrection":  {
+		"materials": {
+			"book-of-the-dead": 5,
+			"box-of-bandages": 13,
+			"papyrus-scroll": 10
+		},
+		"max": 1
+	},
+	"pirates-treasure-map":  {
+		"materials": {
+			"crusty-barnacle": 18,
+			"fearsome-eyepatch": 10,
+			"goldn-doubloon": 6
+		},
+		"max": 1
+	},
+	"witchs-potion":  {
+		"materials": {
+			"eye-of-newt": 14,
+			"toe-of-frog": 8,
+			"witches-brew": 5
+		},
+		"max": 1
+	},
+	"wizards-spellbook":  {
+		"materials": {
+			"techno-mixtape": 5,
+			"teeny-wand": 7,
+			"wumpling-soup": 15
+		},
+		"max": 1
+	}
+}
