@@ -49,6 +49,16 @@
 			}
 		}
 	},
+	"inventory": {
+		"description": "Consulta tu inventario de Dulce o Truco.",
+		"name": "inventario",
+		"options": {
+			"member": {
+				"description": "Consulta el inventario de otra persona.",
+				"name": "miembro"
+			}
+		}
+	},
 	"ping": {
 		"description": "Consulta mi estado.",
 		"name": "ping"
@@ -62,6 +72,10 @@
 				"name": "list"
 			}
 		}
+	},
+	"recipes": {
+		"description": "Consulta todas las recetas disponibles de Dulce o Truco.",
+		"name": "recetas"
 	},
 	"starboard": {
 		"description": "Consulta estadísticas relacionadas al starboard.",

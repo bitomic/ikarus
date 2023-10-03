@@ -49,6 +49,16 @@
 			}
 		}
 	},
+	"inventory": {
+		"description": "Check your Trick-or-Treat inventory.",
+		"name": "inventory",
+		"options": {
+			"member": {
+				"description": "Check someone else's inventory.",
+				"name": "member"
+			}
+		}
+	},
 	"ping": {
 		"description": "Check my status.",
 		"name": "ping"
@@ -86,6 +96,10 @@
 				}
 			}
 		}
+	},
+	"recipes": {
+		"description": "Check all the available Trick-or-Treat recipes.",
+		"name": "recipes"
 	},
 	"starboard": {
 		"description": "Check statistics related to the starboard.",

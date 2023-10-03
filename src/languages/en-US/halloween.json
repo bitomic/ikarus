@@ -1,13 +1,25 @@
 {
 	"channels-updated": "The channel list has been updated successfully.",
 	"claimed-by": "Claimed by {{ user }}",
+	"empty-inventory": {
+		"description": "You don't have any items in your bag yet. Make sure to be quick and press the Trick or Treat buttons before anyone else does when a monster spawns.",
+		"title": "Your inventory is empty"
+	},
 	"enable": {
 		"disabled": "All Trick-or-Treat features have been successfully disabled for this server.",
 		"enabled": "You've successfully enabled all the Trick or Treat features in this server! Don't forget to set the channels to allow creepy monsters to spawn!",
 		"no-change": "The Trick-or-Treat features were already enabled or disabled in this server."
 	},
+	"inventory": {
+		"candies": "Candies",
+		"title": "Inventory"
+	},
 	"no-settings": "You didn't set any value to update.",
 	"not-enabled": "You can't use this command because this server doesn't have the Trick-or-Treat features enabled.",
+	"recipes": {
+		"description": "These are all the available recipes for items you can create with the materials you obtain.",
+		"title": "Crafting recipes"
+	},
 	"spawn": {
 		"description": "Choose between trick or treat to get a reward... or a nasty surprise.",
 		"title": "{{ monster }} has appeared!",
