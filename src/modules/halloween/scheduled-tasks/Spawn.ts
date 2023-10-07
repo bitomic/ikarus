@@ -42,7 +42,7 @@ export class UserTask extends ScheduledTask {
 		const guild = await this.container.client.guilds.fetch( data.id )
 		const lastSpawn = parseInt( await this.container.redis.get( `halloween:last-spawn/${ guild.id }` ) ?? '', 10 ) || 0
 		const canSpawn = lastSpawn + Time.Minute * data.frequency > Date.now()
-		if ( !canSpawn ) return
+		if ( lastSpawn > 0 && !canSpawn ) return
 
 		const chance = data.spawnChance / 100
 		const channels = s.string.array.parse( data.channels ).filter( () => random( true ) <= chance )
@@ -51,6 +51,7 @@ export class UserTask extends ScheduledTask {
 		for ( const channelId of channels ) {
 			await this.spawnMonster( channelId )
 		}
+		await this.container.redis.set( `halloween:last-spawn/${ guild.id }`, Date.now() )
 	}
 
 	public async spawnMonster( channelId: string ): Promise<void> {
