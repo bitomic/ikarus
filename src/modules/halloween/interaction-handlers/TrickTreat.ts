@@ -9,6 +9,7 @@ import { resolveKey } from '@sapphire/plugin-i18next'
 import type { HalloweenUser, HalloweenUserUpgrade } from '@prisma/client'
 import { Colors } from '@bitomic/material-colors'
 import sample from 'lodash/sample.js'
+import { Time } from '@sapphire/duration'
 
 const MonsterNames = s.enum( ...Object.keys( Rewards ) as Array<keyof typeof Rewards> )
 
@@ -67,15 +68,21 @@ export class UserHandler extends InteractionHandler {
 		const user = await this.getUser( interaction.guildId, interaction.user.id )
 
 		if ( isTreat ) {
-			return this.treat( interaction, user )
+			await this.treat( interaction, user )
+			return
 		}
 
 		const trickSuccess = await this.getTrickSuccess( user )
 		if ( trickSuccess ) {
-			return this.treat( interaction, user, 2 )
+			await this.treat( interaction, user, 2 )
 		} else {
-			return this.trick( interaction, user )
+			await this.trick( interaction, user )
 		}
+
+		await this.container.tasks.create( 'cleanup', {
+			channelId: interaction.channelId,
+			messageId: interaction.message.id
+		}, Time.Minute * 5 )
 	}
 
 	protected async getTrickSuccess( user: HalloweenPlayer ): Promise<boolean> {
