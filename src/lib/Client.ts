@@ -51,7 +51,7 @@ export class UserClient extends SapphireClient {
 				bull: {
 					connection: redisOptions,
 					defaultJobOptions: {
-						removeOnComplete: false,
+						removeOnComplete: true,
 						removeOnFail: false
 					}
 				},
