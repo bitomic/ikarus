@@ -24,7 +24,7 @@ export class UserTask extends ScheduledTask {
 
 		for ( const storedGuild of guilds ) {
 			await this.processGuild( storedGuild )
-				.catch( () => this.container.logger.error( `There was a problem with the monster spawn task in guild ${ storedGuild.id }.` ) )
+				.catch( e => this.container.logger.error( `There was a problem with the monster spawn task in guild ${ storedGuild.id }.`, e ) )
 		}
 	}
 
