@@ -79,7 +79,7 @@ export class UserCommand extends Command {
 	protected addFields( embed: APIEmbed, label: string, values: string[] ): void {
 		embed.fields ??= [] // eslint-disable-line @typescript-eslint/no-unnecessary-condition
 
-		if ( values.length === 1 ) {
+		if ( values.length < 3 ) {
 			embed.fields.push( {
 				name: label,
 				value: values.join( '\n' )
@@ -89,12 +89,17 @@ export class UserCommand extends Command {
 				{
 					inline: true,
 					name: label,
-					value: values.slice( 0, Math.floor( values.length / 2 ) ).join( '\n' )
+					value: values.slice( 0, Math.floor( values.length / 3 ) ).join( '\n' )
 				},
 				{
 					inline: true,
 					name: '\u200b',
-					value: values.slice( Math.floor( values.length / 2 ) ).join( '\n' )
+					value: values.slice( Math.floor( values.length / 3 ), Math.floor( 2 * values.length / 3 ) ).join( '\n' )
+				},
+				{
+					inline: true,
+					name: '\u200b',
+					value: values.slice( Math.floor( 2 * values.length / 3 ) ).join( '\n' )
 				}
 			)
 		}
