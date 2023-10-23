@@ -11,9 +11,9 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandFinish> {
 
 	public run( interaction: ChatInputCommandInteraction ): void {
 		if ( interaction.inGuild() && interaction.channel && interaction.guild ) {
-			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in #${ interaction.channel.name } (${ interaction.channel.id }) from guild ${ interaction.guild.name } (${ interaction.guildId })` )
+			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in #${ interaction.channel.name } (${ interaction.channel.id }) from guild ${ interaction.guild.name } (${ interaction.guildId })\n` )
 		} else {
-			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in their DM` )
+			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in their DM\n` )
 		}
 	}
 }
