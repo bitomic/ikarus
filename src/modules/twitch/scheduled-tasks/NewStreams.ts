@@ -18,13 +18,9 @@ export class UserTask extends TwitchTask {
 		const offline = new Set( ( await this.container.redis.keys( 'twitch:active-stream/*' ) )
 			.map( i => i.split( /\//g ).at( 1 ) ) )
 
-		this.container.logger.info( 'The following streamings are expected to be still online:', offline )
-
 		while ( streamers.length ) {
 			const chunk = streamers.splice( 0, 100 )
 			const streams = await this.container.twitch.getStreams( chunk )
-
-			this.container.logger.info( 'The following streamings were fetched in a batch:', streams.map( i => i.user_login ) )
 
 			for ( const stream of streams ) {
 				await this.container.tasks.create( 'update-stream', { stream } )
@@ -33,8 +29,6 @@ export class UserTask extends TwitchTask {
 		}
 
 		if ( offline.size === 0 ) return
-
-		this.container.logger.info( 'The following streamings are apparently no longer active:', offline )
 
 		for ( const user of offline ) {
 			await this.container.tasks.create( 'remove-stream', { user } )
