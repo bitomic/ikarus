@@ -1,4 +1,4 @@
-import { Channel, ChannelType, GuildTextBasedChannel, MappedChannelCategoryTypes, PermissionFlagsBits, PermissionResolvable, TextChannel, ThreadAutoArchiveDuration, ThreadChannel } from 'discord.js'
+import { type Channel, ChannelType, type GuildTextBasedChannel, type MappedChannelCategoryTypes, PermissionFlagsBits, type PermissionResolvable, type TextChannel, ThreadAutoArchiveDuration, type ThreadChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
 import { MissingChannelError } from 'src/errors/MissingChannel.js'
@@ -34,7 +34,7 @@ export class ChannelUtility extends Utility {
 
 	public async getChannel<T extends ChannelType.GuildAnnouncement | ChannelType.GuildVoice | ChannelType.GuildText | ChannelType.GuildStageVoice | ChannelType.GuildForum>( channelId: string, type: T, permissions?: PermissionResolvable ): Promise<MappedChannelCategoryTypes[ T ]> {
 		const channel = await this.container.client.channels.fetch( channelId ) as MappedChannelCategoryTypes[ T ]
-		if ( channel?.type !== type ) throw new MissingChannelError( channelId )
+		if ( channel.type !== type ) throw new MissingChannelError( channelId )
 		if ( !permissions ) return channel
 
 		const bot = this.container.client.user
