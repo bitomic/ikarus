@@ -14,21 +14,21 @@ export class UserButton extends InteractionHandler {
 	}
 
 	public async run( interaction: ButtonInteraction<'cached'> ): Promise<void> {
+		const textComponent = new ActionRowBuilder<TextInputBuilder>()
+			.addComponents( new TextInputBuilder( {
+				custom_id: 'content',
+				label: 'Mensaje',
+				max_length: Math.min( EmbedLimits.MaximumDescriptionLength, TextInputLimits.MaximumValueCharacters ),
+				min_length: 1,
+				required: true,
+				style: TextInputStyle.Paragraph,
+				type: ComponentType.TextInput
+			} ) )
+
 		const modal = new ModalBuilder()
 			.setTitle( 'Envía tu anécdota' )
 			.setCustomId( 'confessionary' )
-			.addComponents(
-				new ActionRowBuilder<TextInputBuilder>()
-					.addComponents( new TextInputBuilder( {
-						custom_id: 'content',
-						label: 'Mensaje',
-						max_length: Math.min( EmbedLimits.MaximumDescriptionLength, TextInputLimits.MaximumValueCharacters ),
-						min_length: 1,
-						required: true,
-						style: TextInputStyle.Paragraph,
-						type: ComponentType.TextInput
-					} ) )
-			)
+			.addComponents( textComponent )
 
 		await interaction.showModal( modal )
 	}

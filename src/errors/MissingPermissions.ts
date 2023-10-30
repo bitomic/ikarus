@@ -5,7 +5,7 @@ export class MissingPermissionsError extends UserError {
 	public constructor( permissions: PermissionResolvable ) {
 		super( {
 			identifier: 'Missing permissions',
-			message: `Missing permissions: ${ permissions }.` // eslint-disable-line @typescript-eslint/no-base-to-string
+			message: `Missing permissions: ${ permissions }.` // eslint-disable-line @typescript-eslint/no-base-to-string, @typescript-eslint/restrict-template-expressions
 		} )
 	}
 }
