@@ -1,4 +1,4 @@
-import { Channel, ChannelType, GuildTextBasedChannel, PermissionFlagsBits, PermissionResolvable, TextChannel, ThreadAutoArchiveDuration, ThreadChannel } from 'discord.js'
+import { Channel, ChannelType, GuildTextBasedChannel, MappedChannelCategoryTypes, PermissionFlagsBits, PermissionResolvable, TextChannel, ThreadAutoArchiveDuration, ThreadChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
 import { MissingChannelError } from 'src/errors/MissingChannel.js'
@@ -12,7 +12,7 @@ export class ChannelUtility extends Utility {
 		const bot = this.container.client.user
 		if ( !bot ) return false
 
-		return channel && this.isGuildText( channel ) && channel.permissionsFor( bot )?.has( 'SendMessages' ) || false
+		return channel?.isTextBased() && !channel.isDMBased() && channel.permissionsFor( bot )?.has( 'SendMessages' ) || false
 	}
 
 	public async findThreadByName( channel: TextChannel, name: string, type: ChannelType.PublicThread | ChannelType.PrivateThread ): Promise<ThreadChannel> {
@@ -32,9 +32,9 @@ export class ChannelUtility extends Utility {
 		} )
 	}
 
-	public async getGuildTextChannel( channelId: string, permissions?: PermissionResolvable ): Promise<GuildTextBasedChannel> {
-		const channel = await this.container.client.channels.fetch( channelId )
-		if ( !channel || !this.isGuildText( channel ) ) throw new MissingChannelError( channelId )
+	public async getChannel<T extends ChannelType.GuildAnnouncement | ChannelType.GuildVoice | ChannelType.GuildText | ChannelType.GuildStageVoice | ChannelType.GuildForum>( channelId: string, type: T, permissions?: PermissionResolvable ): Promise<MappedChannelCategoryTypes[ T ]> {
+		const channel = await this.container.client.channels.fetch( channelId ) as MappedChannelCategoryTypes[ T ]
+		if ( channel?.type !== type ) throw new MissingChannelError( channelId )
 		if ( !permissions ) return channel
 
 		const bot = this.container.client.user
@@ -42,10 +42,6 @@ export class ChannelUtility extends Utility {
 			return channel
 		}
 		throw new MissingPermissionsError( permissions )
-	}
-
-	public isGuildText( channel: Channel ): channel is GuildTextBasedChannel {
-		return channel.isTextBased() && !channel.isDMBased()
 	}
 }
 
