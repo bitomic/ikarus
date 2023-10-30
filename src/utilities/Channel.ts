@@ -1,8 +1,8 @@
 import { type Channel, ChannelType, type GuildTextBasedChannel, type MappedChannelCategoryTypes, PermissionFlagsBits, type PermissionResolvable, type TextChannel, ThreadAutoArchiveDuration, type ThreadChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
-import { MissingChannelError } from 'src/errors/MissingChannel.js'
-import { MissingPermissionsError } from 'src/errors/MissingPermissions.js'
+import { MissingChannelError } from '../errors/MissingChannel.js'
+import { MissingPermissionsError } from '../errors/MissingPermissions.js'
 
 @ApplyOptions<Utility.Options>( {
 	name: 'channel'
