@@ -1,5 +1,5 @@
 import { type ActiveStream, TwitchTask } from './_TwitchTask.js'
-import type { GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
+import { ChannelType, type GuildTextBasedChannel, type TextBasedChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Colors } from '@bitomic/material-colors'
 import { EmbedBuilder } from '@discordjs/builders'
@@ -75,7 +75,8 @@ export class UserTask extends TwitchTask {
 
 	protected async createMessage( follow: TwitchFollows, stream: Stream, avatar: string, game: string ): Promise<void> {
 		const channelUtility = this.container.utilities.channel
-		const channel = await channelUtility.getGuildTextChannel( follow.channel )
+		const channel = await channelUtility.getChannel( follow.channel, ChannelType.GuildText, 'SendMessages' )
+			.catch( () => null )
 
 		if ( !channel ) {
 			this.container.logger.warn( `Can't send stream updates in channel ${ follow.channel }.` )
