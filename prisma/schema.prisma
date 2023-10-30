@@ -91,3 +91,10 @@ model Confession {
 	message String @id
 	user String
 }
+
+model UniteProfile {
+	code String?
+	favoritePokemon String?
+	name String
+	user String @id
+}
