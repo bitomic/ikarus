@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `HalloweenGuild` ADD COLUMN `frequency` INTEGER NOT NULL DEFAULT 5,
-    ADD COLUMN `spawnChance` INTEGER NOT NULL DEFAULT 50;

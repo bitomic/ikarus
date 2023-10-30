@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
   url      = env("DATABASE_URL")
 }
 
@@ -83,4 +84,10 @@ model HalloweenUserUpgrade {
   userId       Int
 
   @@unique([guild, upgrade, userId])
+}
+
+model Confession {
+	guild String
+	message String @id
+	user String
 }
