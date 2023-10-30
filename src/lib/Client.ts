@@ -42,7 +42,7 @@ export class UserClient extends SapphireClient {
 				'GuildMessages',
 				'GuildMessageReactions'
 			],
-			loadDefaultErrorListeners: false,
+			loadDefaultErrorListeners: true,
 			logger: {
 				level: LogLevel.Info
 			},
