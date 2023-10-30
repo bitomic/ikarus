@@ -1,4 +1,4 @@
-import { type ActiveStream, TwitchTask } from './_TwitchTask.js'
+import { TwitchTask } from './_TwitchTask.js'
 import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import type { EmbedField, GuildTextBasedChannel, TextBasedChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
@@ -6,7 +6,6 @@ import { Colors } from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import type { ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '#lib/Twitch'
-import type { TwitchFollows } from '@prisma/client'
 
 interface TaskPayload {
 	user: string
@@ -94,46 +93,6 @@ export class UserTask extends TwitchTask {
 			.setThumbnail( game )
 			.setURL( `https://twitch.tv/${ stream.user_login }` )
 			.setTimestamp( new Date( stream.started_at ) )
-	}
-
-	protected async createMessage( follow: TwitchFollows, stream: Stream, avatar: string, game: string ): Promise<void> {
-		const channelUtility = this.container.utilities.channel
-		const channel = await channelUtility.getGuildTextChannel( follow.channel )
-
-		if ( !channel ) {
-			this.container.logger.warn( `Can't send stream updates in channel ${ follow.channel }.` )
-			return
-		}
-
-		const embed = await this.createEmbed( channel, stream, avatar, game )
-		const message = await channel.send( {
-			embeds: [ embed ]
-		} )
-
-		const activeStream: ActiveStream = {
-			channel: channel.id,
-			message: message.id,
-			streamer: stream.user_login,
-			vod: stream.id
-		}
-		const activeKey = this.activeStreamKey( channel.id, stream.user_login )
-		await this.container.redis.hset( activeKey, activeStream )
-	}
-
-	protected async updateMessage( follow: TwitchFollows, stream: Stream, avatar: string, game: string ): Promise<void> {
-		const activeKey = this.activeStreamKey( follow.channel, stream.user_login )
-		const validated = this.activeStreamValidator.run( await this.container.redis.hgetall( activeKey ) )
-		if ( validated.isErr() ) {
-			await this.createMessage( follow, stream, avatar, game )
-			return
-		}
-
-		const activeStream = validated.unwrap()
-		const channel = await this.container.client.channels.fetch( activeStream.channel ) as GuildTextBasedChannel
-		const message = await channel.messages.fetch( activeStream.message )
-
-		const embed = await this.createEmbed( channel, stream, avatar, game )
-		await message.edit( { embeds: [ embed ] } )
 	}
 }
 
