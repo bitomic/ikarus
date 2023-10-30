@@ -1,6 +1,8 @@
-import type { Channel, GuildTextBasedChannel, PermissionResolvable } from 'discord.js'
+import { type Channel, ChannelType, type GuildTextBasedChannel, type MappedChannelCategoryTypes, PermissionFlagsBits, type PermissionResolvable, type TextChannel, ThreadAutoArchiveDuration, type ThreadChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
+import { MissingChannelError } from 'src/errors/MissingChannel.js'
+import { MissingPermissionsError } from 'src/errors/MissingPermissions.js'
 
 @ApplyOptions<Utility.Options>( {
 	name: 'channel'
@@ -10,23 +12,36 @@ export class ChannelUtility extends Utility {
 		const bot = this.container.client.user
 		if ( !bot ) return false
 
-		return channel && this.isGuildText( channel ) && channel.permissionsFor( bot )?.has( 'SendMessages' ) || false
+		return channel?.isTextBased() && !channel.isDMBased() && channel.permissionsFor( bot )?.has( 'SendMessages' ) || false
 	}
 
-	public async getGuildTextChannel( channelId: string, permissions?: PermissionResolvable ): Promise<GuildTextBasedChannel | null> {
-		const channel = await this.container.client.channels.fetch( channelId )
-		if ( !channel || !this.isGuildText( channel ) ) return null
+	public async findThreadByName( channel: TextChannel, name: string, type: ChannelType.PublicThread | ChannelType.PrivateThread ): Promise<ThreadChannel> {
+		const { threads } = await channel.threads.fetch()
+		const target = threads.find( t => t.name === name )
+		if ( target ) return target
+
+		const bot = this.container.client.user
+		const permission = type === ChannelType.PublicThread ? PermissionFlagsBits.CreatePublicThreads : PermissionFlagsBits.CreatePrivateThreads
+		if ( !bot || !channel.permissionsFor( bot )?.has( permission ) ) throw new MissingPermissionsError( permission )
+
+		return channel.threads.create( {
+			autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+			invitable: false,
+			name,
+			type
+		} )
+	}
+
+	public async getChannel<T extends ChannelType.GuildAnnouncement | ChannelType.GuildVoice | ChannelType.GuildText | ChannelType.GuildStageVoice | ChannelType.GuildForum>( channelId: string, type: T, permissions?: PermissionResolvable ): Promise<MappedChannelCategoryTypes[ T ]> {
+		const channel = await this.container.client.channels.fetch( channelId ) as MappedChannelCategoryTypes[ T ]
+		if ( channel.type !== type ) throw new MissingChannelError( channelId )
 		if ( !permissions ) return channel
 
 		const bot = this.container.client.user
 		if ( bot && channel.permissionsFor( bot )?.has( permissions ) ) {
 			return channel
 		}
-		return null
-	}
-
-	public isGuildText( channel: Channel ): channel is GuildTextBasedChannel {
-		return channel.isTextBased() && !channel.isDMBased()
+		throw new MissingPermissionsError( permissions )
 	}
 }
 
