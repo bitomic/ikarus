@@ -1,4 +1,4 @@
-import type { Channel, GuildTextBasedChannel, PermissionResolvable } from 'discord.js'
+import { Channel, ChannelType, GuildTextBasedChannel, PermissionFlagsBits, PermissionResolvable, TextChannel, ThreadAutoArchiveDuration, ThreadChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Utility } from '@sapphire/plugin-utilities-store'
 import { MissingChannelError } from 'src/errors/MissingChannel.js'
@@ -13,6 +13,23 @@ export class ChannelUtility extends Utility {
 		if ( !bot ) return false
 
 		return channel && this.isGuildText( channel ) && channel.permissionsFor( bot )?.has( 'SendMessages' ) || false
+	}
+
+	public async findThreadByName( channel: TextChannel, name: string, type: ChannelType.PublicThread | ChannelType.PrivateThread ): Promise<ThreadChannel> {
+		const { threads } = await channel.threads.fetch()
+		const target = threads.find( t => t.name === name )
+		if ( target ) return target
+
+		const bot = this.container.client.user
+		const permission = type === ChannelType.PublicThread ? PermissionFlagsBits.CreatePublicThreads : PermissionFlagsBits.CreatePrivateThreads
+		if ( !bot || !channel.permissionsFor( bot )?.has( permission ) ) throw new MissingPermissionsError( permission )
+
+		return channel.threads.create( {
+			autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
+			invitable: false,
+			name,
+			type
+		} )
 	}
 
 	public async getGuildTextChannel( channelId: string, permissions?: PermissionResolvable ): Promise<GuildTextBasedChannel> {
