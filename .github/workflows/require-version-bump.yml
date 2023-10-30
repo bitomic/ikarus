@@ -2,8 +2,8 @@ name: Require version bump
 
 on:
   pull_request:
-    branches-ignore:
-      - 'renovate/**'
+    branches:
+      - 'main'
 
 permissions:
   contents: read
@@ -13,6 +13,7 @@ jobs:
   check:
     name: Check for a version bump
     runs-on: ubuntu-latest
+    if: "!startsWith( github.head_ref, 'renovate/' )"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
