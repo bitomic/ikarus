@@ -1,5 +1,6 @@
 import { env } from '#lib/environment'
 import { ApplyOptions } from '@sapphire/decorators'
+import { EmojiRegex } from '@sapphire/discord-utilities'
 import { Time } from '@sapphire/duration'
 import { Listener, type ListenerOptions } from '@sapphire/framework'
 import { Events, type Message } from 'discord.js'
@@ -8,6 +9,7 @@ import { Events, type Message } from 'discord.js'
 	event: Events.MessageCreate
 } )
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
+	public static readonly EMOJI = new RegExp( EmojiRegex, 'g' )
 	public static readonly GUILD = env.NODE_ENV === 'development' ? env.DISCORD_DEVELOPMENT_SERVER : '1091101890084884630'
 	public static readonly PATTERN = /b(.*)o([^r]+)r(.*)i/i
 
@@ -18,7 +20,15 @@ export class UserEvent extends Listener<typeof Events.MessageCreate> {
 		if ( message.content.length < 10 || !UserEvent.PATTERN.test( message.content ) ) return
 		if ( Date.now() < this.lastMessage + Time.Minute * 15 ) return
 
-		await message.reply( message.content.toLowerCase().replace( UserEvent.PATTERN, '__B__$1__O__$2__R__$3__I__' ) )
+		const highlight = message.content.toLowerCase().replace( UserEvent.PATTERN, '__B__$1__O__$2__R__$3__I__' ).replace( /_{4}/, '' )
+		if ( !highlight.replace( UserEvent.EMOJI, '' ).match( UserEvent.PATTERN ) ) return
+
+		await message.reply( {
+			allowedMentions: {
+				parse: []
+			},
+			content: highlight
+		} )
 		this.lastMessage = Date.now()
 	}
 }
