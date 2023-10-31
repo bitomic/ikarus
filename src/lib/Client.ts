@@ -40,7 +40,8 @@ export class UserClient extends SapphireClient {
 			intents: [
 				'Guilds',
 				'GuildMessages',
-				'GuildMessageReactions'
+				'GuildMessageReactions',
+				'MessageContent'
 			],
 			loadDefaultErrorListeners: true,
 			logger: {
