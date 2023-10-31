@@ -2920,9 +2920,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-pretty@npm:^10.2.0":
-  version: 10.2.0
-  resolution: "pino-pretty@npm:10.2.0"
+"pino-pretty@npm:^10.2.3":
+  version: 10.2.3
+  resolution: "pino-pretty@npm:10.2.3"
   dependencies:
     colorette: ^2.0.7
     dateformat: ^4.6.3
@@ -2940,7 +2940,7 @@ __metadata:
     strip-json-comments: ^3.1.1
   bin:
     pino-pretty: bin.js
-  checksum: 8e8220ab647d11e05349adde37aac116dab1a96ce479297820475b7e2246ea5e56e3764b625c5877821ae66dcea62bdda563cc49eccbd4628c80952998068f48
+  checksum: 9182886855515000df2ef381762c69fc29dbdd9014a76839cc3d8a7a94ac96d4ce17423adb9ddd61eae78986bb0ff3a1d9e6e7aa55476c096a3dd4a0c89440e8
   languageName: node
   linkType: hard
 
@@ -3277,7 +3277,7 @@ __metadata:
     lint-staged: ^14.0.1
     lodash: ^4.17.21
     pino: ^8.15.0
-    pino-pretty: ^10.2.0
+    pino-pretty: ^10.2.3
     prisma: ^5.2.0
     reflect-metadata: ^0.1.13
     rimraf: ^5.0.1
