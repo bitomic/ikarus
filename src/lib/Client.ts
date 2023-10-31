@@ -5,11 +5,12 @@ import fs from 'fs'
 import { getRootData } from '@sapphire/pieces'
 import { ModelStore } from '#framework/ModelStore'
 import path from 'path'
-import { PrismaClient } from '@prisma/client'
 import { randomUUID } from 'crypto'
 import { Redis } from 'ioredis'
 import { Twitch } from './Twitch.js'
 import { ImageManager } from './images.js'
+import type { MySql2Database } from 'drizzle-orm/mysql2'
+import type * as schema from '../drizzle/schema.js'
 
 export class UserClient extends SapphireClient {
 	public constructor() {
@@ -60,7 +61,6 @@ export class UserClient extends SapphireClient {
 			}
 		} )
 		container.images = new ImageManager()
-		container.prisma = new PrismaClient()
 		container.ready = async (): Promise<true> => {
 			if ( this.isReady() ) return true
 
@@ -99,8 +99,8 @@ export class UserClient extends SapphireClient {
 
 declare module '@sapphire/pieces' {
 	interface Container {
+		drizzle: MySql2Database<typeof schema>
 		images: ImageManager
-		prisma: PrismaClient
 		ready: () => Promise<true>
 		redis: Redis
 		twitch: Twitch

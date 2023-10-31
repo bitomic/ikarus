@@ -1,4 +1,3 @@
-import type { HalloweenGuild } from '@prisma/client'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Time } from '@sapphire/duration'
 import { ScheduledTask, type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
@@ -11,6 +10,8 @@ import { resolveKey } from '@sapphire/plugin-i18next'
 import { Colors } from '@bitomic/material-colors'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import MonsterImages from '../data/images.json' assert { type: 'json' }
+import { halloweenGuild } from 'src/drizzle/schema.js'
+import { eq } from 'drizzle-orm'
 
 const Monsters = Object.keys( Rewards ) as Array<keyof typeof Rewards>
 
@@ -28,15 +29,13 @@ export class UserTask extends ScheduledTask {
 		}
 	}
 
-	protected getGuilds(): Promise<HalloweenGuild[]> {
-		return this.container.prisma.halloweenGuild.findMany( {
-			where: {
-				enabled: true
-			}
-		} )
+	protected getGuilds(): Promise<Array<typeof halloweenGuild.$inferSelect>> {
+		return this.container.drizzle.select()
+			.from( halloweenGuild )
+			.where( eq( halloweenGuild.enabled, 1 ) )
 	}
 
-	protected async processGuild( data: HalloweenGuild ): Promise<void> {
+	protected async processGuild( data: typeof halloweenGuild.$inferSelect ): Promise<void> {
 		if ( !this.container.client.user?.id ) return
 
 		const guild = await this.container.client.guilds.fetch( data.id )

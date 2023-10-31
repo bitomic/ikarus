@@ -1,21 +1,18 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes } from '@sapphire/framework'
+import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes, UserError } from '@sapphire/framework'
 import { type ButtonInteraction, ComponentType } from 'discord.js'
 import Rewards from '../data/monsters.json' assert { type: 'json' }
 import { s } from '@sapphire/shapeshift'
 import random from 'lodash/random.js'
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
-import type { HalloweenUser, HalloweenUserUpgrade } from '@prisma/client'
 import { Colors } from '@bitomic/material-colors'
 import sample from 'lodash/sample.js'
 import { Time } from '@sapphire/duration'
+import { and, eq, gt, sql } from 'drizzle-orm'
+import { halloweenInventory, halloweenUser } from 'src/drizzle/schema.js'
 
 const MonsterNames = s.enum( ...Object.keys( Rewards ) as Array<keyof typeof Rewards> )
-
-type HalloweenPlayer = HalloweenUser & {
-	HalloweenUpgrades: HalloweenUserUpgrade[]
-}
 
 @ApplyOptions<InteractionHandlerOptions>( {
 	interactionHandlerType: InteractionHandlerTypes.Button,
@@ -85,51 +82,56 @@ export class UserHandler extends InteractionHandler {
 		}, Time.Minute * 5 )
 	}
 
-	protected async getTrickSuccess( user: HalloweenPlayer ): Promise<boolean> {
-		const hasCandy = await this.container.prisma.halloweenInventory.count( {
-			where: {
-				guild: user.guild,
-				userId: user.id
-			}
-		} )
-		if ( !hasCandy ) return true
+	protected async getTrickSuccess( user: typeof halloweenUser.$inferSelect ): Promise<boolean> {
+		const [ hasCandy ] = await this.container.drizzle
+			.select( {
+				count: sql<number>`COUNT(*)`
+			} )
+			.from( halloweenInventory )
+			.where( and(
+				eq( halloweenInventory.guild, user.guild ),
+				eq( halloweenInventory.userId, user.id )
+			) )
+
+		if ( !hasCandy?.count ) return true
 
 		return random( true ) <= 0.4
 	}
 
-	protected async getUser( guildId: string, userId: string ): Promise<HalloweenPlayer> {
-		const existing = await this.container.prisma.halloweenUser.findFirst( {
-			include: {
-				HalloweenUpgrades: true
-			},
-			where: {
-				guild: guildId,
-				user: userId
-			}
-		} )
+	protected async getUser( guildId: string, userId: string, retry = true ): Promise<typeof halloweenUser.$inferSelect> {
+		const [ existing ] = await this.container.drizzle.select()
+			.from( halloweenUser )
+			.where( and(
+				eq( halloweenUser.guild, guildId ),
+				eq( halloweenUser.user, userId )
+			) )
 		if ( existing ) return existing
 
-		return this.container.prisma.halloweenUser.create( {
-			data: {
+		await this.container.drizzle.insert( halloweenUser )
+			.values( {
 				guild: guildId,
 				user: userId
-			},
-			include: {
-				HalloweenCandy: true,
-				HalloweenUpgrades: true
-			}
-		} )
+			} )
+
+		if ( retry ) {
+			return this.getUser( guildId, userId, false )
+		} else {
+			throw new UserError( {
+				identifier: 'Halloween user recursion',
+				message: 'Possible infinite recursion.'
+			} )
+		}
 	}
 
-	protected async trick( interaction: ButtonInteraction<'cached'>, user: HalloweenPlayer ): Promise<void> {
+	protected async trick( interaction: ButtonInteraction<'cached'>, user: typeof halloweenUser.$inferSelect ): Promise<void> {
 		const count = 3 + Math.floor( random( true ) * 3 )
-		const inventory = await this.container.prisma.halloweenInventory.findMany( {
-			where: {
-				count: { gt: 0 },
-				guild: interaction.guildId,
-				userId: user.id
-			}
-		} )
+		const inventory = await this.container.drizzle.select()
+			.from( halloweenInventory )
+			.where( and(
+				gt( halloweenInventory.count, 0 ),
+				eq( halloweenInventory.guild, interaction.guildId ),
+				eq( halloweenInventory.userId, user.id )
+			) )
 
 		const messageEmbed = interaction.message.embeds.at( 0 )
 		if ( !messageEmbed ) return
@@ -173,32 +175,25 @@ export class UserHandler extends InteractionHandler {
 		}, null, true )
 	}
 
-	protected async treat( interaction: ButtonInteraction<'cached'>, user: HalloweenPlayer, multiplier = 1 ): Promise<void> {
+	protected async treat( interaction: ButtonInteraction<'cached'>, user: typeof halloweenUser.$inferSelect, multiplier = 1 ): Promise<void> {
 		const monsterValidator = MonsterNames.run( interaction.customId.replace( /(trick|treat)-/, '' ) )
 		const monsterName = monsterValidator.isOk() ? monsterValidator.unwrap() : 'alien' as const
 		const rewards = this.getRewards( monsterName, multiplier )
 
 		for ( const [ candyName, candyCount ] of Object.entries( rewards ) ) {
-			await this.container.prisma.halloweenInventory.upsert( {
-				create: {
+			await this.container.drizzle.insert( halloweenInventory )
+				.values( {
 					candyName,
 					count: candyCount,
 					guild: interaction.guildId,
 					userId: user.id
-				},
-				update: {
-					count: {
-						increment: candyCount
+				} )
+				.onDuplicateKeyUpdate( {
+					set: {
+						count: sql`count + 1`
 					}
-				},
-				where: {
-					candyName_guild_userId: {
-						candyName,
-						guild: interaction.guildId,
-						userId: user.id
-					}
-				}
-			} )
+				} )
+				.catch( () => this.container.logger.warn( 'Error while updating candy inventory:', [ candyName, candyCount, user.id ] ) )
 		}
 
 		await this.container.utilities.embed.i18n( interaction, {

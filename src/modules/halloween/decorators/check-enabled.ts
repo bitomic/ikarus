@@ -1,6 +1,8 @@
 import { container } from '@sapphire/pieces'
 import type { ChatInputCommandInteraction, } from 'discord.js'
 import { Colors } from '@bitomic/material-colors'
+import { halloweenGuild } from 'src/drizzle/schema.js'
+import { eq } from 'drizzle-orm'
 
 // eslint-disable-next-line arrow-body-style
 export const checkEnabled = ( ephemeral = false ) => {
@@ -10,11 +12,9 @@ export const checkEnabled = ( ephemeral = false ) => {
 		descriptor.value = async function( interaction: ChatInputCommandInteraction<'cached'> ) {
 			await interaction.deferReply( { ephemeral } )
 
-			const guild = await container.prisma.halloweenGuild.findUnique( {
-				where: {
-					id: interaction.guildId
-				}
-			} )
+			const [ guild ] = await container.drizzle.select()
+				.from( halloweenGuild )
+				.where( eq( halloweenGuild.id, interaction.guildId ) )
 
 			if ( !guild?.enabled ) {
 				await container.utilities.embed.i18n( interaction, {

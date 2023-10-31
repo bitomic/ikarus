@@ -1,6 +1,7 @@
 import { type PieceOptions, UserError } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
 import type { Message } from 'discord.js'
+import { message as Messages } from '../../../drizzle/schema.js'
 import { Model } from '#framework/Model'
 
 @ApplyOptions<PieceOptions>( {
@@ -17,17 +18,15 @@ export class MessagesModel extends Model {
 			} )
 		}
 
-		await this.container.prisma.message.upsert( {
-			create: {
+		await this.container.drizzle.insert( Messages )
+			.values( {
 				author: message.author.id,
 				channel,
 				guild: message.guildId,
 				message: message.id,
 				thread: message.channel.isThread() ? message.channelId : null
-			},
-			update: {},
-			where: { message: message.id }
-		} )
+			} )
+			.catch( () => null )
 	}
 }
 

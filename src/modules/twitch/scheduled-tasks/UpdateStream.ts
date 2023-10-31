@@ -6,11 +6,13 @@ import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '#lib/Twitch'
-import type { TwitchFollows } from '@prisma/client'
+import type { twitchFollows } from 'src/drizzle/schema.js'
 
 interface TaskPayload {
 	stream: Stream
 }
+
+type TwitchFollows = typeof twitchFollows.$inferSelect
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	enabled: true,

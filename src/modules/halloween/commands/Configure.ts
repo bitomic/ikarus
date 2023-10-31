@@ -7,6 +7,8 @@ import { permissions } from '#decorators/permissions'
 import { PermissionFlagsBits } from 'discord-api-types/v10'
 import { s } from '@sapphire/shapeshift'
 import { checkEnabled } from '../decorators/check-enabled.js'
+import { halloweenGuild } from 'src/drizzle/schema.js'
+import { eq } from 'drizzle-orm'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,
@@ -96,15 +98,13 @@ export class UserCommand extends Command {
 
 	protected async enable( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
 		await interaction.deferReply()
-		const toEnable = interaction.options.getBoolean( 'enable', true )
+		const toEnable = interaction.options.getBoolean( 'enable', true ) ? 1 : 0
 
-		const guild = await this.container.prisma.halloweenGuild.findUnique( {
-			where: {
-				id: interaction.guild.id
-			}
-		} )
+		const [ guild ] = await this.container.drizzle.select()
+			.from( halloweenGuild )
+			.where( eq( halloweenGuild.id, interaction.guildId ) )
 
-		const noUpdate = ( !guild && toEnable === false ) || guild?.enabled === toEnable // eslint-disable-line no-extra-parens
+		const noUpdate = ( !guild && toEnable === 0 ) || guild?.enabled === toEnable // eslint-disable-line no-extra-parens
 		if ( noUpdate ) {
 			await this.container.utilities.embed.i18n( interaction, {
 				color: Colors.amber.s800,
@@ -124,11 +124,11 @@ export class UserCommand extends Command {
 
 	@checkEnabled( false )
 	protected async spawning( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		const guild = await this.container.prisma.halloweenGuild.findUniqueOrThrow( {
-			where: {
-				id: interaction.guildId
-			}
-		} )
+		const [ guild ] = await this.container.drizzle.select()
+			.from( halloweenGuild )
+			.where( eq( halloweenGuild.id, interaction.guildId ) )
+
+		if ( !guild ) return
 
 		const chance = interaction.options.getInteger( 'chance' )
 		const frequency = interaction.options.getInteger( 'frequency' ) || 0
@@ -147,13 +147,12 @@ export class UserCommand extends Command {
 		if ( chance && guild.spawnChance !== chance ) guild.spawnChance = chance
 		if ( frequency && guild.frequency !== roundedFrequency ) guild.frequency = roundedFrequency
 
-		await this.container.prisma.halloweenGuild.update( {
-			data: {
+		await this.container.drizzle.update( halloweenGuild )
+			.set( {
 				frequency: guild.frequency,
 				spawnChance: guild.spawnChance
-			},
-			where: { id: interaction.guild.id }
-		} )
+			} )
+			.where( eq( halloweenGuild.id, interaction.guildId ) )
 
 		await this.container.utilities.embed.i18n( interaction, {
 			color: Colors.deepPurple.s800,
@@ -166,11 +165,10 @@ export class UserCommand extends Command {
 		const add = interaction.options.getSubcommand() === 'add-channel'
 		const channel = interaction.options.getChannel( 'channel', true, [ ChannelType.GuildText ] )
 
-		const guild = await this.container.prisma.halloweenGuild.findUniqueOrThrow( {
-			where: {
-				id: interaction.guildId
-			}
-		} )
+		const [ guild ] = await this.container.drizzle.select()
+			.from( halloweenGuild )
+			.where( eq( halloweenGuild.id, interaction.guildId ) )
+		if ( !guild ) return
 
 		const channels = new Set( s.string.array.parse( guild.channels ) )
 		const originalSize = channels.size
@@ -179,14 +177,11 @@ export class UserCommand extends Command {
 		else if ( !add && channels.has( channel.id ) ) channels.delete( channel.id )
 
 		if ( channels.size !== originalSize ) {
-			await this.container.prisma.halloweenGuild.update( {
-				data: {
+			await this.container.drizzle.update( halloweenGuild )
+				.set( {
 					channels: [ ...channels ]
-				},
-				where: {
-					id: interaction.guildId
-				}
-			} )
+				} )
+				.where( eq( halloweenGuild.id, interaction.guildId ) )
 		}
 
 		await this.container.utilities.embed.i18n( interaction, {
@@ -195,21 +190,17 @@ export class UserCommand extends Command {
 		}, null, true )
 	}
 
-	protected async upsertGuild( guildId: string, enabled?: boolean ): Promise<void> {
-		enabled ??= false
+	protected async upsertGuild( guildId: string, enabled?: 0 | 1 ): Promise<void> {
+		enabled ??= 0
 
-		await this.container.prisma.halloweenGuild.upsert( {
-			create: {
+		await this.container.drizzle.insert( halloweenGuild )
+			.values( {
 				channels: [],
-				enabled,
+				enabled: 1,
 				id: guildId
-			},
-			update: {
-				enabled
-			},
-			where: {
-				id: guildId
-			}
-		} )
+			} )
+			.onDuplicateKeyUpdate( {
+				set: { enabled }
+			} )
 	}
 }
