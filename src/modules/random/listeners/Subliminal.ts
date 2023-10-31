@@ -6,6 +6,7 @@ import { Listener, type ListenerOptions } from '@sapphire/framework'
 import { Events, type Message } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>( {
+	enabled: false,
 	event: Events.MessageCreate
 } )
 export class UserEvent extends Listener<typeof Events.MessageCreate> {
