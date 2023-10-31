@@ -27,7 +27,6 @@
     "@bitomic/material-colors": "^1.1.0",
     "@discordjs/builders": "^1.6.5",
     "@discordjs/rest": "^2.0.1",
-    "@prisma/client": "^5.2.0",
     "@quority/core": "^4.0.4",
     "@quority/fandom": "^4.0.9",
     "@sapphire/decorators": "^6.0.2",
@@ -55,7 +54,6 @@
     "mysql2": "^3.6.2",
     "pino": "^8.15.0",
     "pino-pretty": "^10.2.3",
-    "prisma": "^5.2.0",
     "reflect-metadata": "^0.1.13",
     "ts-dotenv": "^0.9.1",
     "undici": "^5.23.0"
