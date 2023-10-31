@@ -5,5 +5,5 @@ export default {
 		connectionString: process.env.DATABASE_URL!,
 	},
 	driver: 'mysql2',
-	schema: './drizzle/schema.ts'
+	schema: './src/drizzle/schema.ts'
 } satisfies Config
