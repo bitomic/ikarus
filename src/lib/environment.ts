@@ -1,6 +1,7 @@
 import { load } from 'ts-dotenv'
 
 export const env = load( {
+	DATABASE_URL: String,
 	DISCORD_DEVELOPMENT_SERVER: String,
 	DISCORD_OWNER: String,
 	DISCORD_PREFIX: {
