@@ -4,6 +4,7 @@ import { type ButtonInteraction, ButtonStyle, ChannelType, type ModalSubmitInter
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from '@discordjs/builders'
 import { env } from '#lib/environment'
 import { Colors } from '@bitomic/material-colors'
+import { confession } from 'src/drizzle/schema.js'
 
 @ApplyOptions<InteractionHandlerOptions>( {
 	interactionHandlerType: InteractionHandlerTypes.ModalSubmit
@@ -67,8 +68,7 @@ export class UserButton extends InteractionHandler {
 	}
 
 	protected async storeData( guild: string, message: string, user: string ): Promise<void> {
-		await this.container.prisma.confession.create( {
-			data: { guild, message, user }
-		} )
+		await this.container.drizzle.insert( confession )
+			.values( { guild, message, user  } )
 	}
 }

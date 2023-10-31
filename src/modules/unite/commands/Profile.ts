@@ -7,6 +7,8 @@ import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import { Colors } from '@bitomic/material-colors'
 import { request } from 'undici'
 import { s } from '@sapphire/shapeshift'
+import { uniteProfile } from 'src/drizzle/schema.js'
+import { eq } from 'drizzle-orm'
 
 interface UniteProfileCreateInput {
     code?: string
@@ -165,23 +167,18 @@ export class UserCommand extends Command {
 			update.favoritePokemon = pokemon
 		}
 
-		await this.container.prisma.uniteProfile.upsert( {
-			create,
-			update,
-			where: {
-				user: interaction.user.id
-			}
-		} )
+		await this.container.drizzle
+			.insert( uniteProfile )
+			.values( create )
+			.onDuplicateKeyUpdate( { set: update } )
 
 		await this.show( interaction )
 	}
 
 	protected async remove( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		await this.container.prisma.uniteProfile.delete( {
-			where: {
-				user: interaction.user.id
-			}
-		} )
+		await this.container.drizzle
+			.delete( uniteProfile )
+			.where( eq( uniteProfile.user, interaction.user.id ) )
 
 		const embed = new EmbedBuilder()
 			.setColor( Colors.amber.s800 )
@@ -195,10 +192,8 @@ export class UserCommand extends Command {
 	protected async show( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
 		const user = interaction.options.getUser( 'user' ) ?? interaction.user
 
-		const item = await this.container.prisma.uniteProfile.findFirst( {
-			where: {
-				user: user.id
-			}
+		const item = await this.container.drizzle.query.uniteProfile.findFirst( {
+			where: ( users, { eq } ) => eq( users.user, user.id )
 		} )
 
 		if ( !item ) {

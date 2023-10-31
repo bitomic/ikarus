@@ -4,6 +4,8 @@ import { type APIEmbed, type ApplicationCommandOptionData, ApplicationCommandOpt
 import { i18n } from '#decorators/i18n'
 import { Colors }  from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
+import { halloweenInventory, halloweenUser } from 'src/drizzle/schema.js'
+import { and, eq } from 'drizzle-orm'
 
 @ApplyOptions<CommandOptions>( {
 	enabled: true,
@@ -29,20 +31,17 @@ export class UserCommand extends Command {
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
 		await interaction.deferReply()
 		const user = interaction.options.getUser( 'member' ) ?? interaction.user
-		const player = await this.container.prisma.halloweenUser.findUnique( {
-			include: {
-				HalloweenCandy: true,
-				HalloweenUpgrades: true
-			},
-			where: {
-				guild_user: {
-					guild: interaction.guildId,
-					user: user.id
-				}
-			}
-		} )
+		const results = await this.container.drizzle.select()
+			.from( halloweenUser )
+			.leftJoin( halloweenInventory, eq( halloweenInventory.userId, halloweenUser.id ) )
+			.where( and(
+				eq( halloweenUser.guild, interaction.guildId ),
+				eq( halloweenUser.user, user.id )
+			) )
 
-		if ( !player?.HalloweenCandy.length ) {
+		const [ first ] = results
+
+		if ( !first?.HalloweenInventory ) {
 			await this.container.utilities.embed.i18n( interaction, {
 				author: {
 					icon_url: user.avatarURL( { extension: 'png' } ) ?? '',
@@ -55,6 +54,19 @@ export class UserCommand extends Command {
 			return
 		}
 
+		const player = {
+			...first.HalloweenUser,
+			inventory: [] as Array<{
+				candyName: string
+				count: number
+			}>
+		}
+
+		for ( const item of results ) {
+			if ( !item.HalloweenInventory ) continue
+			player.inventory.push( item.HalloweenInventory )
+		}
+
 		const embed = await this.container.utilities.embed.i18n( interaction, {
 			author: {
 				icon_url: user.avatarURL( { extension: 'png' } ) ?? '',
@@ -64,7 +76,7 @@ export class UserCommand extends Command {
 			title: 'halloween:inventory.title'
 		} )
 
-		const items = await Promise.all( player.HalloweenCandy.map( async item => {
+		const items = await Promise.all( player.inventory.map( async item => {
 			const name = await resolveKey( interaction, `monsters:${ item.candyName }` )
 			return `${ item.count }× ${ name }`
 		} ) )

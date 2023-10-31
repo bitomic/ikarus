@@ -3,6 +3,8 @@ import type { BaseValidator } from '@sapphire/shapeshift'
 import type { ConfigurationKey } from '@prisma/client'
 import { Model } from '#framework/Model'
 import type { PieceOptions } from '@sapphire/framework'
+import { configuration } from 'src/drizzle/schema.js'
+import { and, eq } from 'drizzle-orm'
 
 @ApplyOptions<PieceOptions>( {
 	name: 'configuration'
@@ -34,12 +36,12 @@ export class ConfigurationModel extends Model {
 	}
 
 	protected async getFromDatabase( guild: string, property: ConfigurationKey ): Promise<string | null> {
-		const result = await this.container.prisma.configuration.findUnique( {
-			select: { value: true },
-			where: {
-				guild_property: { guild, property }
-			}
-		} )
+		const [ result ] = await this.container.drizzle.select()
+			.from( configuration )
+			.where( and(
+				eq( configuration.guild, guild ),
+				eq( configuration.property, property )
+			) )
 
 		return result?.value ?? null
 	}
