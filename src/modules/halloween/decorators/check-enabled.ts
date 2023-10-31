@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces'
 import type { ChatInputCommandInteraction, } from 'discord.js'
 import { Colors } from '@bitomic/material-colors'
-import { halloweenGuild } from 'src/drizzle/schema.js'
+import { halloweenGuild } from '#drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 // eslint-disable-next-line arrow-body-style

@@ -6,7 +6,7 @@ import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '#lib/Twitch'
-import type { twitchFollows } from 'src/drizzle/schema.js'
+import type { twitchFollows } from '#drizzle/schema'
 
 interface TaskPayload {
 	stream: Stream

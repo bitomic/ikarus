@@ -5,7 +5,7 @@ import { Colors } from '@bitomic/material-colors'
 import { hyperlink } from '@discordjs/builders'
 import { i18n } from '#decorators/i18n'
 import { resolveKey } from '@sapphire/plugin-i18next'
-import { twitchFollows } from 'src/drizzle/schema.js'
+import { twitchFollows } from '#drizzle/schema'
 import { and, eq } from 'drizzle-orm'
 
 @ApplyOptions<CommandOptions>( {

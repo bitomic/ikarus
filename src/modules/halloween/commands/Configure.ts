@@ -7,7 +7,7 @@ import { permissions } from '#decorators/permissions'
 import { PermissionFlagsBits } from 'discord-api-types/v10'
 import { s } from '@sapphire/shapeshift'
 import { checkEnabled } from '../decorators/check-enabled.js'
-import { halloweenGuild } from 'src/drizzle/schema.js'
+import { halloweenGuild } from '#drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 @ApplyOptions<CommandOptions>( {

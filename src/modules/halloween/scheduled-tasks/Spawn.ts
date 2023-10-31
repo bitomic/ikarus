@@ -10,7 +10,7 @@ import { resolveKey } from '@sapphire/plugin-i18next'
 import { Colors } from '@bitomic/material-colors'
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import MonsterImages from '../data/images.json' assert { type: 'json' }
-import { halloweenGuild } from 'src/drizzle/schema.js'
+import { halloweenGuild } from '#drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 const Monsters = Object.keys( Rewards ) as Array<keyof typeof Rewards>

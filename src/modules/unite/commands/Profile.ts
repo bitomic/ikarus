@@ -7,7 +7,7 @@ import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import { Colors } from '@bitomic/material-colors'
 import { request } from 'undici'
 import { s } from '@sapphire/shapeshift'
-import { uniteProfile } from 'src/drizzle/schema.js'
+import { uniteProfile } from '#drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 interface UniteProfileCreateInput {

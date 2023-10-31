@@ -10,7 +10,7 @@ import { Colors } from '@bitomic/material-colors'
 import sample from 'lodash/sample.js'
 import { Time } from '@sapphire/duration'
 import { and, eq, gt, sql } from 'drizzle-orm'
-import { halloweenInventory, halloweenUser } from 'src/drizzle/schema.js'
+import { halloweenInventory, halloweenUser } from '#drizzle/schema'
 
 const MonsterNames = s.enum( ...Object.keys( Rewards ) as Array<keyof typeof Rewards> )
 

@@ -16,6 +16,7 @@
 		"rootDir": "./src",
 		"paths": {
 			"#decorators/*": [ "src/decorators/*" ],
+			"#drizzle/*": [ "src/drizzle/*" ],
 			"#framework/*": [ "src/framework/*" ],
 			"#lib/*": [ "src/lib/*" ],
 			"#utils/*": [ "src/utils/*" ]

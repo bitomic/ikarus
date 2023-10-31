@@ -4,7 +4,7 @@ import { type APIEmbed, type ApplicationCommandOptionData, ApplicationCommandOpt
 import { i18n } from '#decorators/i18n'
 import { Colors }  from '@bitomic/material-colors'
 import { resolveKey } from '@sapphire/plugin-i18next'
-import { halloweenInventory, halloweenUser } from 'src/drizzle/schema.js'
+import { halloweenInventory, halloweenUser } from '#drizzle/schema'
 import { and, eq } from 'drizzle-orm'
 
 @ApplyOptions<CommandOptions>( {

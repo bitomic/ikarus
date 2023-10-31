@@ -4,7 +4,7 @@ import { type ButtonInteraction, ButtonStyle, ChannelType, type ModalSubmitInter
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from '@discordjs/builders'
 import { env } from '#lib/environment'
 import { Colors } from '@bitomic/material-colors'
-import { confession } from 'src/drizzle/schema.js'
+import { confession } from '#drizzle/schema'
 
 @ApplyOptions<InteractionHandlerOptions>( {
 	interactionHandlerType: InteractionHandlerTypes.ModalSubmit

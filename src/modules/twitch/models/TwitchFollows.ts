@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Model } from '#framework/Model'
 import type { PieceOptions } from '@sapphire/framework'
-import { twitchFollows } from 'src/drizzle/schema.js'
+import { twitchFollows } from '#drizzle/schema'
 import { eq } from 'drizzle-orm'
 
 @ApplyOptions<PieceOptions>( {
