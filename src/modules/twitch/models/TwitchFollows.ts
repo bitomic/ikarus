@@ -9,7 +9,10 @@ import { eq } from 'drizzle-orm'
 } )
 export class TwitchFollowsModel extends Model {
 	public async getStreamers(): Promise<string[]> {
-		const query = await this.container.drizzle.select()
+		const query = await this.container.drizzle
+			.select( {
+				user: twitchFollows.user
+			} )
 			.from( twitchFollows )
 			.groupBy( columns => columns.user )
 
