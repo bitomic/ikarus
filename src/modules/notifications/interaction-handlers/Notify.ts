@@ -43,7 +43,7 @@ export class UserButton extends InteractionHandler {
 			content: `¡<@!${ interaction.user.id }> (${ interaction.user.username }) está buscando a gente para jugar <@&${ roleId }>!`,
 			embeds: [ {
 				color: role.color || Colors.deepOrange.s800,
-				description: '¿No quieres recibir menciones de este tipo? Puedes modificar tus roles en <id:browse>.'
+				description: '¿No quieres recibir menciones de este tipo? Puedes modificar tus roles en <id:customize>.'
 			} ]
 		} )
 		const message = await interaction.fetchReply()
