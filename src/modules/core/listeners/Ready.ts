@@ -20,5 +20,6 @@ export class UserEvent extends Listener {
 		} )
 		await this.container.twitch.init()
 		await this.container.tasks.create( 'status', null, 0 )
+		await this.container.notifier.for( 'core' ).info( 'Client is ready!' )
 	}
 }

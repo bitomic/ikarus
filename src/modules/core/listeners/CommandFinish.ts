@@ -10,10 +10,18 @@ export class UserEvent extends Listener<typeof Events.ChatInputCommandFinish> {
 	public readonly LOG = fs.createWriteStream( 'commands.log', { flags: 'a' } )
 
 	public run( interaction: ChatInputCommandInteraction ): void {
+		const notifier = this.container.notifier.for( 'core' )
+
 		if ( interaction.inGuild() && interaction.channel && interaction.guild ) {
-			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in #${ interaction.channel.name } (${ interaction.channel.id }) from guild ${ interaction.guild.name } (${ interaction.guildId })\n` )
+			const message = `Command used: ${ interaction.commandName }.`
+			void notifier.log( message, {
+				channel: interaction.channelId,
+				guild: interaction.guildId,
+				user: interaction.user.id
+			} )
 		} else {
-			this.LOG.write( `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in their DM\n` )
+			const message = `${ interaction.user.username } (${ interaction.user.id }) used ${ interaction.commandName } in their DM.`
+			void notifier.log( message )
 		}
 	}
 }
