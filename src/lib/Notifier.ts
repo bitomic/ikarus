@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import { EmbedBuilder } from '@discordjs/builders'
 import { container } from '@sapphire/pieces'
-import { ChannelType, type Webhook } from 'discord.js'
+import { APIEmbed, ChannelType, type Webhook } from 'discord.js'
 import { Colors } from '@bitomic/material-colors'
 
 export type SentinelLevel = 'error' | 'info' | 'log' | 'warn'
@@ -32,19 +32,19 @@ export class Sentinel {
 		this.name = name
 	}
 
-	public async error( message: string | EmbedBuilder, options?: SentinelPayload ): Promise<void> {
+	public async error( message: string | APIEmbed, options?: SentinelPayload ): Promise<void> {
 		await this.send( 'error', message, options )
 	}
 
-	public async info( message: string | EmbedBuilder, options?: SentinelPayload ): Promise<void> {
+	public async info( message: string | APIEmbed, options?: SentinelPayload ): Promise<void> {
 		await this.send( 'info', message, options )
 	}
 
-	public async log( message: string | EmbedBuilder, options?: SentinelPayload ): Promise<void> {
+	public async log( message: string | APIEmbed, options?: SentinelPayload ): Promise<void> {
 		await this.send( 'log', message, options )
 	}
 
-	public async warn( message: string | EmbedBuilder, options?: SentinelPayload ): Promise<void> {
+	public async warn( message: string | APIEmbed, options?: SentinelPayload ): Promise<void> {
 		await this.send( 'warn', message, options )
 	}
 
@@ -62,9 +62,9 @@ export class Sentinel {
 		return webhook
 	}
 
-	protected async send( level: SentinelLevel, message: string | EmbedBuilder, options?: SentinelPayload ): Promise<void> {
+	protected async send( level: SentinelLevel, message: string | APIEmbed, options?: SentinelPayload ): Promise<void> {
 		const webhook = await this.getWebhook( level )
-		const embed = typeof message === 'string' ? new EmbedBuilder( { description: message } ) : message
+		const embed = new EmbedBuilder( typeof message === 'string' ? { description: message } : message )
 		embed.setColor( Sentinel.colors[ level ] )
 
 		if ( options ) {
