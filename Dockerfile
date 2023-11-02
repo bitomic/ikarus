@@ -49,6 +49,7 @@ ENV NODE_ENV="production"
 
 COPY --chown=node:node --from=builder /home/node/app/dist dist
 COPY --chown=node:node drizzle.config.ts .
+COPY --chown=node:node src/drizzle/ src/drizzle/
 
 RUN yarn workspaces focus --all --production
 RUN chown node:node /home/node/app
