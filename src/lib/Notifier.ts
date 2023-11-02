@@ -55,6 +55,7 @@ export class Sentinel {
 		const channel = await container.utilities.channel.getChannel( Sentinel.channelIds[ level ], ChannelType.GuildText )
 		const webhooks = await channel.fetchWebhooks()
 		const webhook = webhooks.find( i => i.owner?.id === container.client.user?.id ) ?? await channel.createWebhook( {
+			avatar: container.client.user?.avatarURL( { extension: 'png' } ) ?? '',
 			name: container.client.user?.displayName ?? 'Logging'
 		} )
 		Sentinel.webhooks.set( level, webhook )
@@ -71,29 +72,29 @@ export class Sentinel {
 				const guild = await container.client.guilds.fetch( options.guild )
 				const channel = options.channel ? await container.client.channels.fetch( options.channel ) : null
 				const user = options.user ? await container.client.users.fetch( options.user ) : null
-				embed.setTitle( `${ guild.name } (${ guild.id })` )
+				embed.setTitle( `${ guild.name } · ${ guild.id }` )
 
 				if ( user ) {
 					embed.setAuthor( {
 						iconURL: user.avatarURL( { extension: 'png' } ) ?? '',
-						name: user.username
+						name: `${ user.username } · ${ user.id }`
 					} )
 				}
 
 				if ( channel && 'guild' in channel ) {
 					embed.setFooter( {
 						iconURL: guild.iconURL( { extension: 'png' } ) ?? '',
-						text: `${ this.name } · #${ channel.name } (${ channel.id })`
+						text: `${ this.name } · #${ channel.name } · ${ channel.id }`
 					} )
 				}
-
-				await webhook.send( {
-					embeds: [ embed ]
-				} )
 			} catch ( e ) {
 				container.logger.error( e )
 			}
 		}
+
+		await webhook.send( {
+			embeds: [ embed ]
+		} )
 	}
 }
 
