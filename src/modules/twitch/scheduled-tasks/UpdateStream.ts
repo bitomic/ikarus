@@ -1,5 +1,5 @@
 import { type ActiveStream, TwitchTask } from './_TwitchTask.js'
-import { ChannelType, Message, type GuildTextBasedChannel, type TextBasedChannel } from 'discord.js'
+import { ChannelType, type GuildTextBasedChannel, type Message, type TextBasedChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Colors } from '@bitomic/material-colors'
 import { EmbedBuilder } from '@discordjs/builders'
