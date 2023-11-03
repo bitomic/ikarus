@@ -3914,7 +3914,7 @@ __metadata:
     rimraf: ^5.0.5
     ts-dotenv: ^0.9.1
     typescript: ^5.2.2
-    undici: ^5.27.0
+    undici: ^5.27.2
   languageName: unknown
   linkType: soft
 
@@ -4419,12 +4419,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:^5.12.0, undici@npm:^5.26.5, undici@npm:^5.27.0":
+"undici@npm:^5.12.0, undici@npm:^5.26.5":
   version: 5.27.0
   resolution: "undici@npm:5.27.0"
   dependencies:
     "@fastify/busboy": ^2.0.0
   checksum: 3acad25bfe5957aa5edc24eb160b5da7a9c67a5061e2e001929bef4bafed07d93a2accb36d407179c35b3ae56adbe89b49e1dd80d8cea9fdc44dca2037174330
+  languageName: node
+  linkType: hard
+
+"undici@npm:^5.27.2":
+  version: 5.27.2
+  resolution: "undici@npm:5.27.2"
+  dependencies:
+    "@fastify/busboy": ^2.0.0
+  checksum: 22bbdd763798700979986546d70072b67223189353d2a811efa9c6e44476161a0d1781ffe24115221f69a1b344b95d5926bd39a6eb760a2cd8804781cec0c5eb
   languageName: node
   linkType: hard
 
