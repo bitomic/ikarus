@@ -60,6 +60,16 @@ export class UserCommand extends Command {
 						type: ApplicationCommandOptionType.String
 					} ],
 					type: ApplicationCommandOptionType.Subcommand
+				},
+				{
+					description: '',
+					name: 'mention',
+					options: [ {
+						description: '',
+						name: 'role',
+						type: ApplicationCommandOptionType.Role
+					} ],
+					type: ApplicationCommandOptionType.Subcommand
 				}
 			] satisfies ApplicationCommandOptionData[]
 		} )
@@ -143,6 +153,8 @@ export class UserCommand extends Command {
 			void this.list( interaction )
 		} else if ( subcommand === 'remove' ) {
 			void this.remove( interaction )
+		} else if ( subcommand === 'mention' ) {
+			void this.mention( interaction )
 		}
 	}
 
@@ -319,6 +331,34 @@ export class UserCommand extends Command {
 		void interaction.reply( {
 			embeds: [ embed ]
 		} )
+	}
+
+	protected async mention( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
+		const role = interaction.options.getRole( 'role' )
+		const { drizzle } = this.container
+
+		if ( !role ) {
+			await drizzle.update( twitchFollows )
+				.set( {
+					mentions: []
+				} )
+				.where( eq( twitchFollows.guild, interaction.guildId ) )
+			await this.container.utilities.embed.i18n( interaction, {
+				color: Colors.amber.s800,
+				description: 'twitch:mention-removed'
+			}, null, true )
+			return
+		}
+
+		await drizzle.update( twitchFollows )
+			.set( {
+				mentions: [ role.id ]
+			} )
+			.where( eq( twitchFollows.guild, interaction.guildId ) )
+		await this.container.utilities.embed.i18n( interaction, {
+			color: Colors.amber.s800,
+			description: 'twitch:mention-added'
+		}, null, true )
 	}
 
 	protected getRedisKey( guild: string ): string {
