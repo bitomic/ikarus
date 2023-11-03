@@ -85,6 +85,16 @@
 				"description": "Get a list of all channels that are being followed by this server.",
 				"name": "list"
 			},
+			"mention": {
+				"description": "Enable or disable mentions when Twitch alerts are sent.",
+				"name": "mention",
+				"options": {
+					"role": {
+						"description": "Role to mention. Skip this option to disable it.",
+						"name": "role"
+					}
+				}
+			},
 			"remove": {
 				"description": "Remove a channel from the server's follow list.",
 				"name": "remove",
