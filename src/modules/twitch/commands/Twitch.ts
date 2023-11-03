@@ -352,7 +352,7 @@ export class UserCommand extends Command {
 
 		await drizzle.update( twitchFollows )
 			.set( {
-				mentions: [ role.id ]
+				mentions: [ role.rawPosition === 0 ? '0' : role.id ]
 			} )
 			.where( eq( twitchFollows.guild, interaction.guildId ) )
 		await this.container.utilities.embed.i18n( interaction, {
