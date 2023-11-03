@@ -4,6 +4,8 @@
 	"game": "Game",
 	"list-none": "This server doesn't have any Twitch channel being followed.",
 	"list-title": "Streamers followed in this server",
+	"mention-added": "New Twitch alerts will now mention the provided role.",
+	"mention-removed": "Mentions have been disabled for Twitch alerts.",
 	"remove-fail": "Couldn't remove **{{ user }}** because it wasn't registered in the server's follows.",
 	"remove-success": "**{{ user }}** was successfully removed from the server's follows.",
 	"viewers": "Viewers",

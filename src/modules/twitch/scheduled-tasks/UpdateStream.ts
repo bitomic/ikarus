@@ -1,12 +1,14 @@
 import { type ActiveStream, TwitchTask } from './_TwitchTask.js'
-import { ChannelType, type GuildTextBasedChannel, type TextBasedChannel } from 'discord.js'
+import { ChannelType, Message, type GuildTextBasedChannel, type TextBasedChannel } from 'discord.js'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Colors } from '@bitomic/material-colors'
 import { EmbedBuilder } from '@discordjs/builders'
 import { resolveKey } from '@sapphire/plugin-i18next'
 import { type ScheduledTaskOptions } from '@sapphire/plugin-scheduled-tasks'
 import type { Stream } from '#lib/Twitch'
-import type { twitchFollows } from '#drizzle/schema'
+import { twitchFollows } from '#drizzle/schema'
+import { eq } from 'drizzle-orm'
+import { s } from '@sapphire/shapeshift'
 
 interface TaskPayload {
 	stream: Stream
@@ -86,9 +88,27 @@ export class UserTask extends TwitchTask {
 		}
 
 		const embed = await this.createEmbed( channel, stream, avatar, game )
-		const message = await channel.send( {
-			embeds: [ embed ]
-		} )
+		const [ stored ] = await this.container.drizzle
+			.select( {
+				mentions: twitchFollows.mentions
+			} )
+			.from( twitchFollows )
+			.where( eq( twitchFollows.guild, follow.guild ) )
+			.limit( 1 )
+		const mentions = s.string.array.lengthGreaterThan( 0 ).run( stored?.mentions )
+
+		let message: Message
+		if ( mentions.isOk() ) {
+			const roles = mentions.unwrap().map( id => id === '0' ? '@everyone' : `<@&${ id }>` )
+			message = await channel.send( {
+				content: roles.join( ' ' ),
+				embeds: [ embed ]
+			} )
+		} else {
+			message = await channel.send( {
+				embeds: [ embed ]
+			} )
+		}
 
 		const activeStream: ActiveStream = {
 			channel: channel.id,
