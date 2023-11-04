@@ -163,6 +163,8 @@ export const tournamentTeam = mysqlTable(
 	{
 		id: int( 'id' ).autoincrement()
 			.notNull(),
+		message: varchar( 'message', { length: 191 } ).notNull()
+			.references( () => message.message, { onDelete: 'restrict', onUpdate: 'cascade' } ),
 		name: varchar( 'name', { length: 191 } ).notNull(),
 		players: json( 'players' ).notNull(),
 		tournament: int( 'tournament' ).notNull()
