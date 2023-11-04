@@ -5,7 +5,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes } from '@sapphire/framework'
 import { s } from '@sapphire/shapeshift'
 import { ButtonStyle, type StringSelectMenuInteraction } from 'discord.js'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 @ApplyOptions<InteractionHandlerOptions>( {
 	interactionHandlerType: InteractionHandlerTypes.SelectMenu,
@@ -47,7 +47,10 @@ export class UserHandler extends InteractionHandler {
 	protected async handleSingleplayer( interaction: StringSelectMenuInteraction<'cached'>, game: typeof tournamentGame.$inferSelect ): Promise<void> {
 		const [ isRegistered ] = await this.container.drizzle.select()
 			.from( tournamentTeam )
-			.where( eq( tournamentTeam.tournament, game.id ) )
+			.where( and(
+				eq( tournamentTeam.tournament, game.id ),
+				eq( tournamentTeam.name, interaction.user.id )
+			) )
 			.limit( 1 )
 
 		const listButton = new ButtonBuilder()
