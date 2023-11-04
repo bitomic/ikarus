@@ -143,8 +143,7 @@ export class UserCommand extends Command {
 			ephemeral: true
 		} )
 
-		const pinned = await message.pin()
-		await pinned.delete()
+		await message.pin()
 	}
 
 	protected async addButton( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
