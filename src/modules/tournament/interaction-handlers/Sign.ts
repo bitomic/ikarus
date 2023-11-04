@@ -1,6 +1,6 @@
 import { message as Messages, tournamentGame, tournamentTeam } from '#drizzle/schema'
 import { Colors } from '@bitomic/material-colors'
-import { EmbedBuilder } from '@discordjs/builders'
+import { ActionRowBuilder, type ButtonBuilder, EmbedBuilder } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes } from '@sapphire/framework'
 import { s } from '@sapphire/shapeshift'
@@ -23,10 +23,11 @@ export class UserHandler extends InteractionHandler {
 	}
 
 	public override async run( interaction: ButtonInteraction<'cached'> ): Promise<void> {
-		await interaction.deferReply( { ephemeral: true } )
+		await interaction.deferUpdate()
 
 		try {
 			const game = await this.findGameById( interaction )
+			await this.disableButton( interaction )
 
 			if ( interaction.customId.startsWith( 'tournament-join' ) ) {
 				await this.join( interaction, game )
@@ -41,6 +42,22 @@ export class UserHandler extends InteractionHandler {
 				content: 'Hubo un problema al intentar procesar la acción. Por favor inténtalo de nuevo, y si el problema persiste, contacta con un administrador.'
 			} )
 		}
+	}
+
+	protected async disableButton( interaction: ButtonInteraction<'cached'> ): Promise<void> {
+		const { customId } = interaction
+
+		const position = customId.startsWith( 'tournament-list' ) ? 1 : 0
+
+		const rawRow = interaction.message.components.at( 0 )
+		if ( !rawRow ) return
+
+		const row = new ActionRowBuilder<ButtonBuilder>( rawRow.toJSON() )
+		row.components.at( position )?.setDisabled( true )
+
+		await interaction.editReply( {
+			components: [ row ]
+		} )
 	}
 
 	protected async join( interaction: ButtonInteraction<'cached'>, game: typeof tournamentGame.$inferSelect ): Promise<void> {

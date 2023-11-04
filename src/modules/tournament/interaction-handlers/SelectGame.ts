@@ -31,6 +31,11 @@ export class UserHandler extends InteractionHandler {
 			await interaction.editReply( {
 				content: 'Hubo un problema al intentar procesar la acción. Por favor inténtalo de nuevo, y si el problema persiste, contacta con un administrador.'
 			} )
+		} finally {
+			const message = await interaction.message.fetch()
+			await message.edit( {
+				components: message.components
+			} )
 		}
 	}
 
