@@ -135,13 +135,16 @@ export class UserCommand extends Command {
 			.setColor( Colors.deepOrange.s800 )
 
 		const channel = await this.container.utilities.channel.getChannel( interaction.channelId, ChannelType.GuildText )
-		await channel.send( {
+		const message = await channel.send( {
 			embeds: [ embed ]
 		} )
 		await submit.reply( {
 			content: 'El mensaje fue guardado exitosamente.',
 			ephemeral: true
 		} )
+
+		const pinned = await message.pin()
+		await pinned.delete()
 	}
 
 	protected async addButton( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
