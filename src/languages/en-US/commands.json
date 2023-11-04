@@ -126,5 +126,37 @@
 				}
 			}
 		}
+	},
+	"tournament": {
+		"description": "Setup a tournament manager.",
+		"name": "tournament",
+		"options": {
+			"add-game": {
+				"description": "Add a game to the dropdown menu.",
+				"name": "add-game",
+				"options": {
+					"game": {
+						"description": "Name to display for the game.",
+						"name": "game"
+					},
+					"max-players": {
+						"description": "Maximum players allowed per team.",
+						"name": "max_players"
+					},
+					"max-teams": {
+						"description": "Set a limit on how many teams can sign up.",
+						"name": "max_teams"
+					},
+					"min-players": {
+						"description": "Minimum players allowed per team.",
+						"name": "min_players"
+					}
+				}
+			},
+			"setup": {
+				"description": "Setup a message.",
+				"name": "setup"
+			}
+		}
 	}
 }
