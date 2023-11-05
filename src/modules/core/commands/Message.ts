@@ -66,7 +66,7 @@ export class UserCommand extends Command {
 	}
 
 	private async handleEdit( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		await interaction.reply( '...' )
+		await interaction.deferReply( { ephemeral: true } )
 
 		try {
 			const message = await this.getMessage( interaction )
