@@ -59,6 +59,26 @@
 			}
 		}
 	},
+	"message": {
+		"description": "Set or edit a customizable message.",
+		"name": "message",
+		"options": {
+			"create": {
+				"description": "Create a new customizable message.",
+				"name": "create"
+			},
+			"edit": {
+				"description": "Modify a customizable message.",
+				"name": "edit",
+				"options": {
+					"message": {
+						"description": "Link or ID for the message to edit.",
+						"name": "message"
+					}
+				}
+			}
+		}
+	},
 	"ping": {
 		"description": "Check my status.",
 		"name": "ping"
