@@ -6,7 +6,8 @@ import { s } from '@sapphire/shapeshift'
 import { type Message, type StringSelectMenuInteraction, TextInputStyle } from 'discord.js'
 
 @ApplyOptions<InteractionHandlerOptions>( {
-	interactionHandlerType: InteractionHandlerTypes.SelectMenu
+	interactionHandlerType: InteractionHandlerTypes.SelectMenu,
+	name: 'customize-message-menu'
 } )
 export class UserHandler extends InteractionHandler {
 	public readonly Options = s.enum( ...[
@@ -53,15 +54,20 @@ export class UserHandler extends InteractionHandler {
 		let modal: ModalBuilder
 		const embed = this.getMessageEmbed( message )
 
-		if ( option === 'add-field' ) {
+		if ( option === 'add-field' || option === 'add-inline-field' ) {
+			const fields = embed.data.fields?.length || 0
+			if ( fields >= EmbedLimits.MaximumFields ) {
+				await interaction.reply( {
+					content: `Embeds can't have more than ${ EmbedLimits.MaximumFields } fields.`,
+					ephemeral: true
+				} )
+				return
+			}
+
+			const title = option === 'add-field' ? 'Add field' : 'Add inline field'
 			modal = createModal(
-				'Add field',
-				...this.getEmbedFieldInputs()
-			)
-		} else if ( option === 'add-inline-field' ) {
-			modal = createModal(
-				'Add inline field',
-				...this.getEmbedFieldInputs( true )
+				title,
+				...this.getEmbedFieldInputs( option === 'add-inline-field' )
 			)
 		} else if ( option === 'author' || option === 'footer' ) {
 			const inputs = this.getEmbedAuthorFooterInputs( { embed, prefix: option } )
