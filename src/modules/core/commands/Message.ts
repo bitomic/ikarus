@@ -3,7 +3,6 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { ApplicationCommandOptionType, ButtonStyle, type ChatInputCommandInteraction, type InteractionReplyOptions, type Message, PermissionFlagsBits } from 'discord.js'
 import { i18n } from '#decorators/i18n'
 import { s } from '@sapphire/shapeshift'
-import { MessageLinkRegex, SnowflakeRegex } from '@sapphire/discord-utilities'
 import { MissingMessageError } from '../../../errors/MissingMessage.js'
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, StringSelectMenuBuilder } from '@discordjs/builders'
 import { Colors } from '@bitomic/material-colors'
@@ -69,7 +68,7 @@ export class UserCommand extends Command {
 		await interaction.deferReply( { ephemeral: true } )
 
 		try {
-			const message = await this.getMessage( interaction )
+			const message = await this.container.utilities.interaction.getCustomizableMessage( interaction )
 			await this.sendPrompt( interaction, message )
 		} catch ( e ) {
 			let content: string
@@ -83,32 +82,6 @@ export class UserCommand extends Command {
 			await interaction.editReply( content )
 			this.container.logger.error( e )
 		}
-	}
-
-	private async getMessage( interaction: ChatInputCommandInteraction<'cached'> ): Promise<Message<true>> {
-		const option = interaction.options.getString( 'message' )
-		const messages = this.container.stores.get( 'models' ).get( 'messages' )
-		let message: Message<true>
-
-		if ( option ) {
-			const messageId = this.parseMessageArgument( option )
-			message = await messages.get( messageId )
-		} else {
-			message = await messages.findLatestByUser( interaction.channelId, interaction.client.user.id )
-		}
-
-		if ( message.author.id !== interaction.client.user.id ) {
-			throw new MissingMessageError( interaction.channelId, message.id )
-		}
-
-		return message
-	}
-
-	private parseMessageArgument( option: string ): string {
-		const isSnowflake = s.string.regex( SnowflakeRegex ).run( option )
-		if ( isSnowflake.isOk() ) return isSnowflake.unwrap()
-
-		return s.string.parse( MessageLinkRegex.exec( option )?.groups?.messageId )
 	}
 
 	private async sendPrompt( interaction: ChatInputCommandInteraction<'cached'>, message: Message<true>, followUp?: boolean ): Promise<void> {
