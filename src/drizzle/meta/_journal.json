@@ -15,6 +15,13 @@
       "when": 1699069501003,
       "tag": "0001_jazzy_sentinels",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1699215867610,
+      "tag": "0002_acoustic_smasher",
+      "breakpoints": true
     }
   ]
 }

@@ -174,3 +174,15 @@ export const tournamentTeam = mysqlTable(
 		tournamentTeamId: primaryKey( table.id )
 	} )
 )
+
+export const channelSettings = mysqlTable(
+	'ChannelSettings',
+	{
+		channel: varchar( 'channel', { length: 191 } ).notNull(),
+		feature: varchar( 'channel', { length: 191 } ).notNull(),
+		guild: varchar( 'guild', { length: 191 } ).notNull()
+	},
+	table => ( {
+		channelSettingsId: primaryKey( table.feature, table.guild )
+	} )
+)
