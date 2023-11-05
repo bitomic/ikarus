@@ -134,7 +134,7 @@ export class UserCommand extends Command {
 			.setPlaceholder( 'What do you want to edit?' )
 			.setOptions(
 				{
-					description: 'Text outside any embed.',
+					description: 'Text outside the embed.',
 					label: 'Message content',
 					value: 'content'
 				},
@@ -142,6 +142,31 @@ export class UserCommand extends Command {
 					description: 'Change the embed\'s description and its color.',
 					label: 'Embed content',
 					value: 'description'
+				},
+				{
+					description: 'Append a new normal field to the embed.',
+					label: 'Append field',
+					value: 'add-field'
+				},
+				{
+					description: 'Append an inline field to the embed.',
+					label: 'Append inline field',
+					value: 'add-inline-field'
+				},
+				{
+					description: 'Remove all fields from the embed.',
+					label: 'Remove all fields',
+					value: 'remove-fields'
+				},
+				{
+					description: 'Set an author\'s name and icon.',
+					label: 'Author',
+					value: 'author'
+				},
+				{
+					description: 'Set the foother\'s text and icon.',
+					label: 'Footer',
+					value: 'footer'
 				}
 			)
 		const button = new ButtonBuilder()
