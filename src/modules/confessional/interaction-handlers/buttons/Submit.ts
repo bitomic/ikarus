@@ -5,11 +5,12 @@ import { ActionRowBuilder, ModalBuilder, TextInputBuilder } from '@discordjs/bui
 import { EmbedLimits, TextInputLimits } from '@sapphire/discord-utilities'
 
 @ApplyOptions<InteractionHandlerOptions>( {
-	interactionHandlerType: InteractionHandlerTypes.Button
+	interactionHandlerType: InteractionHandlerTypes.Button,
+	name: 'confession-submit-button'
 } )
 export class UserButton extends InteractionHandler {
 	public override parse( interaction: ButtonInteraction ) {
-		if ( interaction.customId === 'confessionary' ) return this.some()
+		if ( !interaction.customId.startsWith( 'confession-' ) ) return this.some()
 		return this.none()
 	}
 
@@ -27,7 +28,7 @@ export class UserButton extends InteractionHandler {
 
 		const modal = new ModalBuilder()
 			.setTitle( 'Envía tu anécdota' )
-			.setCustomId( 'confessionary' )
+			.setCustomId( interaction.customId )
 			.addComponents( textComponent )
 
 		await interaction.showModal( modal )

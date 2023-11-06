@@ -1,4 +1,4 @@
-import { int, json, mysqlEnum, mysqlTable, primaryKey, tinyint, unique, varchar } from 'drizzle-orm/mysql-core'
+import { boolean, index, int, json, mysqlEnum, mysqlTable, primaryKey, tinyint, unique, varchar } from 'drizzle-orm/mysql-core'
 
 export const confession = mysqlTable(
 	'Confession',
@@ -184,5 +184,20 @@ export const channelSettings = mysqlTable(
 	},
 	table => ( {
 		channelSettingsId: primaryKey( table.feature, table.guild )
+	} )
+)
+
+export const confessions = mysqlTable(
+	'Confessions',
+	{
+		guild: varchar( 'guild', { length: 191 } ).notNull(),
+		message: varchar( 'message', { length: 191 } ).notNull(),
+		private: boolean( 'private' ).default( true ),
+		removed: boolean( 'removed' ).default( false ),
+		user: varchar( 'user', { length: 191 } ).notNull()
+	},
+	table => ( {
+		confessionsMessageId: primaryKey( table.message ),
+		confessionsUser: index( 'user' ).on( table.user )
 	} )
 )
