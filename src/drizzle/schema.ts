@@ -26,6 +26,19 @@ export const message = mysqlTable(
 	} )
 )
 
+export const halloweenUser = mysqlTable(
+	'HalloweenUser',
+	{
+		guild: varchar( 'guild', { length: 191 } ).notNull(),
+		id: int( 'id' ).autoincrement()
+			.notNull(),
+		user: varchar( 'user', { length: 191 } ).notNull(),
+	},
+	table => ( {
+		halloweenUserGuildUserKey: unique( 'HalloweenUser_guild_user_key' ).on( table.guild, table.user ),
+		halloweenUserId: primaryKey( table.id ),
+	} ) )
+
 export const twitchFollows = mysqlTable(
 	'TwitchFollows',
 	{

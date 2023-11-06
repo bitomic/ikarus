@@ -10,7 +10,6 @@ CREATE TABLE `Confessions` (
 DROP TABLE `Confession`;--> statement-breakpoint
 DROP TABLE `HalloweenGuild`;--> statement-breakpoint
 DROP TABLE `HalloweenInventory`;--> statement-breakpoint
-DROP TABLE `HalloweenUser`;--> statement-breakpoint
 DROP TABLE `HalloweenUserUpgrade`;--> statement-breakpoint
 DROP TABLE `Starboard`;--> statement-breakpoint
 ALTER TABLE `ChannelSettings` DROP PRIMARY KEY;--> statement-breakpoint

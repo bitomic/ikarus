@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "55f18735-e7ed-4c8f-80a8-2bb18369e451",
+  "id": "5d049e73-90ee-4241-85c8-b70b400713c1",
   "prevId": "7f52c832-0e1c-4ae2-844b-4ef5efb338f7",
   "tables": {
     "ChannelSettings": {
@@ -140,6 +140,51 @@
         }
       },
       "uniqueConstraints": {}
+    },
+    "HalloweenUser": {
+      "name": "HalloweenUser",
+      "columns": {
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user": {
+          "name": "user",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "HalloweenUser_id": {
+          "name": "HalloweenUser_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "HalloweenUser_guild_user_key": {
+          "name": "HalloweenUser_guild_user_key",
+          "columns": [
+            "guild",
+            "user"
+          ]
+        }
+      }
     },
     "Message": {
       "name": "Message",
