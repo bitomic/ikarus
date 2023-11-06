@@ -1,8 +1,0 @@
-{
-	"already-have": "You already have this role.",
-	"higher-role": "The configured role is above the roles that I can assign.",
-	"managed-role": "This role belongs to another bot, and I can't assign it.",
-	"role-added": "I've added <@&{{ role }}> to your roles.",
-	"role-removed": "I've removed <@&{{ role }}> to your roles.",
-	"unknown-role": "Looks like the role that was associated to this button doesn't exist anymore."
-}

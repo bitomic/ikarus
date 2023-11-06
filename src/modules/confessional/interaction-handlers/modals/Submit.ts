@@ -3,7 +3,6 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { type ButtonInteraction, ButtonStyle, type ModalSubmitInteraction, PermissionFlagsBits, type User } from 'discord.js'
 import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from '@discordjs/builders'
 import { Colors } from '@bitomic/material-colors'
-import { confession } from '#drizzle/schema'
 import { s } from '@sapphire/shapeshift'
 
 @ApplyOptions<InteractionHandlerOptions>( {
@@ -98,10 +97,5 @@ export class UserButton extends InteractionHandler {
 		}
 
 		return embed
-	}
-
-	protected async storeData( guild: string, message: string, user: string ): Promise<void> {
-		await this.container.drizzle.insert( confession )
-			.values( { guild, message, user  } )
 	}
 }
