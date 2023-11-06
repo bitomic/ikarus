@@ -1,4 +1,40 @@
 {
+	"confessional": {
+		"description": "Check or configure confessional settings.",
+		"name": "confesional",
+		"options": {
+			"setup": {
+				"description": "Enable and configure confessional features.",
+				"name": "setup",
+				"options": {
+					"enable": {
+						"description": "Enable confessional features in this server.",
+						"name": "enable",
+						"options": {
+							"channel": {
+								"description": "What channel to post user stories in.",
+								"name": "channel"
+							},
+							"message": {
+								"description": "What message to use for setup and adding buttons to it.",
+								"name": "message"
+							}
+						}
+					},
+					"set-channel": {
+						"description": "Set where are confessions sent to.",
+						"name": "set-channel",
+						"options": {
+							"channel": {
+								"description": "What channel to post user stories in.",
+								"name": "channel"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
 	"halloween": {
 		"description": "Setup the Trick or Treat settings.",
 		"name": "trick-or-treat",
