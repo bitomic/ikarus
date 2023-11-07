@@ -1,61 +1,37 @@
 {
-	"halloween": {
-		"description": "Setup the Trick or Treat settings.",
-		"name": "trick-or-treat",
+	"confessional": {
+		"description": "Check or configure confessional settings.",
+		"name": "confesional",
 		"options": {
-			"add-channel": {
-				"description": "Allow monsters to spawn in the specified channel.",
-				"name": "add-channel",
-				"options": {
-					"channel": {
-						"description": "Channel you want to allow.",
-						"name": "channel"
-					}
-				}
-			},
-			"enable": {
-				"description": "Turn the event on or off for this server.",
-				"name": "enable",
+			"setup": {
+				"description": "Enable and configure confessional features.",
+				"name": "setup",
 				"options": {
 					"enable": {
-						"description": "Enable or disable",
-						"name": "enable"
-					}
-				}
-			},
-			"spawning": {
-				"description": "Control how often monsters can spawn.",
-				"name": "spawning",
-				"options": {
-					"chance": {
-						"description": "Set what's the chance for monsters to spawn (5%-100%).",
-						"name": "chance"
+						"description": "Enable confessional features in this server.",
+						"name": "enable",
+						"options": {
+							"channel": {
+								"description": "What channel to post user stories in.",
+								"name": "channel"
+							},
+							"message": {
+								"description": "What message to use for setup and adding buttons to it.",
+								"name": "message"
+							}
+						}
 					},
-					"frequency": {
-						"description": "Set how many minutes must be at least between spawns (only multiples of 5 minutes).",
-						"name": "frequency"
+					"set-channel": {
+						"description": "Set where are confessions sent to.",
+						"name": "set-channel",
+						"options": {
+							"channel": {
+								"description": "What channel to post user stories in.",
+								"name": "channel"
+							}
+						}
 					}
 				}
-			},
-			"remove-channel": {
-				"description": "Remove a previously allowed channel.",
-				"name": "remove-channel",
-				"options": {
-					"channel": {
-						"description": "Channel you want to disallow.",
-						"name": "channel"
-					}
-				}
-			}
-		}
-	},
-	"inventory": {
-		"description": "Check your Trick-or-Treat inventory.",
-		"name": "inventory",
-		"options": {
-			"member": {
-				"description": "Check someone else's inventory.",
-				"name": "member"
 			}
 		}
 	},
@@ -74,6 +50,48 @@
 					"message": {
 						"description": "Link or ID for the message to edit.",
 						"name": "message"
+					}
+				}
+			}
+		}
+	},
+	"notifications": {
+		"description": "Setup a message with buttons to allow anyone to ping specific roles.",
+		"name": "notifications",
+		"options": {
+			"add-button": {
+				"description": "Setup a button for a new role.",
+				"name": "add-button",
+				"options": {
+					"channel": {
+						"description": "Channel to send mentions in.",
+						"name": "channel"
+					},
+					"label": {
+						"description": "Text for the button.",
+						"name": "label"
+					},
+					"message": {
+						"description": "Customizable message to add buttons to.",
+						"name": "message"
+					},
+					"role": {
+						"description": "Role to mention when the button is pressed.",
+						"name": "role"
+					}
+				}
+			},
+			"remove-button": {
+				"description": "Remove one of the buttons in the message.",
+				"name": "remove-button",
+				"options": {
+					"message": {
+						"description": "Customizable message to add buttons to.",
+						"name": "message"
+					},
+					"role": {
+						"description": "Role to remove.",
+						"name": "role"
 					}
 				}
 			}
@@ -122,26 +140,6 @@
 					"streamer": {
 						"description": "Streamer you want to start following.",
 						"name": "streamer"
-					}
-				}
-			}
-		}
-	},
-	"recipes": {
-		"description": "Check all the available Trick-or-Treat recipes.",
-		"name": "recipes"
-	},
-	"starboard": {
-		"description": "Check statistics related to the starboard.",
-		"name": "starboard",
-		"options": {
-			"user": {
-				"description": "Check an user's stats.",
-				"name": "user",
-				"options": {
-					"user": {
-						"description": "User you want to check.",
-						"name": "user"
 					}
 				}
 			}

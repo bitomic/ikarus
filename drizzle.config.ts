@@ -9,5 +9,6 @@ export default {
 		casing: 'camel'
 	},
 	schema: './src/drizzle/schema.ts',
-	out: './src/drizzle'
+	out: './src/drizzle',
+	verbose: true
 } satisfies Config

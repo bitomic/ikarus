@@ -1,18 +1,17 @@
-import { env } from '#lib/environment'
-import { Colors } from '@bitomic/material-colors'
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder } from '@discordjs/builders'
+import { i18n } from '#decorators/i18n'
+import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
-import { ButtonLimits, EmbedLimits, TextInputLimits } from '@sapphire/discord-utilities'
-import { Time } from '@sapphire/duration'
+import { ButtonLimits } from '@sapphire/discord-utilities'
 import { type ApplicationCommandRegistry, Command, type CommandOptions } from '@sapphire/framework'
 import { s } from '@sapphire/shapeshift'
-import { type APIButtonComponentWithCustomId, ApplicationCommandOptionType, ButtonStyle, ChannelType, type ChatInputCommandInteraction, ComponentType, type Message, PermissionFlagsBits, TextInputStyle } from 'discord.js'
+import { type APIButtonComponentWithCustomId, ApplicationCommandOptionType, ButtonStyle, ChannelType, type ChatInputCommandInteraction, ComponentType, type Message, PermissionFlagsBits } from 'discord.js'
 import chunk from 'lodash/chunk.js'
 
 @ApplyOptions<CommandOptions>( {
-	name: 'notificaciones'
+	name: 'notifications'
 } )
 export class UserCommand extends Command {
+	@i18n
 	public override registerApplicationCommands( registry: ApplicationCommandRegistry ): void {
 		registry.registerChatInputCommand( {
 			defaultMemberPermissions: PermissionFlagsBits.ManageGuild,
@@ -21,56 +20,47 @@ export class UserCommand extends Command {
 			name: this.name,
 			options: [
 				{
-					description: 'Crea un mensaje para añadir botones en él.',
-					name: 'create-message',
-					nameLocalizations: {
-						'es-ES': 'crear-mensaje'
-					},
-					type: ApplicationCommandOptionType.Subcommand
-				},
-				{
-					description: 'Agrega un botón para enviar notificaciones.',
+					description: '',
 					name: 'add-button',
-					nameLocalizations: {
-						'es-ES': 'agregar-botón'
-					},
 					options: [
 						{
-							description: 'Texto del botón',
+							channelTypes: [
+								ChannelType.GuildText
+							],
+							description: '',
+							name: 'channel',
+							required: true,
+							type: ApplicationCommandOptionType.Channel
+						},
+						{
+							description: '',
 							maxLength: ButtonLimits.MaximumLabelCharacters,
 							minLength: 1,
 							name: 'label',
-							nameLocalizations: {
-								'es-ES': 'etiqueta'
-							},
 							required: true,
 							type: ApplicationCommandOptionType.String
 						},
 						{
-							description: 'Rol para mencionar.',
+							description: '',
 							name: 'role',
-							nameLocalizations: {
-								'es-ES': 'rol'
-							},
 							required: true,
 							type: ApplicationCommandOptionType.Role
+						},
+						{
+							description: '',
+							name: 'message',
+							type: ApplicationCommandOptionType.String
 						}
 					],
 					type: ApplicationCommandOptionType.Subcommand
 				},
 				{
-					description: 'Elimina un botón para enviar notificaciones.',
+					description: '',
 					name: 'remove-button',
-					nameLocalizations: {
-						'es-ES': 'eliminar-botón'
-					},
 					options: [
 						{
-							description: 'Rol para retirar.',
+							description: '',
 							name: 'role',
-							nameLocalizations: {
-								'es-ES': 'rol'
-							},
 							required: true,
 							type: ApplicationCommandOptionType.Role
 						}
@@ -78,81 +68,27 @@ export class UserCommand extends Command {
 					type: ApplicationCommandOptionType.Subcommand
 				}
 			]
-		}, { guildIds: [ env.NODE_ENV === 'development' ? env.DISCORD_DEVELOPMENT_SERVER : '1091101890084884630' ] } )
+		} )
 	}
 
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		const subcommand = s.enum( ...[ 'create-message', 'add-button', 'remove-button' ] as const )
+		const subcommand = s.enum( ...[ 'add-button', 'remove-button' ] as const )
 			.parse( interaction.options.getSubcommand() )
 
-		if ( subcommand === 'create-message' ) {
-			await this.createMessage( interaction )
-		} else if ( subcommand === 'add-button' ) {
+		if ( subcommand === 'add-button' ) {
 			await this.addButton( interaction )
 		} else {
 			await this.removeButton( interaction )
 		}
 	}
 
-	protected async createMessage( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
-		const modal = new ModalBuilder()
-			.setCustomId( 'notification-message' )
-			.setTitle( 'Crear mensaje de notificaciones' )
-			.addComponents(
-				new ActionRowBuilder<TextInputBuilder>()
-					.addComponents(
-						new TextInputBuilder()
-							.setCustomId( 'title' )
-							.setLabel( 'Título' )
-							.setMaxLength( EmbedLimits.MaximumTitleLength )
-							.setMinLength( 1 )
-							.setRequired( true )
-							.setStyle( TextInputStyle.Short )
-					),
-				new ActionRowBuilder<TextInputBuilder>()
-					.addComponents(
-						new TextInputBuilder()
-							.setCustomId( 'content' )
-							.setLabel( 'Contenido' )
-							.setMaxLength( TextInputLimits.MaximumValueCharacters )
-							.setMinLength( 10 )
-							.setRequired( true )
-							.setStyle( TextInputStyle.Paragraph )
-					)
-			)
-
-		await interaction.showModal( modal )
-		const submit = await interaction.awaitModalSubmit( {
-			filter: submit => submit.customId === 'notification-message',
-			time: Time.Second * 15
-		} )
-
-		const title = submit.fields.getTextInputValue( 'title' )
-		const content = submit.fields.getTextInputValue( 'content' )
-		const embed = new EmbedBuilder()
-			.setTitle( title )
-			.setDescription( content )
-			.setColor( Colors.deepOrange.s800 )
-
-		const channel = await this.container.utilities.channel.getChannel( interaction.channelId, ChannelType.GuildText )
-		const message = await channel.send( {
-			embeds: [ embed ]
-		} )
-		await submit.reply( {
-			content: 'El mensaje fue guardado exitosamente.',
-			ephemeral: true
-		} )
-
-		await message.pin()
-	}
-
 	protected async addButton( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
 		await interaction.deferReply( { ephemeral: true } )
 
+		const channel = interaction.options.getChannel( 'channel', true, [ ChannelType.GuildText ] )
 		const label = interaction.options.getString( 'label', true )
 		const role = interaction.options.getRole( 'role', true )
-		const message = await this.getInteractionMessage( interaction )
-		if ( !message ) return
+		const message = await this.container.utilities.interaction.getCustomizableMessage( interaction )
 
 		const buttons = this.getButtons( message )
 
@@ -170,6 +106,8 @@ export class UserCommand extends Command {
 		} )
 
 		await this.updateComponents( message, buttons )
+		await this.container.stores.get( 'models' ).get( 'notifications' )
+			.setChannelForRole( interaction.guildId, channel.id, role.id )
 		await interaction.editReply( 'Botón añadido exitosamente.' )
 	}
 
@@ -177,8 +115,7 @@ export class UserCommand extends Command {
 		await interaction.deferReply( { ephemeral: true } )
 
 		const role = interaction.options.getRole( 'role', true )
-		const message = await this.getInteractionMessage( interaction )
-		if ( !message ) return
+		const message = await this.container.utilities.interaction.getCustomizableMessage( interaction )
 
 		const buttons = this.getButtons( message )
 
@@ -189,20 +126,9 @@ export class UserCommand extends Command {
 		}
 
 		await this.updateComponents( message, updated )
+		await this.container.stores.get( 'models' ).get( 'notifications' )
+			.remove( role.id )
 		await interaction.editReply( 'Botón eliminado exitosamente.' )
-	}
-
-	protected async getInteractionMessage( interaction: ChatInputCommandInteraction<'cached'> ): Promise<Message | null> {
-		const channel = interaction.channel ?? await this.container.utilities.channel.getChannel( interaction.channelId, ChannelType.GuildText )
-		const pinned = await channel.messages.fetchPinned()
-		const message = pinned.first()
-
-		if ( !message || message.author.id !== this.container.client.user?.id ) {
-			await interaction.editReply( 'No he podido encontrar mensajes en el canal, o el más reciente no fue enviado por mí.' )
-			return null
-		}
-
-		return message
 	}
 
 	protected getButtons( message: Message ): APIButtonComponentWithCustomId[] {

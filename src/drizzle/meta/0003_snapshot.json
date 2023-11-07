@@ -1,0 +1,482 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "id": "5d049e73-90ee-4241-85c8-b70b400713c1",
+  "prevId": "7f52c832-0e1c-4ae2-844b-4ef5efb338f7",
+  "tables": {
+    "ChannelSettings": {
+      "name": "ChannelSettings",
+      "columns": {
+        "channel": {
+          "name": "channel",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "feature": {
+          "name": "feature",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "ChannelSettings_feature_guild": {
+          "name": "ChannelSettings_feature_guild",
+          "columns": [
+            "feature",
+            "guild"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Confessions": {
+      "name": "Confessions",
+      "columns": {
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "message": {
+          "name": "message",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "private": {
+          "name": "private",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": true
+        },
+        "removed": {
+          "name": "removed",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": false
+        },
+        "user": {
+          "name": "user",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "user": {
+          "name": "user",
+          "columns": [
+            "user"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Confessions_message": {
+          "name": "Confessions_message",
+          "columns": [
+            "message"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Configuration": {
+      "name": "Configuration",
+      "columns": {
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "property": {
+          "name": "property",
+          "type": "enum('StarboardChannel','StarboardCount')",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Configuration_guild_property": {
+          "name": "Configuration_guild_property",
+          "columns": [
+            "guild",
+            "property"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "HalloweenUser": {
+      "name": "HalloweenUser",
+      "columns": {
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "user": {
+          "name": "user",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "HalloweenUser_id": {
+          "name": "HalloweenUser_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "HalloweenUser_guild_user_key": {
+          "name": "HalloweenUser_guild_user_key",
+          "columns": [
+            "guild",
+            "user"
+          ]
+        }
+      }
+    },
+    "Message": {
+      "name": "Message",
+      "columns": {
+        "author": {
+          "name": "author",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "channel": {
+          "name": "channel",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "message": {
+          "name": "message",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "thread": {
+          "name": "thread",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Message_message": {
+          "name": "Message_message",
+          "columns": [
+            "message"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "TournamentGame": {
+      "name": "TournamentGame",
+      "columns": {
+        "game": {
+          "name": "game",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "maxPlayers": {
+          "name": "maxPlayers",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "maxTeams": {
+          "name": "maxTeams",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "minPlayers": {
+          "name": "minPlayers",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "TournamentGame_id": {
+          "name": "TournamentGame_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {
+        "TournamentGame_guild_game_key": {
+          "name": "TournamentGame_guild_game_key",
+          "columns": [
+            "guild",
+            "game"
+          ]
+        }
+      }
+    },
+    "TournamentTeam": {
+      "name": "TournamentTeam",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "message": {
+          "name": "message",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "players": {
+          "name": "players",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tournament": {
+          "name": "tournament",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "TournamentTeam_message_Message_message_fk": {
+          "name": "TournamentTeam_message_Message_message_fk",
+          "tableFrom": "TournamentTeam",
+          "tableTo": "Message",
+          "columnsFrom": [
+            "message"
+          ],
+          "columnsTo": [
+            "message"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        },
+        "TournamentTeam_tournament_TournamentGame_id_fk": {
+          "name": "TournamentTeam_tournament_TournamentGame_id_fk",
+          "tableFrom": "TournamentTeam",
+          "tableTo": "TournamentGame",
+          "columnsFrom": [
+            "tournament"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "cascade"
+        }
+      },
+      "compositePrimaryKeys": {
+        "TournamentTeam_id": {
+          "name": "TournamentTeam_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "TwitchFollows": {
+      "name": "TwitchFollows",
+      "columns": {
+        "channel": {
+          "name": "channel",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "guild": {
+          "name": "guild",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mentions": {
+          "name": "mentions",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "user": {
+          "name": "user",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "TwitchFollows_channel_user": {
+          "name": "TwitchFollows_channel_user",
+          "columns": [
+            "channel",
+            "user"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "UniteProfile": {
+      "name": "UniteProfile",
+      "columns": {
+        "code": {
+          "name": "code",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "favoritePokemon": {
+          "name": "favoritePokemon",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user": {
+          "name": "user",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "UniteProfile_user": {
+          "name": "UniteProfile_user",
+          "columns": [
+            "user"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

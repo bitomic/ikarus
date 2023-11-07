@@ -1,6 +1,6 @@
 {
   "name": "sapphire-template",
-  "version": "2.6.0",
+  "version": "2.7.0",
   "private": true,
   "main": "dist/main.js",
   "license": "MIT",
@@ -58,6 +58,7 @@
     "pino-pretty": "^10.2.3",
     "reflect-metadata": "^0.1.13",
     "ts-dotenv": "^0.9.1",
+    "ts-pattern": "^5.0.5",
     "undici": "^5.27.2"
   },
   "devDependencies": {

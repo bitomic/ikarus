@@ -1,16 +1,4 @@
-import { int, json, mysqlEnum, mysqlTable, primaryKey, tinyint, unique, varchar } from 'drizzle-orm/mysql-core'
-
-export const confession = mysqlTable(
-	'Confession',
-	{
-		guild: varchar( 'guild', { length: 191 } ).notNull(),
-		message: varchar( 'message', { length: 191 } ).notNull(),
-		user: varchar( 'user', { length: 191 } ).notNull(),
-	},
-	table => ( {
-		confessionMessage: primaryKey( table.message ),
-	} )
-)
+import { boolean, index, int, json, mysqlEnum, mysqlTable, primaryKey, unique, varchar } from 'drizzle-orm/mysql-core'
 
 export const configuration = mysqlTable(
 	'Configuration',
@@ -21,68 +9,6 @@ export const configuration = mysqlTable(
 	},
 	table => ( {
 		configurationGuildProperty: primaryKey( table.guild, table.property ),
-	} )
-)
-
-export const halloweenGuild = mysqlTable(
-	'HalloweenGuild',
-	{
-		channels: json( 'channels' ).notNull(),
-		enabled: tinyint( 'enabled' ).default( 0 )
-			.notNull(),
-		frequency: int( 'frequency' ).default( 5 )
-			.notNull(),
-		id: varchar( 'id', { length: 191 } ).notNull(),
-		spawnChance: int( 'spawnChance' ).default( 50 )
-			.notNull(),
-	},
-	table => ( {
-		halloweenGuildId: primaryKey( table.id ),
-	} )
-)
-
-export const halloweenInventory = mysqlTable(
-	'HalloweenInventory',
-	{
-		candyName: varchar( 'candyName', { length: 191 } ).notNull(),
-		count: int( 'count' ).default( 0 )
-			.notNull(),
-		guild: varchar( 'guild', { length: 191 } ).notNull(),
-		id: int( 'id' ).autoincrement()
-			.notNull(),
-		userId: int( 'userId' ).notNull()
-			.references( () => halloweenUser.id, { onDelete: 'restrict', onUpdate: 'cascade' } ),
-	},
-	table => ( {
-		halloweenInventoryCandyNameGuildUserIdKey: unique( 'HalloweenInventory_candyName_guild_userId_key' ).on( table.candyName, table.guild, table.userId ),
-		halloweenInventoryId: primaryKey( table.id ),
-	} ) )
-
-export const halloweenUser = mysqlTable(
-	'HalloweenUser',
-	{
-		guild: varchar( 'guild', { length: 191 } ).notNull(),
-		id: int( 'id' ).autoincrement()
-			.notNull(),
-		user: varchar( 'user', { length: 191 } ).notNull(),
-	},
-	table => ( {
-		halloweenUserGuildUserKey: unique( 'HalloweenUser_guild_user_key' ).on( table.guild, table.user ),
-		halloweenUserId: primaryKey( table.id ),
-	} ) )
-
-export const halloweenUserUpgrade = mysqlTable(
-	'HalloweenUserUpgrade',
-	{
-		guild: varchar( 'guild', { length: 191 } ).notNull(),
-		upgrade: varchar( 'upgrade', { length: 191 } ).notNull(),
-		upgradeCount: int( 'upgradeCount' ).default( 0 )
-			.notNull(),
-		userId: int( 'userId' ).notNull()
-			.references( () => halloweenUser.id, { onDelete: 'restrict', onUpdate: 'cascade' } ),
-	},
-	table => ( {
-		halloweenUserUpgradeGuildUpgradeUserIdKey: unique( 'HalloweenUserUpgrade_guild_upgrade_userId_key' ).on( table.guild, table.upgrade, table.userId ),
 	} )
 )
 
@@ -99,19 +25,6 @@ export const message = mysqlTable(
 		messageMessage: primaryKey( table.message ),
 	} )
 )
-
-export const starboard = mysqlTable(
-	'Starboard',
-	{
-		originalId: varchar( 'originalId', { length: 191 } ).notNull()
-			.references( () => message.message, { onDelete: 'restrict', onUpdate: 'cascade' } ),
-		pinnedId: varchar( 'pinnedId', { length: 191 } ).notNull()
-			.references( () => message.message, { onDelete: 'restrict', onUpdate: 'cascade' } ),
-	},
-	table => ( {
-		starboardOriginalIdKey: unique( 'Starboard_originalId_key' ).on( table.originalId ),
-		starboardPinnedId: primaryKey( table.pinnedId ),
-	} ) )
 
 export const twitchFollows = mysqlTable(
 	'TwitchFollows',
@@ -172,5 +85,32 @@ export const tournamentTeam = mysqlTable(
 	},
 	table => ( {
 		tournamentTeamId: primaryKey( table.id )
+	} )
+)
+
+export const channelSettings = mysqlTable(
+	'ChannelSettings',
+	{
+		channel: varchar( 'channel', { length: 191 } ).notNull(),
+		feature: varchar( 'feature', { length: 191 } ).notNull(),
+		guild: varchar( 'guild', { length: 191 } ).notNull()
+	},
+	table => ( {
+		channelSettingsId: primaryKey( table.feature, table.guild )
+	} )
+)
+
+export const confessions = mysqlTable(
+	'Confessions',
+	{
+		guild: varchar( 'guild', { length: 191 } ).notNull(),
+		message: varchar( 'message', { length: 191 } ).notNull(),
+		private: boolean( 'private' ).default( true ),
+		removed: boolean( 'removed' ).default( false ),
+		user: varchar( 'user', { length: 191 } ).notNull()
+	},
+	table => ( {
+		confessionsMessageId: primaryKey( table.message ),
+		confessionsUser: index( 'user' ).on( table.user )
 	} )
 )
