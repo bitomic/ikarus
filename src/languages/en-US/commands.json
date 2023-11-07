@@ -101,6 +101,16 @@
 		"description": "Check my status.",
 		"name": "ping"
 	},
+	"subscribers": {
+		"description": "Announce when a member gets the Twitch role from the integration.",
+		"name": "subscribers",
+		"options": {
+			"channel": {
+				"description": "Channel where to send announcements.",
+				"name": "channel"
+			}
+		}
+	},
 	"twitch": {
 		"description": "Check details about the Twitch channels being followed by this server.",
 		"name": "twitch",
