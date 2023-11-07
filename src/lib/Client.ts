@@ -40,6 +40,7 @@ export class UserClient extends SapphireClient {
 			},
 			intents: [
 				'Guilds',
+				'GuildMembers',
 				'GuildMessages',
 				'GuildMessageReactions',
 				'MessageContent'
@@ -48,7 +49,7 @@ export class UserClient extends SapphireClient {
 			logger: {
 				level: LogLevel.Info
 			},
-			partials: [ Partials.Channel, Partials.Message, Partials.Reaction ],
+			partials: [ Partials.Channel, Partials.GuildMember, Partials.Message, Partials.Reaction ],
 			tasks: {
 				bull: {
 					connection: redisOptions,
