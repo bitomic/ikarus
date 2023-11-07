@@ -1,10 +1,10 @@
-import { boolean, index, int, json, mysqlEnum, mysqlTable, primaryKey, unique, varchar } from 'drizzle-orm/mysql-core'
+import { boolean, index, int, json, mysqlTable, primaryKey, unique, varchar } from 'drizzle-orm/mysql-core'
 
 export const configuration = mysqlTable(
 	'Configuration',
 	{
 		guild: varchar( 'guild', { length: 191 } ).notNull(),
-		property: mysqlEnum( 'property', [ 'StarboardChannel', 'StarboardCount' ] ).notNull(),
+		property: varchar( 'property', { length: 191 } ).notNull(),
 		value: varchar( 'value', { length: 191 } ).notNull(),
 	},
 	table => ( {

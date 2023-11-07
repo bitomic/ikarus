@@ -1,0 +1,1 @@
+ALTER TABLE `Configuration` MODIFY COLUMN `property` varchar(191) NOT NULL;
