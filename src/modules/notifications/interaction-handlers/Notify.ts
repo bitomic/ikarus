@@ -43,10 +43,22 @@ export class UserButton extends InteractionHandler {
 			.getChannel( interaction.guildId, roleId )
 
 		const message = await channel.send( {
+			components: [ new ActionRowBuilder<ButtonBuilder>().addComponents(
+				new ButtonBuilder( {
+					custom_id: `notifyremove-${ role.id }`,
+					label: 'Quitar rol',
+					style: ButtonStyle.Primary
+				} ),
+				new ButtonBuilder( {
+					custom_id: `notifyadd-${ role.id }`,
+					label: 'Añadir rol',
+					style: ButtonStyle.Secondary
+				} )
+			) ],
 			content: `¡<@!${ interaction.user.id }> (${ interaction.user.username }) está buscando a gente para jugar <@&${ roleId }>!`,
 			embeds: [ {
 				color: role.color || Colors.deepOrange.s800,
-				description: '¿No quieres recibir menciones de este tipo? Puedes modificar tus roles en <id:customize>.'
+				description: '¿No quieres recibir menciones de este tipo? Puedes modificar tus roles en <id:customize> o usando los siguientes botones.'
 			} ]
 		} )
 		await this.container.redis.set( key, Date.now() )
