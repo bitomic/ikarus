@@ -38,8 +38,9 @@ export class UserCommand extends Command {
 			const role = await this.findTwitchRole( interaction.guild )
 
 			const models = this.container.stores.get( 'models' )
-			await models.get( 'channel-settings' ).set( interaction.guildId, channel.id, 'twitch-subscribers' )
-			await models.get( 'configuration' ).set( interaction.guildId, 'twitch-role', role.id )
+			const configuration = models.get( 'configuration' )
+			await configuration.set( interaction.guildId, 'twitch-channel', channel.id )
+			await configuration.set( interaction.guildId, 'twitch-role', role.id )
 
 			await interaction.editReply( {
 				embeds: [ {
