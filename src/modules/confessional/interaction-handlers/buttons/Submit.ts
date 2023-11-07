@@ -10,8 +10,8 @@ import { EmbedLimits, TextInputLimits } from '@sapphire/discord-utilities'
 } )
 export class UserButton extends InteractionHandler {
 	public override parse( interaction: ButtonInteraction ) {
-		if ( !interaction.customId.startsWith( 'confession-' ) ) return this.some()
-		return this.none()
+		if ( !interaction.customId.startsWith( 'confession-' ) ) return this.none()
+		return this.some()
 	}
 
 	public async run( interaction: ButtonInteraction<'cached'> ): Promise<void> {
