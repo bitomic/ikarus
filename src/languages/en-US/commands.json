@@ -55,6 +55,48 @@
 			}
 		}
 	},
+	"notifications": {
+		"description": "Setup a message with buttons to allow anyone to ping specific roles.",
+		"name": "notifications",
+		"options": {
+			"add-button": {
+				"description": "Setup a button for a new role.",
+				"name": "add-button",
+				"options": {
+					"channel": {
+						"description": "Channel to send mentions in.",
+						"name": "channel"
+					},
+					"label": {
+						"description": "Text for the button.",
+						"name": "label"
+					},
+					"message": {
+						"description": "Customizable message to add buttons to.",
+						"name": "message"
+					},
+					"role": {
+						"description": "Role to mention when the button is pressed.",
+						"name": "role"
+					}
+				}
+			},
+			"remove-button": {
+				"description": "Remove one of the buttons in the message.",
+				"name": "remove-button",
+				"options": {
+					"message": {
+						"description": "Customizable message to add buttons to.",
+						"name": "message"
+					},
+					"role": {
+						"description": "Role to remove.",
+						"name": "role"
+					}
+				}
+			}
+		}
+	},
 	"ping": {
 		"description": "Check my status.",
 		"name": "ping"
