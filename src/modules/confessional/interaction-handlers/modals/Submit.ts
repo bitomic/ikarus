@@ -49,7 +49,7 @@ export class UserButton extends InteractionHandler {
 		try {
 			const message = await channel.send( {
 				components: [ this.createComponents() ],
-				embeds: [ this.createEmbed( content ) ]
+				embeds: [ embed ]
 			} )
 			await this.container.stores.get( 'models' ).get( 'confessions' )
 				.create( message, interaction.user.id, type === 'private' )
