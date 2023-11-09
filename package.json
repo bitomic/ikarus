@@ -44,7 +44,7 @@
     "@sapphire/utilities": "^3.13.0",
     "bullmq": "^4.13.2",
     "colorette": "^2.0.20",
-    "discord-api-types": "^0.37.62",
+    "discord-api-types": "^0.37.63",
     "discord.js": "^14.13.0",
     "drizzle-kit": "^0.19.13",
     "drizzle-orm": "^0.28.6",
