@@ -123,6 +123,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discordjs/collection@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@discordjs/collection@npm:2.0.0"
+  checksum: c2d05fa2b9a27bb64e93e2836bbe44c835d21f85e28cd934f6e2a81fef423ab0415968cca9d066b83347539edc8ea9afa8075d80bd62594e39f09eb881052c49
+  languageName: node
+  linkType: hard
+
 "@discordjs/formatters@npm:^0.3.2":
   version: 0.3.2
   resolution: "@discordjs/formatters@npm:0.3.2"
@@ -155,6 +162,23 @@ __metadata:
     tslib: ^2.6.1
     undici: 5.22.1
   checksum: 36e33489293956e6356e68d69857c2ea910aa376be8c530d6aa640f5887d119d2c0abb736b427353bbdad92c534917fd38adb3a8529c87bdd010c75017ae6b27
+  languageName: node
+  linkType: hard
+
+"@discordjs/rest@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@discordjs/rest@npm:2.1.0"
+  dependencies:
+    "@discordjs/collection": ^2.0.0
+    "@discordjs/util": ^1.0.2
+    "@sapphire/async-queue": ^1.5.0
+    "@sapphire/snowflake": ^3.5.1
+    "@vladfrangu/async_event_emitter": ^2.2.2
+    discord-api-types: 0.37.61
+    magic-bytes.js: ^1.5.0
+    tslib: ^2.6.2
+    undici: 5.27.2
+  checksum: aa239b16e719d20e01e889201290a894b8f0ee59bcc8f42bf7dd3bb175a3e5c1c36aeec4348d3c3c1df6fd450708b1097a3961893e9f2e1d6ddb4623eb102cc1
   languageName: node
   linkType: hard
 
@@ -3398,6 +3422,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"magic-bytes.js@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "magic-bytes.js@npm:1.5.0"
+  checksum: 058c58344b2030f1e76c6209110a0f3056179237ebb501c314793cdeb449fb588f081b4569a2784d3264ee0fc56b0b9dc3c9d9c46eb2c629e3866f03a6f18846
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.25.3":
   version: 0.25.9
   resolution: "magic-string@npm:0.25.9"
@@ -4417,7 +4448,7 @@ __metadata:
     "@bitomic/eslint-config": ^1.3.0
     "@bitomic/material-colors": ^1.1.0
     "@discordjs/builders": ^1.7.0
-    "@discordjs/rest": ^2.0.1
+    "@discordjs/rest": ^2.1.0
     "@quority/core": ^4.0.4
     "@quority/fandom": ^4.0.9
     "@sapphire/decorators": ^6.0.2
@@ -5005,21 +5036,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici@npm:5.27.2, undici@npm:^5.22.1, undici@npm:^5.27.2":
+  version: 5.27.2
+  resolution: "undici@npm:5.27.2"
+  dependencies:
+    "@fastify/busboy": ^2.0.0
+  checksum: 22bbdd763798700979986546d70072b67223189353d2a811efa9c6e44476161a0d1781ffe24115221f69a1b344b95d5926bd39a6eb760a2cd8804781cec0c5eb
+  languageName: node
+  linkType: hard
+
 "undici@npm:^5.12.0, undici@npm:^5.26.5":
   version: 5.27.0
   resolution: "undici@npm:5.27.0"
   dependencies:
     "@fastify/busboy": ^2.0.0
   checksum: 3acad25bfe5957aa5edc24eb160b5da7a9c67a5061e2e001929bef4bafed07d93a2accb36d407179c35b3ae56adbe89b49e1dd80d8cea9fdc44dca2037174330
-  languageName: node
-  linkType: hard
-
-"undici@npm:^5.22.1, undici@npm:^5.27.2":
-  version: 5.27.2
-  resolution: "undici@npm:5.27.2"
-  dependencies:
-    "@fastify/busboy": ^2.0.0
-  checksum: 22bbdd763798700979986546d70072b67223189353d2a811efa9c6e44476161a0d1781ffe24115221f69a1b344b95d5926bd39a6eb760a2cd8804781cec0c5eb
   languageName: node
   linkType: hard
 
