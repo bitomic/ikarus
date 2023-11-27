@@ -1,6 +1,6 @@
 {
   "name": "sapphire-template",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "private": true,
   "main": "dist/main.js",
   "license": "MIT",
