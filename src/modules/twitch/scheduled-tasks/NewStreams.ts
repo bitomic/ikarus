@@ -5,7 +5,7 @@ import { TwitchTask } from './_TwitchTask.js'
 
 @ApplyOptions<ScheduledTaskOptions>( {
 	enabled: true,
-	interval: Time.Minute * 3,
+	interval: Time.Second * 45,
 	name: 'new-streams'
 } )
 export class UserTask extends TwitchTask {
