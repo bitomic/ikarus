@@ -33,7 +33,7 @@
     "@sapphire/decorators": "^6.0.2",
     "@sapphire/discord-utilities": "^3.2.0",
     "@sapphire/duration": "^1.1.0",
-    "@sapphire/framework": "4.8.4",
+    "@sapphire/framework": "4.8.5",
     "@sapphire/pieces": "^3.10.0",
     "@sapphire/plugin-api": "^5.2.0",
     "@sapphire/plugin-i18next": "^5.1.1",
