@@ -2028,6 +2028,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"discord-api-types@npm:^0.37.66":
+  version: 0.37.66
+  resolution: "discord-api-types@npm:0.37.66"
+  checksum: ddc915515ad2f2c8d9b01ef0bc640dc616342e978ca926f01d2c4cb2cc2b5cd907057d934fa8b196a19447a3c81f4f541b7c7be2816426e9af8edf3e8ebfe935
+  languageName: node
+  linkType: hard
+
 "discord.js@npm:^14.14.1":
   version: 14.14.1
   resolution: "discord.js@npm:14.14.1"
@@ -4696,7 +4703,7 @@ __metadata:
     "@typescript-eslint/parser": ^6.13.2
     bullmq: ^4.15.1
     colorette: ^2.0.20
-    discord-api-types: ^0.37.65
+    discord-api-types: ^0.37.66
     discord.js: ^14.14.1
     drizzle-kit: ^0.20.6
     drizzle-orm: ^0.29.1
