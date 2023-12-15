@@ -4520,10 +4520,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "reflect-metadata@npm:0.2.0"
-  checksum: a06ef033415e063f8303181775a735a7704741d4b84572f4f255b9202bb8931b82e2b859a3c332e541abd8637e5282dbedf59dadd186a54959890066096ad068
+"reflect-metadata@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "reflect-metadata@npm:0.2.1"
+  checksum: 772f552a544e04b999c1bf2c868225fef10032274e9d9e315bc3e7a687a504b8b115fa71966665b9619acfd323123a941f892b593250140da809330d41564181
   languageName: node
   linkType: hard
 
@@ -4718,7 +4718,7 @@ __metadata:
     mysql2: ^3.6.5
     pino: ^8.17.1
     pino-pretty: ^10.2.3
-    reflect-metadata: ^0.2.0
+    reflect-metadata: ^0.2.1
     rimraf: ^5.0.5
     ts-dotenv: ^0.9.1
     ts-pattern: ^5.0.6
