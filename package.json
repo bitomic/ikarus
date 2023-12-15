@@ -40,7 +40,7 @@
     "@sapphire/plugin-logger": "^3.0.7",
     "@sapphire/plugin-scheduled-tasks": "^7.1.2",
     "@sapphire/plugin-utilities-store": "^1.0.3",
-    "@sapphire/shapeshift": "^3.9.4",
+    "@sapphire/shapeshift": "^3.9.5",
     "@sapphire/utilities": "^3.14.0",
     "bullmq": "^4.15.4",
     "colorette": "^2.0.20",
