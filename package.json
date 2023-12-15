@@ -55,7 +55,7 @@
     "lodash": "^4.17.21",
     "mysql2": "^3.6.5",
     "pino": "^8.17.1",
-    "pino-pretty": "^10.2.3",
+    "pino-pretty": "^10.3.0",
     "reflect-metadata": "^0.2.1",
     "ts-dotenv": "^0.9.1",
     "ts-pattern": "^5.0.6",
