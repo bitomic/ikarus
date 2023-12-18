@@ -45,7 +45,7 @@ export class UserCommand extends Command {
 					type: ApplicationCommandOptionType.Subcommand
 				}
 			]
-		} )
+		}, { guildIds: [ env.NODE_ENV === 'development' ? env.DISCORD_DEVELOPMENT_SERVER : '1091101890084884630' ] } )
 	}
 
 	public override async chatInputRun( interaction: ChatInputCommandInteraction<'cached'> ): Promise<void> {
