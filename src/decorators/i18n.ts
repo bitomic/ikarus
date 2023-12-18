@@ -5,7 +5,7 @@ import { s } from '@sapphire/shapeshift'
 import type { TFunction } from 'i18next'
 
 type i18nCollection = {
-	[ key in Locale ]?: TFunction
+	[ key in Locale | 'es-419' ]?: TFunction
 } & { 'en-US': TFunction }
 
 const localize = ( i18n: i18nCollection, target: ChatInputApplicationCommandData | ApplicationCommandOptionData, prefix: string ) => {
@@ -51,7 +51,7 @@ export const i18n = ( _target: unknown, methodName: string, descriptor: Property
 		if ( !command || !isCommandData( command ) ) return
 
 		const { languages } = container.i18n
-		const validateLocale = s.nativeEnum( Locale )
+		const validateLocale = s.nativeEnum( Locale ).or( s.literal( 'es-419' as const ) )
 
 		const i18n: i18nCollection = {
 			'en-US': container.i18n.getT( 'en-US' )
