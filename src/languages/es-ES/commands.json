@@ -1,4 +1,32 @@
 {
+	"mailbox-submit": {
+		"description": "Envía algo para el buzón navideño.",
+		"name": "buzón",
+		"options": {
+			"clip": {
+				"description": "Muestra una ventana para enviar un clip.",
+				"name": "clip"
+			},
+			"help": {
+				"description": "Muestra un mensaje de ayuda para ti o alguien más.",
+				"name": "ayuda"
+			},
+			"meme": {
+				"description": "Te permite subir un meme.",
+				"name": "meme",
+				"options": {
+					"image": {
+						"description": "Agrega una imagen.",
+						"name": "image"
+					}
+				}
+			},
+			"story": {
+				"description": "Muestra una ventana para enviar una historia.",
+				"name": "story"
+			}
+		}
+	},
 	"ping": {
 		"description": "Consulta mi estado.",
 		"name": "ping"
