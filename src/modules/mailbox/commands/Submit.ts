@@ -103,6 +103,17 @@ export class UserCommand extends Command {
 				embeds: [ embed ],
 				files: [ attachment ]
 			} )
+			await channel.send( {
+				embeds: [
+					new EmbedBuilder()
+						.setAuthor( {
+							iconURL: interaction.user.avatarURL( { extension: 'png' } ) ?? '',
+							name: interaction.user.username
+						} )
+						.setColor( interaction.member.displayColor || Colors.deepPurple.s800 )
+						.setDescription( `<@!${ interaction.user.id }> envió un meme.` )
+				]
+			} )
 			await interaction.editReply( 'Se ha enviado tu meme exitosamente. ¡Lo veremos el próximo viernes!' )
 		} catch ( e ) {
 			this.container.logger.error( e )

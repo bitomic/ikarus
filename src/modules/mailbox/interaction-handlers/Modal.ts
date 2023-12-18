@@ -1,7 +1,7 @@
 import { InteractionHandler, type InteractionHandlerOptions, InteractionHandlerTypes } from '@sapphire/framework'
 import { ApplyOptions } from '@sapphire/decorators'
-import { type ButtonInteraction, ButtonStyle, ChannelType, type ModalSubmitInteraction, type TextChannel, type User } from 'discord.js'
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, hyperlink } from '@discordjs/builders'
+import { type ButtonInteraction, ChannelType, type ModalSubmitInteraction, type TextChannel } from 'discord.js'
+import { EmbedBuilder, hyperlink } from '@discordjs/builders'
 import { Colors } from '@bitomic/material-colors'
 import { s } from '@sapphire/shapeshift'
 import { env } from '#lib/environment'
@@ -66,43 +66,25 @@ export class UserButton extends InteractionHandler {
 			}
 
 			await thread.send( { embeds: [ embed ] } )
+
+			const msg = type === 'clip'
+				? `<@!${ interaction.user.id }> votó por un clip.`
+				: `<@!${ interaction.user.id }> envió una historia.`
+			await channel.send( {
+				embeds: [
+					new EmbedBuilder()
+						.setAuthor( {
+							iconURL: interaction.user.avatarURL( { extension: 'png' } ) ?? '',
+							name: interaction.user.username
+						} )
+						.setColor( interaction.member.displayColor || Colors.deepPurple.s800 )
+						.setDescription( msg )
+				]
+			} )
 			await interaction.editReply( 'Se ha registrado tu respuesta exitosamente. ¡Lo veremos el próximo viernes!' )
 		} catch ( e ) {
 			this.container.logger.error( e, content )
 			await interaction.editReply( 'Hubo un problema al intentar guardar tu respuesta. Si el problema persiste, puedes mencionar a <@!697553237867364362>.' )
 		}
-	}
-
-	protected createComponents(): ActionRowBuilder<ButtonBuilder> {
-		return new ActionRowBuilder<ButtonBuilder>()
-			.addComponents(
-				new ButtonBuilder( {
-					custom_id: 'creview-approve',
-					label: 'Confirmar revisión',
-					style: ButtonStyle.Success
-				} ),
-				new ButtonBuilder( {
-					custom_id: 'creview-decline',
-					label: 'Rechazar',
-					style: ButtonStyle.Danger
-				} )
-			)
-	}
-
-	protected createEmbed( description: string, user?: User | null ): EmbedBuilder {
-		const embed = new EmbedBuilder( {
-			color: Colors.deepPurple.s800,
-			description,
-			title: 'Confesión'
-		} )
-
-		if ( user ) {
-			embed.setAuthor( {
-				iconURL: user.avatarURL( { extension: 'png' } ) || '',
-				name: user.username
-			} )
-		}
-
-		return embed
 	}
 }
