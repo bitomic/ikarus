@@ -35,6 +35,34 @@
 			}
 		}
 	},
+	"mailbox-submit": {
+		"description": "Submit content for the mailbox.",
+		"name": "mailbox",
+		"options": {
+			"clip": {
+				"description": "Shows a modal to send a Twitch clip.",
+				"name": "clip"
+			},
+			"help": {
+				"description": "Show a help message for you or other people.",
+				"name": "help"
+			},
+			"meme": {
+				"description": "Allows you to upload a meme.",
+				"name": "meme",
+				"options": {
+					"image": {
+						"description": "Add an image.",
+						"name": "image"
+					}
+				}
+			},
+			"story": {
+				"description": "Shows a modal to send a story.",
+				"name": "story"
+			}
+		}
+	},
 	"message": {
 		"description": "Set or edit a customizable message.",
 		"name": "message",
