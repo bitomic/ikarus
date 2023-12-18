@@ -42,7 +42,7 @@
     "@sapphire/plugin-utilities-store": "^1.0.3",
     "@sapphire/shapeshift": "^3.9.5",
     "@sapphire/utilities": "^3.14.0",
-    "bullmq": "^4.15.4",
+    "bullmq": "^4.16.0",
     "colorette": "^2.0.20",
     "discord-api-types": "^0.37.66",
     "discord.js": "^14.14.1",
