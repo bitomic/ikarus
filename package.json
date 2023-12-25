@@ -47,7 +47,7 @@
     "discord-api-types": "^0.37.66",
     "discord.js": "^14.14.1",
     "drizzle-kit": "^0.20.8",
-    "drizzle-orm": "^0.29.1",
+    "drizzle-orm": "^0.29.2",
     "fs-extra": "^11.2.0",
     "i18next": "^22.5.1",
     "imgur": "^2.3.0",
