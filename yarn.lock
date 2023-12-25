@@ -2099,9 +2099,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-orm@npm:^0.29.1":
-  version: 0.29.1
-  resolution: "drizzle-orm@npm:0.29.1"
+"drizzle-orm@npm:^0.29.2":
+  version: 0.29.2
+  resolution: "drizzle-orm@npm:0.29.2"
   peerDependencies:
     "@aws-sdk/client-rds-data": ">=3"
     "@cloudflare/workers-types": ">=3"
@@ -2111,15 +2111,18 @@ __metadata:
     "@planetscale/database": ">=1"
     "@types/better-sqlite3": "*"
     "@types/pg": "*"
+    "@types/react": ">=18"
     "@types/sql.js": "*"
     "@vercel/postgres": "*"
     better-sqlite3: ">=7"
     bun-types: "*"
+    expo-sqlite: ">=13.2.0"
     knex: "*"
     kysely: "*"
     mysql2: ">=2"
     pg: ">=8"
     postgres: ">=3"
+    react: ">=18"
     sql.js: ">=1"
     sqlite3: ">=5"
   peerDependenciesMeta:
@@ -2161,7 +2164,7 @@ __metadata:
       optional: true
     sqlite3:
       optional: true
-  checksum: a80bb1ac0b974acd4dcf57d50897065ea6e0a6e5cf4481b130ea2880304b2d1bededace9f532e66b39ab2b30ce4ef1feafbf60cb9c4ddc2b00fff2a7cd4d118f
+  checksum: a97e97c252eeb90dca89dbd226cb8feef198eebc1bfc3807f62855e751e597c2841f64d06879dacab62a013485f8d2ec7ba46edfbcf00fd054aa2afb5dbe281d
   languageName: node
   linkType: hard
 
@@ -4690,7 +4693,7 @@ __metadata:
     discord-api-types: ^0.37.66
     discord.js: ^14.14.1
     drizzle-kit: ^0.20.8
-    drizzle-orm: ^0.29.1
+    drizzle-orm: ^0.29.2
     eslint: ^8.56.0
     fs-extra: ^11.2.0
     husky: ^8.0.3
