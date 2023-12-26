@@ -4338,16 +4338,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^8.17.1":
-  version: 8.17.1
-  resolution: "pino@npm:8.17.1"
+"pino@npm:^8.17.2":
+  version: 8.17.2
+  resolution: "pino@npm:8.17.2"
   dependencies:
     atomic-sleep: ^1.0.0
     fast-redact: ^3.1.1
     on-exit-leak-free: ^2.1.0
     pino-abstract-transport: v1.1.0
     pino-std-serializers: ^6.0.0
-    process-warning: ^2.0.0
+    process-warning: ^3.0.0
     quick-format-unescaped: ^4.0.3
     real-require: ^0.2.0
     safe-stable-stringify: ^2.3.1
@@ -4355,7 +4355,7 @@ __metadata:
     thread-stream: ^2.0.0
   bin:
     pino: bin.js
-  checksum: 12fda9f8942ff299dcab6aace9396c90f650db88b82c5954fc91ab7e05765a15dc655072749342b539916406bbe13a8983c13498a95cd7e126218f4b830126a2
+  checksum: fc769d3d7b1333de94d51815fbe2abc4a1cc07cb0252a399313e54e26c13da2c0a69b227c296bd95ed52660d7eaa993662a9bf270b7370d0f7553fdd38716b63
   languageName: node
   linkType: hard
 
@@ -4373,10 +4373,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"process-warning@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "process-warning@npm:2.0.0"
-  checksum: a2bb299835bced58e63cbe06a8fd6e048a648d3649e81b62c442b63112a3f0a86912e7b1a9c557daca30652232d3b0a7f1972fb87c36334e2a5a6f3d5c4a76c9
+"process-warning@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "process-warning@npm:3.0.0"
+  checksum: 1fc2eb4524041de3c18423334cc8b4e36bec5ad5472640ca1a936122c6e01da0864c1a4025858ef89aea93eabe7e77db93ccea225b10858617821cb6a8719efe
   languageName: node
   linkType: hard
 
@@ -4704,7 +4704,7 @@ __metadata:
     lint-staged: ^15.2.0
     lodash: ^4.17.21
     mysql2: ^3.6.5
-    pino: ^8.17.1
+    pino: ^8.17.2
     pino-pretty: ^10.3.0
     reflect-metadata: ^0.2.1
     rimraf: ^5.0.5
