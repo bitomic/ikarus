@@ -41,7 +41,7 @@
     "@sapphire/plugin-scheduled-tasks": "^7.1.2",
     "@sapphire/plugin-utilities-store": "^1.0.3",
     "@sapphire/shapeshift": "^3.9.5",
-    "@sapphire/utilities": "^3.15.1",
+    "@sapphire/utilities": "^3.15.2",
     "bullmq": "^4.17.0",
     "colorette": "^2.0.20",
     "discord-api-types": "^0.37.67",
