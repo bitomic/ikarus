@@ -1792,9 +1792,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-kit@npm:^0.20.11":
-  version: 0.20.11
-  resolution: "drizzle-kit@npm:0.20.11"
+"drizzle-kit@npm:^0.20.12":
+  version: 0.20.12
+  resolution: "drizzle-kit@npm:0.20.12"
   dependencies:
     "@drizzle-team/studio": ^0.0.37
     "@esbuild-kit/esm-loader": ^2.5.5
@@ -1812,7 +1812,7 @@ __metadata:
     zod: ^3.20.2
   bin:
     drizzle-kit: bin.cjs
-  checksum: a3f3c062c59ac8465d4c5cf5c4d7322d82bdaf5e154fb0f63dd7b3702a57b034ab0f29f72afa5148f94b7e65b92f7434f05438b56910480c1136a7bcfa6c7aaf
+  checksum: a6f7d243b5c4f2e2d447da0bb13d86f4ab399e48be90a1f5a113e4f5a11025cc42fed711cc03e72016464effd96506853dc70d8dab6d46df1f74b6001c216603
   languageName: node
   linkType: hard
 
@@ -4201,7 +4201,7 @@ __metadata:
     colorette: ^2.0.20
     discord-api-types: ^0.37.67
     discord.js: ^14.14.1
-    drizzle-kit: ^0.20.11
+    drizzle-kit: ^0.20.12
     drizzle-orm: ^0.29.3
     eslint: ^8.56.0
     fs-extra: ^11.2.0
