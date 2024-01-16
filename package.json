@@ -46,7 +46,7 @@
     "colorette": "^2.0.20",
     "discord-api-types": "^0.37.67",
     "discord.js": "^14.14.1",
-    "drizzle-kit": "^0.20.12",
+    "drizzle-kit": "^0.20.13",
     "drizzle-orm": "^0.29.3",
     "fs-extra": "^11.2.0",
     "i18next": "^22.5.1",
