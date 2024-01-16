@@ -131,12 +131,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@drizzle-team/studio@npm:^0.0.37":
-  version: 0.0.37
-  resolution: "@drizzle-team/studio@npm:0.0.37"
+"@drizzle-team/studio@npm:^0.0.39":
+  version: 0.0.39
+  resolution: "@drizzle-team/studio@npm:0.0.39"
   dependencies:
     superjson: ^2.2.1
-  checksum: 072c28bfa3d177803d45261f3587f65ccbf9e9442bce162ee2f2b6dbd8e6c59718c91ddc1d05e36269f5364c38338d174277f0fa002a608104ac968aedf37bfd
+  checksum: b15e55b795a3bfb4d4f7987b164d7c1b8784faf8fd0f512101dd3a1574a20365e1a4cd46c3766b8f59de3aaa67fa9e4e4550757bd8f434b806554fe4332b253c
   languageName: node
   linkType: hard
 
@@ -1792,11 +1792,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"drizzle-kit@npm:^0.20.12":
-  version: 0.20.12
-  resolution: "drizzle-kit@npm:0.20.12"
+"drizzle-kit@npm:^0.20.13":
+  version: 0.20.13
+  resolution: "drizzle-kit@npm:0.20.13"
   dependencies:
-    "@drizzle-team/studio": ^0.0.37
+    "@drizzle-team/studio": ^0.0.39
     "@esbuild-kit/esm-loader": ^2.5.5
     camelcase: ^7.0.1
     chalk: ^5.2.0
@@ -1812,7 +1812,7 @@ __metadata:
     zod: ^3.20.2
   bin:
     drizzle-kit: bin.cjs
-  checksum: a6f7d243b5c4f2e2d447da0bb13d86f4ab399e48be90a1f5a113e4f5a11025cc42fed711cc03e72016464effd96506853dc70d8dab6d46df1f74b6001c216603
+  checksum: 86c045d4245a35b6eadedd7986d59ce94812076af462de44adfdfdf734346162571e42e47a17f61197c91193708e1b160e5c066a606192e1afa6bbf943b7d32a
   languageName: node
   linkType: hard
 
@@ -4201,7 +4201,7 @@ __metadata:
     colorette: ^2.0.20
     discord-api-types: ^0.37.67
     discord.js: ^14.14.1
-    drizzle-kit: ^0.20.12
+    drizzle-kit: ^0.20.13
     drizzle-orm: ^0.29.3
     eslint: ^8.56.0
     fs-extra: ^11.2.0
